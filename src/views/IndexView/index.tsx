@@ -139,7 +139,7 @@ export const IndexView: React.FC = () => {
                     >
                       <img
                         className="absolute h-full w-full object-cover"
-                        src={item!.content!.files[0].uri}
+                        src={item?.content?.files && item.content.files.length > 0 ? item?.content?.files[0].uri : ""}
                       />
                     </button>
                   ))}
