@@ -3,22 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "rm -rf .next node_modules yarn.lock",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.16",
+    "@solana/web3.js": "^1.78.0",
     "@types/node": "20.4.5",
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
+    "clsx": "^2.0.0",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
+    "helius-sdk": "^1.0.13",
     "next": "13.4.12",
+    "next-auth": "^4.22.3",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.10.1",
+    "react-query": "^3.39.3",
+    "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6"
   }
