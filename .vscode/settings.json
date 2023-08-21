@@ -1,0 +1,20 @@
+{
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "cSpell.words": [
+    "Blockhash",
+    "clsx",
+    "HASURA",
+    "Keypair",
+    "lamports",
+    "metaplex",
+    "openapi",
+    "Pubkey",
+    "semifungible",
+    "solana",
+    "Solflare",
+    "superadmin",
+    "unoptimized"
+  ]
+}

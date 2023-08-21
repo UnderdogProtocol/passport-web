@@ -4,44 +4,39 @@ import { Dropdown, DropdownProps } from "@/components/Dropdown";
 import { LoadingSection } from "@/components/LoadingSection";
 import { MediaObject } from "@/components/MediaObject";
 import { Modal } from "@/components/Modal";
+import { useContext } from "@/hooks/useContext";
 import { useNftsByOwnerAddress } from "@/hooks/useNftsByOwnerAddress";
-import { findUnderdogPda, shortenAddress, sleep } from "@/lib";
+import { shortenAddress, sleep } from "@/lib";
+import { findLinkPda, transferAssetV0 } from "@underdog-protocol/underdog-identity-sdk";
 import axios from "axios";
 import { DAS } from "helius-sdk";
 import { signOut, useSession } from "next-auth/react";
 import { useMemo, useState } from "react";
+import { faker } from "@faker-js/faker";
+import { PublicKey } from "@metaplex-foundation/umi";
 
 export const IndexView: React.FC = () => {
+  const context = useContext();
   const { data: session } = useSession();
   const [minting, setMinting] = useState(false);
-  const underdogUserPda = useMemo(
+  const linkPda = useMemo(
     () =>
       session?.user?.email
-        ? findUnderdogPda([Buffer.from(session.user.email)])
+        ? findLinkPda(context, { identifier: session.user.email })[0]
         : undefined,
-    [session?.user?.email]
+    [session?.user?.email, context]
   );
 
-  const { data, isLoading, refetch } = useNftsByOwnerAddress(underdogUserPda);
+  const { data, isLoading, refetch } = useNftsByOwnerAddress(linkPda);
+
+  console.log(data);
 
   const [nft, setNft] = useState<DAS.GetAssetResponse>();
 
   const handleMintNft = async () => {
     setMinting(true);
-    await axios.post(
-      "https://dev.underdogprotocol.com/v2/projects/1/nfts",
-      {
-        name: "Underdog NFT",
-        symbol: "UPDOG",
-        image: "https://picsum.photos/200",
-        receiverAddress: underdogUserPda?.toBase58(),
-      },
-      {
-        headers: {
-          Authorization: `Bearer 03c4c1cf444acf.f9a4567eb8ac46f5bd6a8077192c6a04`,
-        },
-      }
-    );
+
+    await axios.post("/api/create-nft");
 
     for (let i = 0; i < 9; i++) {
       await refetch();
@@ -56,14 +51,22 @@ export const IndexView: React.FC = () => {
       children: "Copy Address",
       size: "sm",
       onClick: () =>
-        navigator.clipboard.writeText(underdogUserPda?.toBase58() || ""),
+        navigator.clipboard.writeText(linkPda || ""),
     },
     {
       children: "View on Solscan",
       size: "sm",
       onClick: () =>
         window.open(
-          `https://solscan.io/account/${underdogUserPda?.toBase58()}?cluster=devnet`
+          `https://solscan.io/account/${linkPda}`
+        ),
+    },
+    {
+      children: "View on XRAY",
+      size: "sm",
+      onClick: () =>
+        window.open(
+          `https://xray.helius.xyz/account/${linkPda}`
         ),
     },
     {
@@ -73,21 +76,20 @@ export const IndexView: React.FC = () => {
     },
   ];
 
-  if (session?.user?.email && underdogUserPda) {
+  const transfer = async (mintAddress: PublicKey) => {
+    const response = await axios.post("/api/transfer", { mintAddress });
+    console.log(response);
+  }
+
+  if (session?.user?.email && linkPda) {
     return (
       <>
-        <div className="py-2 bg-primary flex justify-center">
-          <span>
-            Underdog Protocol ID is in beta and only supports Solana Devnet -
-            proceed with caution
-          </span>
-        </div>
         <Container size="lg" className="py-8">
           <div className="flex justify-between items-center">
             <MediaObject
               media={{ src: session.user.image || undefined }}
               title={session.user.email}
-              description={shortenAddress(underdogUserPda)}
+              description={shortenAddress(linkPda)}
             />
             <Dropdown items={dropdownItems} />
           </div>
@@ -96,15 +98,15 @@ export const IndexView: React.FC = () => {
           <Modal open={!!nft} onClose={() => setNft(undefined)}>
             <div className="bg-dark p-8 rounded-lg border-dark-accent border space-y-4">
               <MediaObject
-                media={{
-                  src: nft?.content?.files ? nft?.content?.files[0].uri : "",
-                }}
+                // media={{
+                //   src: ,
+                // }}
                 title={nft?.content?.metadata.name}
                 description={nft?.content?.metadata.symbol}
                 size="xl"
               />
               <div className="grid">
-                <Button type="secondary" disabled size="sm">
+                <Button type="secondary" size="sm" onClick={() => transfer(nft?.id)}>
                   Send
                 </Button>
               </div>
@@ -127,19 +129,19 @@ export const IndexView: React.FC = () => {
               </div>
               <div className="grid grid-cols-3 gap-1">
                 {data?.items
-                  .filter(
-                    (item) =>
-                      item?.content?.files && item.content.files.length > 0
-                  )
                   .map((item) => (
                     <button
                       className="relative pb-[100%] rounded-md overflow-hidden hover:opacity-50"
                       key={item.id}
-                      onClick={() => setNft(item)}
+                      onClick={() => window.open(`https://xray.helius.xyz/token/${item.id}`)}
                     >
                       <img
                         className="absolute h-full w-full object-cover"
-                        src={item?.content?.files && item.content.files.length > 0 ? item?.content?.files[0].uri : ""}
+                        src={
+                          item.content
+                            ? item.content.json_uri.replace("jsondata", "imgdata")
+                            : "https://updg8.com/imgdata/8QfUaoNPNwjEAKHkXvBUrjQaqiRf7MmpRWUHuQdMZyXj"
+                        }
                       />
                     </button>
                   ))}

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { helius } from "@/lib/helius";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@metaplex-foundation/umi";
 
 const fetchNftsByOwnerAddress = (ownerAddress?: PublicKey, page = 1) => {
   if (!ownerAddress) {
@@ -8,17 +8,14 @@ const fetchNftsByOwnerAddress = (ownerAddress?: PublicKey, page = 1) => {
   }
 
   return helius.rpc.getAssetsByOwner({
-    ownerAddress: ownerAddress.toBase58(),
+    ownerAddress,
     page,
   });
 };
 
-export const useNftsByOwnerAddress = (
-  ownerAddress?: PublicKey,
-  page = 1,
-) => {
+export const useNftsByOwnerAddress = (ownerAddress?: PublicKey, page = 1) => {
   return useQuery(
-    ["nftsByOwnerAddress", ownerAddress?.toBase58(), page],
+    ["nftsByOwnerAddress", ownerAddress, page],
     () => fetchNftsByOwnerAddress(ownerAddress, page),
     { enabled: !!ownerAddress }
   );
