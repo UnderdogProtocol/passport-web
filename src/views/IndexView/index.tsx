@@ -95,7 +95,7 @@ export const IndexView: React.FC = () => {
           </div>
 
           <hr className="my-4 border border-dark-accent" />
-          <Modal open={!!nft} onClose={() => setNft(undefined)}>
+          {/* <Modal open={!!nft} onClose={() => setNft(undefined)}>
             <div className="bg-dark p-8 rounded-lg border-dark-accent border space-y-4">
               <MediaObject
                 // media={{
@@ -111,7 +111,7 @@ export const IndexView: React.FC = () => {
                 </Button>
               </div>
             </div>
-          </Modal>
+          </Modal> */}
 
           {isLoading ? (
             <LoadingSection />
