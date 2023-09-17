@@ -9,9 +9,17 @@ export const SignInView: React.FC = () => {
       className="py-8 h-screen flex items-center justify-center"
     >
       <div className="p-12 space-y-8 bg-dark-light rounded-lg w-full">
-        <img src="https://underdogprotocol.com/full-logo-dark.svg" />
+        <img
+          src="https://storage.googleapis.com/underdog-protocol/logos/full_dark.svg"
+          alt="logo"
+        />
 
-        <Button type="primary" size="lg" block onClick={() => signIn("google", { callbackUrl: "/" })}>
+        <Button
+          type="primary"
+          size="lg"
+          block
+          onClick={() => signIn("google", { callbackUrl: "/" })}
+        >
           Sign in with Google
         </Button>
       </div>
