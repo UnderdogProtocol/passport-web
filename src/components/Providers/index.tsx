@@ -1,3 +1,4 @@
+import { UserProvider } from "@/contexts/user";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -12,7 +13,9 @@ const queryClient = new QueryClient();
 export const Providers: React.FC<ProvidersProps> = ({ children, session }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionProvider session={session}>{children}</SessionProvider>
+      <SessionProvider session={session}>
+        <UserProvider>{children}</UserProvider>
+      </SessionProvider>
     </QueryClientProvider>
   );
 };

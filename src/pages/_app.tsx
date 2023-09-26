@@ -1,18 +1,28 @@
-import { Providers } from "@/components/Providers";
-import "@/styles/globals.css";
+import "@solana/wallet-adapter-react-ui/styles.css";
+import { NextPage } from "next";
 import type { AppProps } from "next/app";
-import Head from "next/head";
+import { ReactElement, ReactNode } from "react";
+import "@/styles/globals.css";
+
+import { Providers } from "@/components/Providers";
+
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
-}: AppProps) {
+}: AppPropsWithLayout) {
+  const getLayout = Component.getLayout || ((page) => page);
+
   return (
-    <>
-    <Head><title>ID | Underdog Protocol</title></Head>
-      <Providers session={session}>
-        <Component {...pageProps} />
-      </Providers>
-    </>
+    <Providers session={session}>
+      {getLayout(<Component {...pageProps} />)}
+    </Providers>
   );
 }

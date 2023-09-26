@@ -41,7 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
   const headerClassName = clsx(centered && "text-center", className);
 
   const { title: titleSizeClassName } = sizeClassName[titleSize || size];
-  const titleClassName = clsx(titleSizeClassName, "font-bold text-light");
+  const titleClassName = clsx(titleSizeClassName, "font-medium text-light");
 
   const { description: descriptionSizeClassName } = sizeClassName[descriptionSize || size];
   const descriptionClassName = clsx(descriptionSizeClassName, "text-light-accent");
