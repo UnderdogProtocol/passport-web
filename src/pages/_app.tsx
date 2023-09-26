@@ -5,6 +5,8 @@ import { ReactElement, ReactNode } from "react";
 import "@/styles/globals.css";
 
 import { Providers } from "@/components/Providers";
+import Head from "next/head";
+import { Fonts } from "@/components/Fonts";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -21,8 +23,14 @@ export default function App({
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <Providers session={session}>
-      {getLayout(<Component {...pageProps} />)}
-    </Providers>
+    <>
+      <Head>
+        <Fonts />
+      </Head>
+
+      <Providers session={session}>
+        {getLayout(<Component {...pageProps} />)}
+      </Providers>
+    </>
   );
 }
