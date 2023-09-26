@@ -1,17 +1,27 @@
-import { useLinkAccount } from "@/hooks/useLinkAccount";
 import { apps } from "@/lib/constants";
 import { context } from "@/lib/context";
-import { PublicKey, RpcAccount } from "@metaplex-foundation/umi";
-import { findLinkPda } from "@underdog-protocol/underdog-identity-sdk";
+import { PublicKey } from "@metaplex-foundation/umi";
+import {
+  LinkAccountData,
+  fetchLinkFromSeeds,
+  findLinkPda,
+} from "@underdog-protocol/underdog-identity-sdk";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 export type UserContextProps = {
   user: Omit<User, "id"> | undefined;
   address: PublicKey | undefined;
-  account: RpcAccount | undefined;
+  account: LinkAccountData | undefined;
   app: (typeof apps)[keyof typeof apps] | undefined;
   namespace: string | undefined;
 };
@@ -32,6 +42,7 @@ type UserProviderProps = {
 
 export function UserProvider({ children }: UserProviderProps) {
   const router = useRouter();
+  const [account, setAccount] = useState<LinkAccountData>();
 
   const namespace = useMemo(
     () => router.query.namespace as string,
@@ -54,7 +65,14 @@ export function UserProvider({ children }: UserProviderProps) {
     }
   }, [user, router.query.namespace]);
 
-  const account = useLinkAccount(address);
+  useEffect(() => {
+    if (user?.email && namespace) {
+      fetchLinkFromSeeds(context, {
+        namespace,
+        identifier: user.email,
+      }).then(setAccount);
+    }
+  }, [namespace, user]);
 
   return (
     <UserContext.Provider value={{ user, app, address, account, namespace }}>

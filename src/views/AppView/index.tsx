@@ -34,18 +34,19 @@ export const AppView: React.FC = () => {
 
   if (!(user && app && address)) return <LoadingPage />;
 
-  const dropdownItems: DropdownProps["items"] = [
+  const items = [
     {
-      children: "Copy Address",
-      size: "sm",
-      onClick: () => navigator.clipboard.writeText(address),
-    },
-    {
-      children: "View on XRAY",
-      size: "sm",
-      onClick: () => viewAccountOnXray(address),
+      title: "Address",
+      description: shortenAddress(address),
     },
   ];
+
+  if (account) {
+    items.push({
+      title: "Linked Wallet",
+      description: shortenAddress(account.address),
+    });
+  }
 
   return (
     <Container className="grid lg:grid-cols-3 gap-8 py-4">
@@ -104,14 +105,7 @@ export const AppView: React.FC = () => {
         </Card>
 
         <Card className="p-4">
-          <DescriptionList
-            items={[
-              {
-                title: "Address",
-                description: shortenAddress(address),
-              },
-            ]}
-          />
+          <DescriptionList items={items} />
         </Card>
       </div>
 
