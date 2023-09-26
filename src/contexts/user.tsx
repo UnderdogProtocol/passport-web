@@ -71,6 +71,8 @@ export function UserProvider({ children }: UserProviderProps) {
         namespace,
         identifier: user.email,
       }).then(setAccount);
+    } else {
+      setAccount(undefined);
     }
   }, [namespace, user]);
 
