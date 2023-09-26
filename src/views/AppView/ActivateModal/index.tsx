@@ -6,6 +6,8 @@ import { Header } from "@/components/MediaObject/Header";
 import { Modal, ModalProps } from "@/components/Modal";
 import { renderNotification } from "@/components/Notification";
 import { useUserContext } from "@/contexts/user";
+import { useToggle } from "@/hooks/useToggle";
+import { shortenAddress } from "@/lib";
 import { context } from "@/lib/context";
 import { publicKey } from "@metaplex-foundation/umi";
 import { toWeb3JsTransaction } from "@metaplex-foundation/umi-web3js-adapters";
@@ -37,18 +39,19 @@ export const ActivateModal: React.FC<ActivateModalProps> = (props) => {
         base58.serialize(response.data)
       );
 
+      const signedTransaction = await wallet.signTransaction(toWeb3JsTransaction(transaction));
+
       try {
-      await wallet.sendTransaction(
-        toWeb3JsTransaction(transaction),
-        connection
-      );
+        await connection.sendRawTransaction(signedTransaction.serialize());
+        renderNotification({ title: `Activated your ${app.title} account`, description: `Wallet ${shortenAddress(publicKey(wallet.publicKey))} linked` })
       } catch {
         renderNotification({
           title: "There was a problem sending your transaction",
           description: "Please confirm the transaction to continue",
-        })
+        });
       }
 
+      props.onClose && props.onClose();
     }
   };
 

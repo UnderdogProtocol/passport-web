@@ -43,7 +43,7 @@ router.post(async (req, res) => {
       linker: createNoopSigner(publicKey(req.body.linkerAddress)),
       namespace: req.query.namespace as string,
       identifier: session.user.email,
-    }).buildWithLatestBlockhash(context)
+    }).buildAndSign(context)
   );
 
   res.send(base58.deserialize(transaction.serialize())[0]);
