@@ -511,6 +511,13 @@
   dependencies:
     buffer "^6.0.3"
 
+"@metaplex-foundation/umi-web3js-adapters@^0.8.9":
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-web3js-adapters/-/umi-web3js-adapters-0.8.9.tgz#5541159e1c69a9c984cde5e7015247dad4af39ea"
+  integrity sha512-WKdWUEiDnoWKKEETy6DjLWyHlMwKi5OPJ6eeApeui6ITkTTAs3z3BAf3NYDYywmN/DgeXPIbJkwwkwfvcHg3xw==
+  dependencies:
+    buffer "^6.0.3"
+
 "@metaplex-foundation/umi@0.8.4":
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi/-/umi-0.8.4.tgz#e88e1d7cf0c1fde42ef2f79bba977ddcf62a0ac7"
@@ -1844,10 +1851,10 @@
     "@typescript-eslint/types" "5.62.0"
     eslint-visitor-keys "^3.3.0"
 
-"@underdog-protocol/underdog-identity-sdk@0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@underdog-protocol/underdog-identity-sdk/-/underdog-identity-sdk-0.5.0.tgz#8cca8315c2bd12d284ef7b04744ea76ca3efc6c5"
-  integrity sha512-zBA7J+t8/Uq+qcorkOgCqKDitNI+XOjxJ2RCmZxSQ5alyVHnS5s4EF8dareB1+Ddol4r2kLZNamxcUsOxu/9NA==
+"@underdog-protocol/underdog-identity-sdk@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@underdog-protocol/underdog-identity-sdk/-/underdog-identity-sdk-0.6.0.tgz#86cf93b4f464aad6d4174909c2e4fe7efacfe8ce"
+  integrity sha512-QX6HXmfJa3x4JDE1cqQFCz5pLawyysf1OU8v36WZ0+lJGjrwB04JyPJr7SEpKjRBp2jY/P+xZZRBmW9zpWeJiQ==
   dependencies:
     "@metaplex-foundation/mpl-bubblegum" "1.0.0-alpha.8"
     "@metaplex-foundation/mpl-token-metadata" "3.0.0-alpha.24"

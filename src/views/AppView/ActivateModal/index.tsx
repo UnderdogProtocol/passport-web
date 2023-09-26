@@ -6,15 +6,51 @@ import { Header } from "@/components/MediaObject/Header";
 import { Modal, ModalProps } from "@/components/Modal";
 import { renderNotification } from "@/components/Notification";
 import { useUserContext } from "@/contexts/user";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { context } from "@/lib/context";
+import { publicKey } from "@metaplex-foundation/umi";
+import { toWeb3JsTransaction } from "@metaplex-foundation/umi-web3js-adapters";
+import { base58 } from "@metaplex-foundation/umi/serializers";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import axios from "axios";
 
 export type ActivateModalProps = ModalProps;
 
 export const ActivateModal: React.FC<ActivateModalProps> = (props) => {
-  const { publicKey } = useWallet();
-  const { app } = useUserContext();
+  const wallet = useWallet();
+  const { connection } = useConnection();
+  const { app, namespace, user } = useUserContext();
 
   if (!app) return null;
+
+  const handleActivate = async () => {
+    if (
+      wallet.publicKey &&
+      wallet.signTransaction &&
+      user?.email &&
+      namespace
+    ) {
+      const response = await axios.post(`/api/${namespace}/activate`, {
+        linkerAddress: wallet.publicKey.toBase58(),
+      });
+
+      const transaction = context.transactions.deserialize(
+        base58.serialize(response.data)
+      );
+
+      try {
+      await wallet.sendTransaction(
+        toWeb3JsTransaction(transaction),
+        connection
+      );
+      } catch {
+        renderNotification({
+          title: "There was a problem sending your transaction",
+          description: "Please confirm the transaction to continue",
+        })
+      }
+
+    }
+  };
 
   return (
     <Modal {...props}>
@@ -39,11 +75,7 @@ export const ActivateModal: React.FC<ActivateModalProps> = (props) => {
             title="Activate Account"
             description="Sign the transaction to activate your account. This requires a little bit of SOL to store your account on-chain."
           />
-          <Button
-            type="primary"
-            disabled={!publicKey}
-            onClick={() => renderNotification({ title: "Oops", description: "I did it again" })}
-          >
+          <Button type="primary" disabled={!publicKey} onClick={handleActivate}>
             Activate
           </Button>
         </div>

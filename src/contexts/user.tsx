@@ -13,6 +13,7 @@ export type UserContextProps = {
   address: PublicKey | undefined;
   account: RpcAccount | undefined;
   app: (typeof apps)[keyof typeof apps] | undefined;
+  namespace: string | undefined;
 };
 
 export const UserContext = createContext<UserContextProps>({
@@ -20,6 +21,7 @@ export const UserContext = createContext<UserContextProps>({
   address: undefined,
   account: undefined,
   app: undefined,
+  namespace: undefined,
 });
 
 export const useUserContext = () => useContext(UserContext);
@@ -31,14 +33,16 @@ type UserProviderProps = {
 export function UserProvider({ children }: UserProviderProps) {
   const router = useRouter();
 
+  const namespace = useMemo(
+    () => router.query.namespace as string,
+    [router.query.namespace]
+  );
+
   const session = useSession();
   const user = useMemo(() => session?.data?.user, [session]);
   const app = useMemo(
-    () =>
-      router.query.namespace
-        ? apps[router.query.namespace as string]
-        : undefined,
-    [router.query.namespace]
+    () => (namespace ? apps[namespace] : undefined),
+    [namespace]
   );
 
   const address = useMemo(() => {
@@ -53,7 +57,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const account = useLinkAccount(address);
 
   return (
-    <UserContext.Provider value={{ user, app, address, account }}>
+    <UserContext.Provider value={{ user, app, address, account, namespace }}>
       {children}
     </UserContext.Provider>
   );

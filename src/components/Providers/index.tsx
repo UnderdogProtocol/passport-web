@@ -4,6 +4,7 @@ import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -21,7 +22,7 @@ export const Providers: React.FC<ProvidersProps> = ({ children, session }) => {
       <SessionProvider session={session}>
         <UserProvider>
           <ConnectionProvider endpoint="https://smart-serene-daylight.solana-mainnet.quiknode.pro/874271840b52506691067a7b8f57052e1322099b/">
-            <WalletProvider wallets={[]} autoConnect>
+            <WalletProvider wallets={[new SolflareWalletAdapter()]} autoConnect>
               <WalletModalProvider>{children}</WalletModalProvider>
             </WalletProvider>
           </ConnectionProvider>
