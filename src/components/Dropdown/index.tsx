@@ -8,9 +8,10 @@ import { Button, ButtonProps } from "../Button";
 export type DropdownProps = {
   items: ButtonProps[];
   children?: ReactNode;
+  className?: string;
 };
 
-export function Dropdown({ items = [], children }: DropdownProps) {
+export function Dropdown({ items = [], children, className }: DropdownProps) {
   if (items.length === 0) return null;
 
   return (

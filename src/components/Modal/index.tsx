@@ -24,11 +24,6 @@ export function Modal({ open, onClose, size = "md", children, closable = true, c
 
   const dialogClassName = clsx("fixed z-20 inset-0 overflow-y-auto flex items-center justify-center min-h-screen");
 
-  const modalClassName = clsx(
-    "bg-dark border-dark-accent border w-full max-w-sm transform overflow-hidden rounded-lg p-4 transition-all",
-    className
-  );
-
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog static as="div" className={dialogClassName} open={open} onClose={handleClose}>

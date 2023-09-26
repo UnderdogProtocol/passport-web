@@ -8,7 +8,7 @@ type AvatarProps = {
 
 export const Avatar: React.FC<AvatarProps> = ({ src, className }: AvatarProps) => {
   const avatarClassName = clsx(
-    "rounded-md flex-shrink-0 h-8 w-8",
+    "rounded-md flex-shrink-0",
     className
   );
 

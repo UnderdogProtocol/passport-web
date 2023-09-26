@@ -7,6 +7,7 @@ import "@/styles/globals.css";
 import { Providers } from "@/components/Providers";
 import Head from "next/head";
 import { Fonts } from "@/components/Fonts";
+import { Toaster } from "react-hot-toast";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -27,6 +28,8 @@ export default function App({
       <Head>
         <Fonts />
       </Head>
+
+      <Toaster />
 
       <Providers session={session}>
         {getLayout(<Component {...pageProps} />)}

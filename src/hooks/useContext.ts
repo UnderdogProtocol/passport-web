@@ -6,13 +6,4 @@ export const useContext = () => {
   );
 
   return context;
-
-  // umi.use(
-  //   keypairIdentity(
-  //     createSignerFromKeypair(umi, {
-  //       publicKey: publicKey(underdogKeypair.publicKey.toBase58()),
-  //       secretKey: underdogKeypair.secretKey,
-  //     })
-  //   )
-  // );
 };
