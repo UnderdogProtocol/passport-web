@@ -1851,10 +1851,10 @@
     "@typescript-eslint/types" "5.62.0"
     eslint-visitor-keys "^3.3.0"
 
-"@underdog-protocol/underdog-identity-sdk@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@underdog-protocol/underdog-identity-sdk/-/underdog-identity-sdk-0.6.0.tgz#86cf93b4f464aad6d4174909c2e4fe7efacfe8ce"
-  integrity sha512-QX6HXmfJa3x4JDE1cqQFCz5pLawyysf1OU8v36WZ0+lJGjrwB04JyPJr7SEpKjRBp2jY/P+xZZRBmW9zpWeJiQ==
+"@underdog-protocol/underdog-identity-sdk@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@underdog-protocol/underdog-identity-sdk/-/underdog-identity-sdk-0.7.0.tgz#c9997563f524ca0294a7cde076e1f4d7c9f19286"
+  integrity sha512-eRUagih2yZsomZEOtUq2bQHai6W8P/OJermjYtsXhOvWRBffN9KAF/N0SmE4LsDQqJ67dnTathChA1aJrmkhKg==
   dependencies:
     "@metaplex-foundation/mpl-bubblegum" "1.0.0-alpha.8"
     "@metaplex-foundation/mpl-token-metadata" "3.0.0-alpha.24"

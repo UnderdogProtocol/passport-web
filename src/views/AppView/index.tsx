@@ -3,20 +3,11 @@ import { LoadingPage } from "@/components/LoadingPage";
 import { MediaObject } from "@/components/MediaObject";
 import { useUserContext } from "@/contexts/user";
 import { useNftsByOwnerAddress } from "@/hooks/useNftsByOwnerAddress";
-import { shortenAddress } from "@/lib";
 import { HiLockClosed, HiOutlineSquares2X2 } from "react-icons/hi2";
-import { Card } from "@/components/Card";
-import { Badge } from "@/components/Badge";
-import { Button } from "@/components/Button";
-import { DescriptionList } from "@/components/DescriptionList";
-import { ActivateModal } from "./ActivateModal";
-import { useToggle } from "@/hooks/useToggle";
 import Link from "next/link";
 
 export const AppView: React.FC = () => {
-  const [activating, toggleActivating] = useToggle();
-
-  const { user, address, account, namespace, app } = useUserContext();
+  const { user, address, namespace, app } = useUserContext();
 
   const { data } = useNftsByOwnerAddress(address);
 
@@ -33,7 +24,7 @@ export const AppView: React.FC = () => {
       />
 
       <div className="grid grid-cols-3 sm:grid-cols-5 gap-1">
-        {data?.items.map((item) => (
+        {data?.items.filter((item) => !item.burnt).map((item) => (
           <Link
             href={`/${namespace}/${item.id}`}
             className="relative pb-[100%] rounded-md overflow-hidden hover:opacity-50"

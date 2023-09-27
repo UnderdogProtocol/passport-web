@@ -15,7 +15,7 @@ import { LoadingPage } from "../LoadingPage";
 export const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [activating, toggleActivating] = useToggle();
 
-  const { user, address, account, namespace, app } = useUserContext();
+  const { user, address, account, app } = useUserContext();
 
   if (!(user && app && address)) return <LoadingPage />;
 

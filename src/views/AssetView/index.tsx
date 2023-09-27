@@ -1,14 +1,12 @@
+import { BurnModal } from "@/components/BurnModal";
 import { Container } from "@/components/Container";
 import { Dropdown, DropdownProps } from "@/components/Dropdown";
 import { MediaObject } from "@/components/MediaObject";
 import { renderNotification } from "@/components/Notification";
 import { TransferModal } from "@/components/TransferModal";
-import { useUserContext } from "@/contexts/user";
 import { useAsset } from "@/hooks/useAsset";
-import { useAssetProof } from "@/hooks/useAssetProof";
 import { useToggle } from "@/hooks/useToggle";
 import { publicKey } from "@metaplex-foundation/umi";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { HiOutlineArrowUpOnSquare, HiOutlineTrash } from "react-icons/hi2";
@@ -27,6 +25,7 @@ export const AssetView = () => {
   const { data: assetData } = useAsset(mintAddress);
 
   const [transferModalOpen, toggleTransferModalOpen] = useToggle();
+  const [burnModalOpen, toggleBurnModalOpen] = useToggle();
 
   const dropdownItems: DropdownProps["items"] = [
     {
@@ -45,7 +44,7 @@ export const AssetView = () => {
           media={{ icon: <HiOutlineTrash className="h-6 w-6" /> }}
         />
       ),
-      onClick: () => renderNotification({ title: "Burned" }),
+      onClick: toggleBurnModalOpen,
     },
   ];
 
@@ -69,6 +68,12 @@ export const AssetView = () => {
       <TransferModal
         open={transferModalOpen}
         onClose={toggleTransferModalOpen}
+        size="5xl"
+      />
+
+      <BurnModal
+        open={burnModalOpen}
+        onClose={toggleBurnModalOpen}
         size="5xl"
       />
     </Container>

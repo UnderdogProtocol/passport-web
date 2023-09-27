@@ -13,13 +13,21 @@ import { toWeb3JsTransaction } from "@metaplex-foundation/umi-web3js-adapters";
 import { base58 } from "@metaplex-foundation/umi/serializers";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import axios from "axios";
+import { useEffect } from "react";
 
 export type ActivateModalProps = ModalProps;
 
 export const ActivateModal: React.FC<ActivateModalProps> = (props) => {
   const wallet = useWallet();
   const { connection } = useConnection();
-  const { app, namespace, user } = useUserContext();
+  const { app, namespace, user, account } = useUserContext();
+
+  useEffect(() => {
+    if (account && props.open) {
+      renderNotification({ title: "Account already activated" });
+      props.onClose && props.onClose();
+    }
+  }, [account, props]);
 
   if (!app) return null;
 
