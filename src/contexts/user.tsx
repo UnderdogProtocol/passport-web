@@ -51,7 +51,9 @@ export function UserProvider({ children }: UserProviderProps) {
   );
 
   const session = useSession();
+
   const user = useMemo(() => session?.data?.user, [session]);
+
   const app = useMemo(
     () => (namespace ? apps[namespace] : undefined),
     [namespace]
