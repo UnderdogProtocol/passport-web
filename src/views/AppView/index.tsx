@@ -1,34 +1,22 @@
 import { Container } from "@/components/Container";
-import { useMemo } from "react";
 import { LoadingPage } from "@/components/LoadingPage";
-import { apps } from "@/lib/constants";
 import { MediaObject } from "@/components/MediaObject";
 import { useUserContext } from "@/contexts/user";
-import { useRouter } from "next/router";
 import { useNftsByOwnerAddress } from "@/hooks/useNftsByOwnerAddress";
-import { shortenAddress, viewAccountOnXray, viewAssetOnXray } from "@/lib";
+import { shortenAddress } from "@/lib";
 import { HiLockClosed, HiOutlineSquares2X2 } from "react-icons/hi2";
-import { DropdownProps } from "@/components/Dropdown";
-import { publicKey } from "@metaplex-foundation/umi";
 import { Card } from "@/components/Card";
 import { Badge } from "@/components/Badge";
 import { Button } from "@/components/Button";
 import { DescriptionList } from "@/components/DescriptionList";
 import { ActivateModal } from "./ActivateModal";
 import { useToggle } from "@/hooks/useToggle";
+import Link from "next/link";
 
 export const AppView: React.FC = () => {
-  const router = useRouter();
   const [activating, toggleActivating] = useToggle();
 
-  const { user, address, account } = useUserContext();
-  const app = useMemo(
-    () =>
-      router.query.namespace
-        ? apps[router.query.namespace as string]
-        : undefined,
-    [router]
-  );
+  const { user, address, account, namespace, app } = useUserContext();
 
   const { data } = useNftsByOwnerAddress(address);
 
@@ -61,10 +49,10 @@ export const AppView: React.FC = () => {
 
         <div className="grid grid-cols-3 sm:grid-cols-5 gap-1">
           {data?.items.map((item) => (
-            <button
+            <Link
+              href={`/${namespace}/${item.id}`}
               className="relative pb-[100%] rounded-md overflow-hidden hover:opacity-50"
               key={item.id}
-              onClick={() => viewAssetOnXray(publicKey(item.id))}
             >
               <img
                 className="absolute h-full w-full object-cover"
@@ -74,11 +62,10 @@ export const AppView: React.FC = () => {
                     : "https://updg8.com/imgdata/8QfUaoNPNwjEAKHkXvBUrjQaqiRf7MmpRWUHuQdMZyXj"
                 }
               />
-
               {item.ownership.delegated && (
                 <HiLockClosed className="absolute bottom-0 right-0 text-light m-2 h-5 w-5" />
               )}
-            </button>
+            </Link>
           ))}
         </div>
       </div>
