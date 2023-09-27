@@ -3,7 +3,7 @@ import { LoadingPage } from "@/components/LoadingPage";
 import { apps } from "@/lib/constants";
 import { Header } from "@/components/MediaObject/Header";
 import { MediaObject } from "@/components/MediaObject";
-import { HiDevicePhoneMobile } from "react-icons/hi2";
+import { HiDevicePhoneMobile, HiOutlineGlobeAlt } from "react-icons/hi2";
 import Link from "next/link";
 import { useUserContext } from "@/contexts/user";
 
@@ -19,6 +19,7 @@ export const IndexView: React.FC = () => {
         size="4xl"
         media={{ icon: <HiDevicePhoneMobile className="text-light h-8 w-8" /> }}
       />
+
       <div className="grid grid-cols-4 gap-8">
         {Object.entries(apps).map(([namespace, { title, src }]) => (
           <Link href={namespace} key={title}>
