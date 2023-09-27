@@ -3,7 +3,6 @@ import { context } from "@/lib/context";
 import { PublicKey } from "@metaplex-foundation/umi";
 import {
   LinkAccountData,
-  fetchLinkFromSeeds,
   findLinkPda,
   safeFetchLinkFromSeeds,
 } from "@underdog-protocol/underdog-identity-sdk";

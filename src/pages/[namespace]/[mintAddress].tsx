@@ -1,4 +1,4 @@
-import { getLayout } from "@/components/Layout";
+import { getLayout } from "@/components/AppLayout";
 import { AssetView } from "@/views/AssetView";
 
 export default function AssetPage() {
