@@ -5,6 +5,7 @@ import {
   LinkAccountData,
   fetchLinkFromSeeds,
   findLinkPda,
+  safeFetchLinkFromSeeds,
 } from "@underdog-protocol/underdog-identity-sdk";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
@@ -67,10 +68,10 @@ export function UserProvider({ children }: UserProviderProps) {
 
   useEffect(() => {
     if (user?.email && namespace) {
-      fetchLinkFromSeeds(context, {
+      safeFetchLinkFromSeeds(context, {
         namespace,
         identifier: user.email,
-      }).then(setAccount);
+      }).then((account) => account && setAccount(account));
     } else {
       setAccount(undefined);
     }
