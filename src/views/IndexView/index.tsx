@@ -21,10 +21,8 @@ export const IndexView: React.FC = () => {
     "FuhuXxkkDeUEVe45eoE6KyTEwBkpKk4NRtTkgEbBk3Ym",
   ];
 
-  const getRandomIndex = () =>
-    Math.floor(Math.random() * (mintAddresses.length + 1));
+  const getRandomIndex = () => Math.floor(Math.random() * mintAddresses.length);
 
-  console.log(getRandomIndex());
   const mintAddress = mintAddresses[getRandomIndex()];
 
   return (
