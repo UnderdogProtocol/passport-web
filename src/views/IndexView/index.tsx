@@ -3,17 +3,52 @@ import { LoadingPage } from "@/components/LoadingPage";
 import { apps } from "@/lib/constants";
 import { Header } from "@/components/MediaObject/Header";
 import { MediaObject } from "@/components/MediaObject";
-import { HiDevicePhoneMobile, HiOutlineGlobeAlt } from "react-icons/hi2";
+import { HiDevicePhoneMobile } from "react-icons/hi2";
 import Link from "next/link";
 import { useUserContext } from "@/contexts/user";
+import { Card } from "@/components/Card";
+import { Button } from "@/components/Button";
 
 export const IndexView: React.FC = () => {
   const { user } = useUserContext();
 
   if (!user) return <LoadingPage />;
 
+  const mintAddresses = [
+    "3tZu3iprEmDSbHWiZHKjHcU9bFpwgbvC61BZ1rbM15ok",
+    "Aq8WBoNf2KoNwA14zV4LdSRhHyeWxJ2omjdQGcJMGuXK",
+    "9B5qGF6pr9YgYkuL6BnKRFLb6vTmG8iTk5fgJ2bV6uE2",
+    "FuhuXxkkDeUEVe45eoE6KyTEwBkpKk4NRtTkgEbBk3Ym",
+  ];
+
+  const getRandomIndex = () =>
+    Math.floor(Math.random() * (mintAddresses.length + 1));
+
+  console.log(getRandomIndex());
+  const mintAddress = mintAddresses[getRandomIndex()];
+
   return (
     <Container className="py-8 space-y-8">
+      <Card className="p-4 flex items-center justify-between">
+        <MediaObject
+          size="2xl"
+          media={{
+            src: `https://updg8.com/imgdata/${mintAddress}`,
+          }}
+          title="Collect art for free with your Passport"
+          description="Sign in with the same email and art will be dropped to your public Passport address"
+        />
+
+        <Button
+          type="secondary"
+          onClick={() =>
+            window.open(`https://shop.underdogprotocol.com/${mintAddress}`)
+          }
+        >
+          Visit Shop
+        </Button>
+      </Card>
+
       <MediaObject
         title="Applications"
         size="4xl"
