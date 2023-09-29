@@ -15,7 +15,7 @@ const tailwindSizes = [
 export type TailwindSize = (typeof tailwindSizes)[number];
 
 export const sizeToDimensionsClassName: Record<TailwindSize, string> = {
-  xs: "h-8 w-8",
+  xs: "h-6 w-6",
   sm: "h-10 w-10",
   md: "h-11 w-11",
   lg: "h-14 w-14",

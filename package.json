@@ -1,5 +1,5 @@
 {
-  "name": "id",
+  "name": "@underdog-protcol/passport-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -22,6 +22,7 @@
     "@types/node": "20.4.5",
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
+    "@underdog-protocol/passport": "^2.0.0",
     "@underdog-protocol/underdog-identity-sdk": "0.7.0",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",

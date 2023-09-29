@@ -1,6 +1,7 @@
 import { apps } from "@/lib/constants";
 import { context } from "@/lib/context";
 import { PublicKey } from "@metaplex-foundation/umi";
+import { getPassportAddress } from "@underdog-protocol/passport";
 import {
   LinkAccountData,
   findLinkPda,
@@ -60,10 +61,10 @@ export function UserProvider({ children }: UserProviderProps) {
 
   const address = useMemo(() => {
     if (router.query.namespace && user?.email) {
-      return findLinkPda(context, {
+      return getPassportAddress({
         namespace: router.query.namespace as string,
         identifier: user.email,
-      })[0];
+      });
     }
   }, [user, router.query.namespace]);
 

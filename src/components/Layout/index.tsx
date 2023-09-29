@@ -17,7 +17,7 @@ export default function Layout({ children }: LayoutProps) {
       <main className="flex h-screen flex-col">
         <Navbar />
 
-        <Container className="h-full w-full overflow-y-scroll pb-16">
+        <Container className="h-full w-full overflow-y-scroll pb-16 px-4">
           {children}
         </Container>
       </main>

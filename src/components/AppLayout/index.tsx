@@ -11,6 +11,7 @@ import { useToggle } from "@/hooks/useToggle";
 import { Container } from "../Container";
 import { useUserContext } from "@/contexts/user";
 import { LoadingPage } from "../LoadingPage";
+import { AddressLink } from "../AddressLink";
 
 export const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [activating, toggleActivating] = useToggle();
@@ -22,14 +23,14 @@ export const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const items = [
     {
       title: "Address",
-      description: shortenAddress(address),
+      description: <AddressLink address={address} showXray />,
     },
   ];
 
   if (account) {
     items.push({
       title: "Linked Wallet",
-      description: shortenAddress(account.address),
+      description: <AddressLink address={account.address} showXray />,
     });
   }
 
@@ -45,7 +46,6 @@ export const AppLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
             <div className="flex justify-between items-center">
               <MediaObject
                 title={app.title}
-                description={shortenAddress(address)}
                 size="2xl"
                 media={{ src: app.src, size: "lg" }}
               />

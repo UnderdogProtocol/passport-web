@@ -426,6 +426,14 @@
     "@metaplex-foundation/umi-web3js-adapters" "^0.8.7"
     "@noble/curves" "^1.0.0"
 
+"@metaplex-foundation/umi-eddsa-web3js@^0.8.9":
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-eddsa-web3js/-/umi-eddsa-web3js-0.8.9.tgz#c2579ea86cbe6780753e965842f991793cf4ff4b"
+  integrity sha512-ltaQ5eH73NHOAZ+Qtt5+H+pFbahSSEEzs34tV2trtyr6zrYrawOuHqxvLkiduhdVFe8A05EqQGwFUA6qrx6z9g==
+  dependencies:
+    "@metaplex-foundation/umi-web3js-adapters" "^0.8.9"
+    "@noble/curves" "^1.0.0"
+
 "@metaplex-foundation/umi-http-fetch@^0.8.4", "@metaplex-foundation/umi-http-fetch@^0.8.7":
   version "0.8.7"
   resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-http-fetch/-/umi-http-fetch-0.8.7.tgz#cdc65541ee5b0f18c6dba2ba9cffbc2bc65e2f9d"
@@ -442,6 +450,11 @@
   version "0.8.7"
   resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-program-repository/-/umi-program-repository-0.8.7.tgz#5469a352db3842ab72299512abc9ab113894f613"
   integrity sha512-L3xAE1A8HhHEsvXLBRrbzkuM8e87AMN6/VDdPTWYceh00Xmrzdobl1VZ+xlSogWdEJyfzxs4pt8TWWO330e56w==
+
+"@metaplex-foundation/umi-program-repository@^0.8.9":
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-program-repository/-/umi-program-repository-0.8.9.tgz#f557e14e61dbe65e2fef5e25e2c11f539295e54e"
+  integrity sha512-Q6uNH+zTDiXwsL8l/fhNnCyd9ztblDxCkM8hhPbngHqDhxpedvopWEIopHzmkomngle+biXlPJfb+eQrGygklQ==
 
 "@metaplex-foundation/umi-public-keys@^0.8.2":
   version "0.8.2"
@@ -1426,6 +1439,27 @@
     rpc-websockets "^7.5.1"
     superstruct "^0.14.2"
 
+"@solana/web3.js@^1.78.5":
+  version "1.78.5"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.78.5.tgz#591cd47423cdb0b5e5cb7e8dc4dc70b2abe02f80"
+  integrity sha512-2ZHsDNqkKdglJQrIvJ3p2DmgS3cGnary3VJyqt9C1SPrpAtLYzcElr3xyXJOznyQTU/8AMw+GoF11lFoKbicKg==
+  dependencies:
+    "@babel/runtime" "^7.22.6"
+    "@noble/curves" "^1.0.0"
+    "@noble/hashes" "^1.3.1"
+    "@solana/buffer-layout" "^4.0.0"
+    agentkeepalive "^4.3.0"
+    bigint-buffer "^1.1.5"
+    bn.js "^5.2.1"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    buffer "6.0.3"
+    fast-stable-stringify "^1.0.0"
+    jayson "^4.1.0"
+    node-fetch "^2.6.12"
+    rpc-websockets "^7.5.1"
+    superstruct "^0.14.2"
+
 "@solflare-wallet/sdk@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@solflare-wallet/sdk/-/sdk-1.3.0.tgz#9d4de45d1856c4ce624631c8d2e27fbf9722f813"
@@ -1851,7 +1885,18 @@
     "@typescript-eslint/types" "5.62.0"
     eslint-visitor-keys "^3.3.0"
 
-"@underdog-protocol/underdog-identity-sdk@0.7.0":
+"@underdog-protocol/passport@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@underdog-protocol/passport/-/passport-2.0.0.tgz#b839c928909917aecfbea5b2da284758408a58c9"
+  integrity sha512-mmWuKTxYevUxmeL49W5FjOHyj6SmzvBFZUoC9mqY9BIwJztS+1Uj8N/Qv81W6LxUdWCWLnc1nBmU/H0g2yBw9A==
+  dependencies:
+    "@metaplex-foundation/umi" "^0.8.7"
+    "@metaplex-foundation/umi-eddsa-web3js" "^0.8.9"
+    "@metaplex-foundation/umi-program-repository" "^0.8.9"
+    "@solana/web3.js" "^1.78.5"
+    "@underdog-protocol/underdog-identity-sdk" "^0.7.0"
+
+"@underdog-protocol/underdog-identity-sdk@0.7.0", "@underdog-protocol/underdog-identity-sdk@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@underdog-protocol/underdog-identity-sdk/-/underdog-identity-sdk-0.7.0.tgz#c9997563f524ca0294a7cde076e1f4d7c9f19286"
   integrity sha512-eRUagih2yZsomZEOtUq2bQHai6W8P/OJermjYtsXhOvWRBffN9KAF/N0SmE4LsDQqJ67dnTathChA1aJrmkhKg==
