@@ -6,10 +6,17 @@ import { renderNotification } from "@/components/Notification";
 import { TransferModal } from "@/components/TransferModal";
 import { useAsset } from "@/hooks/useAsset";
 import { useToggle } from "@/hooks/useToggle";
+import { viewAssetOnXray } from "@/lib";
 import { publicKey } from "@metaplex-foundation/umi";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
-import { HiOutlineArrowUpOnSquare, HiOutlineTrash } from "react-icons/hi2";
+import {
+  HiMagnifyingGlass,
+  HiOutlineArrowUpOnSquare,
+  HiOutlineSquare2Stack,
+  HiOutlineTrash,
+  HiSquare2Stack,
+} from "react-icons/hi2";
 
 export const AssetView = () => {
   const router = useRouter();
@@ -28,6 +35,15 @@ export const AssetView = () => {
   const [burnModalOpen, toggleBurnModalOpen] = useToggle();
 
   const dropdownItems: DropdownProps["items"] = [
+    {
+      children: (
+        <MediaObject
+          title="View on XRAY"
+          media={{ icon: <HiMagnifyingGlass className="h-6 w-6" /> }}
+        />
+      ),
+      onClick: () => assetData && viewAssetOnXray(publicKey(assetData?.id)),
+    },
     {
       children: (
         <MediaObject
