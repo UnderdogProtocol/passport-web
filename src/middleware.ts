@@ -16,6 +16,6 @@ export const config = {
      * Match all request paths except for the ones starting with:
      * - api (API routes)
      */
-    '/((?!api).*)', // might need to make this `/api/sphere`
+    '/((?!api/sphere/webhook).*)', // might need to make this `/api/sphere`
   ],
 }
