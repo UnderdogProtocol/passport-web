@@ -75,7 +75,7 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
           isSigner: false,
           isWritable: false,
         }));
-
+      
       const transaction = toWeb3JsTransaction(
         await transferAssetV0(context, {
           authority: createNoopSigner(linkedAddress),

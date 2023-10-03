@@ -53,12 +53,12 @@ export const IndexView: React.FC = () => {
         media={{ icon: <HiDevicePhoneMobile className="text-light h-8 w-8" /> }}
       />
 
-      <div className="grid grid-cols-4 gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
         {Object.entries(apps).map(([namespace, { title, src }]) => (
           <Link href={namespace} key={title}>
-            <div className="bg-dark-light p-8 rounded-lg">
-              <img src={src} className="p-8" />
-              <Header title={title} size="3xl" />
+            <div className="bg-dark-light p-4 rounded-lg">
+              <img src={src} className="p-4" />
+              <Header title={title} size="xl" />
             </div>
           </Link>
         ))}

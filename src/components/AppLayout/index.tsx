@@ -5,7 +5,6 @@ import { DescriptionList } from "../DescriptionList";
 import { Card } from "../Card";
 import { Button } from "../Button";
 import { Badge } from "../Badge";
-import { shortenAddress } from "@/lib";
 import { MediaObject } from "../MediaObject";
 import { useToggle } from "@/hooks/useToggle";
 import { Container } from "../Container";

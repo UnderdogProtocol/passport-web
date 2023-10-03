@@ -19,6 +19,34 @@ export const apps: Record<string, { title: string; src: string }> = {
     title: "Sporting",
     src: SPORTING_LOGO_URL,
   },
+  sphere: {
+    title: "Sphere",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/sphere/icon.jpg`,
+  },
+  superteam: {
+    title: "Superteam",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/superteam/icon.png`,
+  },
+  liquidprop: {
+    title: "LiquidProp",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/liquidprop/icon.jpeg`,
+  },
+  keks: {
+    title: "Keks",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/keks/icon.jpeg`,
+  },
+  urfeed: {
+    title: "urfeed",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/urfeed/icon.png`,
+  },
+  intotheverse: {
+    title: "intotheverse",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/intotheverse/icon.png`,
+  },
+  etherfuse: {
+    title: "Etherfuse",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/etherfuse/icon.png`,
+  },
   underdog: {
     title: "Underdog",
     src: UNDERDOG_LOGO_URL,
