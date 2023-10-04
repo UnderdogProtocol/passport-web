@@ -2,8 +2,10 @@ import crypto from 'crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    console.log("IN WEBHOOK HANDLER API");
 
     const requestBody = req.body;
+console.log(JSON.stringify(requestBody));
 
     // get the header 'signature' from the request
     const headerSignature = req.headers['signature'];
@@ -33,6 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const {id:customerId, amountUSD} = customer
     
     // TODO: Implement the logic here
+    console.log('Webhook processed successfully');
 
     res.status(200).json({ message: 'Webhook processed successfully' });
 }
