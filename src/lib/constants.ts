@@ -51,4 +51,8 @@ export const apps: Record<string, { title: string; src: string }> = {
     title: "Underdog",
     src: UNDERDOG_LOGO_URL,
   },
+  mail: {
+    title: "Mail",
+    src: PUBLIC_LOGO_URL,
+  },
 };
