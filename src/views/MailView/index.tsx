@@ -39,8 +39,16 @@ export const MailView: React.FC = () => {
       }),
     });
 
-    console.log(await result.json());
+    const {data: response, error} = await result.json();
+
+    if(error) {
+      console.log(error[0].message);
+      alert(error[0].message)
+      return;
+    }
     
+    console.log("JSON file name");
+    console.log(response[0].fileName);
 
     try {
       const res = await payPaymentLink({
@@ -51,13 +59,14 @@ export const MailView: React.FC = () => {
           }
         ],
         metadata:{
-          hello: "world"
+          csvFileName: response[0].fileName,
         }
       })
 
       console.log(res);
     } catch (e) {
       console.log(e);
+      alert(e.message)
     }
 
   };

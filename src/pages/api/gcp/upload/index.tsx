@@ -9,7 +9,7 @@ const gcpConfigBase64 = process.env.GCP_STORAGE_CONFIG;
 
 const gcpConfig = JSON.parse(Buffer.from(gcpConfigBase64!, 'base64').toString('utf-8'));
 
-const gcpStorage = new Storage({
+export const gcpStorage = new Storage({
     credentials: gcpConfig,
 });
 
@@ -26,7 +26,7 @@ router.post(async (req, res) => {
     const { recipients } = req.body;
 
     if(!recipients || recipients.trim().length === 0) {
-        return res.status(400).json({ message: "Invalid recipients" });
+        return res.status(400).json({ data: null, error: [{ message: "Invalid recipients" }]});
     }
 
     // Generates 6 character random string for filename
@@ -41,7 +41,7 @@ router.post(async (req, res) => {
     }, (err)=>{
         if(err) {
             console.log(err);
-            return res.status(500).json({ message: "Error saving file" });
+            return res.status(500).json({ data: null, error: [{ message: "Error saving file" }]});
         }
     });
 
@@ -59,7 +59,7 @@ router.post(async (req, res) => {
     // }
 
 
-    return res.status(200).json({ message: "Success", data: [{fileName}] });
+    return res.status(200).json({ data: [{fileName}], error: null });
     
     
 
