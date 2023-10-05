@@ -29,9 +29,18 @@ export const MailView: React.FC = () => {
 
     const { subject, content, recipients } = data;
 
-    console.log(subject);
-    console.log(content);
-    console.log(recipients);
+    const result = await fetch("/api/gcp/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        recipients: recipients
+      }),
+    });
+
+    console.log(await result.json());
+    
 
     try {
       const res = await payPaymentLink({
