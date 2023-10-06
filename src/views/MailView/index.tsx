@@ -7,6 +7,7 @@ import { Button } from "@/components/Button";
 import { FieldErrors, useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { useSphere } from "@spherelabs/react";
 import { ConnectWalletButton } from "@/components/ConnectWalletButton";
+import { PublicKey } from "@solana/web3.js";
 
 type FormValues = {
   subject: string;
@@ -20,14 +21,51 @@ export const MailView: React.FC = () => {
   const { handleSubmit, register, formState, getValues, watch } = form;
   const { errors } = formState;
 
+  const mintAddresses: string[] = []
+
   const { payPaymentLink } = useSphere();
-  // const { setLineItemQuantity, lineItems, pay, subtotal, discount } =
-  //   useSphere();
 
   const formSubmit = async (data: FormValues) => {
     console.log("Form submitted");
 
     const { subject, content, recipients } = data;
+
+    if(recipients.split(",").length > 0){
+      console.log(recipients);
+      console.log("Split");
+      
+      mintAddresses.push(...recipients.split(",").filter((item) => item.trim().length > 0))
+    }
+
+    if(mintAddresses.length == 0){
+      alert("No recipients found");
+      return;
+    }
+
+    if(mintAddresses.length > 1000){
+      alert("Max 1000 recipients allowed");
+      return;
+    }
+
+    console.log(mintAddresses);
+
+    for(let i=0;i<mintAddresses.length;i++){
+      try{
+        
+        // Clean up the address
+        const addressValue = mintAddresses[i].replace(/(\r\n|\n|\r)/gm, "");
+
+        // Check if address is valid
+        new PublicKey(addressValue);
+
+        // Replace the address with the cleaned up one
+        mintAddresses[i] = addressValue;
+
+      }catch(e){
+        alert(`Value ${mintAddresses[i]} is not a valid Solana address`);
+        return;
+      }
+    }
 
     const result = await fetch("/api/gcp/upload", {
       method: "POST",
@@ -35,18 +73,18 @@ export const MailView: React.FC = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        recipients: recipients
+        recipients: mintAddresses.join(","),
       }),
     });
 
-    const {data: response, error} = await result.json();
+    const { data: response, error } = await result.json();
 
-    if(error) {
+    if (error) {
       console.log(error[0].message);
       alert(error[0].message)
       return;
     }
-    
+
     console.log("JSON file name");
     console.log(response[0].fileName);
 
@@ -58,7 +96,9 @@ export const MailView: React.FC = () => {
             quantity: 1
           }
         ],
-        metadata:{
+        metadata: {
+          subject: subject,
+          content: content,
           csvFileName: response[0].fileName,
         }
       })
@@ -73,6 +113,37 @@ export const MailView: React.FC = () => {
 
   const onError = (errors: FieldErrors<FormValues>) => {
     console.log("Form errors", errors);
+  };
+
+  const csvValidation = () => {
+    var fileInput = document.getElementById('csvFile') as HTMLInputElement;
+
+    var filePath = fileInput?.value;
+
+    var allowedExtensions = /(\.csv)$/i;
+
+    if (!allowedExtensions.exec(filePath)) {
+      alert(`Only CSV Allowed`);
+      fileInput.value = '';
+      return false;
+    }
+
+    if (fileInput!.files!.length > 0) {
+      var file = fileInput!.files![0];
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        var fileContent = event!.target!.result?.toString();
+        mintAddresses.push(...fileContent!.split(","))
+        console.log(mintAddresses);
+        
+      };
+
+      reader.readAsText(file);
+      fileInput.value = "";
+    } else {
+      alert("Invalid CSV file");
+    }
+
   };
 
   return (
@@ -92,8 +163,18 @@ export const MailView: React.FC = () => {
         />
 
         <textarea {...register("recipients", {
-          required: { value: true, message: "Recipients is required" },
+          required: { value: false, message: "Recipients is required" },
         })} rows={10}
+        />
+
+        <input
+          id="csvFile"
+          name="csvFile"
+          type="file"
+          className="cursor-pointer"
+          onChange={(e) => {
+            csvValidation();
+          }}
         />
 
         <Button type="primary" htmlType="submit">Submit</Button>
