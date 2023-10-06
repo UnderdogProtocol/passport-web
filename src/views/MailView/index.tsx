@@ -29,6 +29,9 @@ export const MailView: React.FC = () => {
     console.log("Form submitted");
 
     const { subject, content, recipients } = data;
+    console.log(subject);
+    console.log(content);
+    
 
     if(recipients.split(",").length > 0){
       console.log(recipients);
