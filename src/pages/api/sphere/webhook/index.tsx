@@ -3,6 +3,7 @@ import { createRouter } from "next-connect";
 import { NextApiRequest, NextApiResponse } from 'next';
 import { gcpStorage } from '../../gcp/upload';
 import * as HttpStatus from "http-status"
+import { PaymentMetadataSchema } from '@/lib/schema';
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -40,7 +41,10 @@ router.post(async (req, res) => {
 
     const { id: customerId, amountUSD } = customer
 
+    // Zod parsing payment metadata
+    const paymentMetadata = PaymentMetadataSchema.safeParse(meta)
     const { csvFileName, subject, content: description } = meta
+
     const bucket = gcpStorage.bucket("underdog-public");
     const file = bucket.file(csvFileName);
 
