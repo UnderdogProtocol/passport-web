@@ -8,16 +8,23 @@ import { FieldErrors, useForm, useFieldArray, SubmitHandler } from "react-hook-f
 import { useSphere } from "@spherelabs/react";
 import { ConnectWalletButton } from "@/components/ConnectWalletButton";
 import { PublicKey } from "@solana/web3.js";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { SendMailFormSchema } from '@/lib/schema'
 
-type FormValues = {
-  subject: string;
-  content: string;
-  recipients: string;
-}
+// type FormValues = {
+//   subject: string;
+//   content: string;
+//   recipients: string;
+// }
+
+type FormValues = z.infer<typeof SendMailFormSchema>;
 
 export const MailView: React.FC = () => {
 
-  const form = useForm();
+  const form = useForm<FormValues>({
+    resolver: zodResolver(SendMailFormSchema),
+  });
   const { handleSubmit, register, formState, getValues, watch } = form;
   const { errors } = formState;
 
@@ -33,7 +40,7 @@ export const MailView: React.FC = () => {
     console.log(content);
     
 
-    if(recipients.split(",").length > 0){
+    if(recipients && recipients.split(",").length > 0){
       console.log(recipients);
       console.log("Split");
       
@@ -107,7 +114,7 @@ export const MailView: React.FC = () => {
       })
 
       console.log(res);
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
       alert(e.message)
     }
