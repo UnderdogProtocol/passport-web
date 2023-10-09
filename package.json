@@ -34,6 +34,7 @@
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
     "helius-sdk": "^1.0.13",
+    "http-status": "^1.7.0",
     "install": "^0.13.0",
     "next": "13.4.12",
     "next-auth": "^4.22.3",

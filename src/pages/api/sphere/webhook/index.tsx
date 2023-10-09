@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { gcpStorage } from '../../gcp/upload';
+import * as HttpStatus from "http-status"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log("IN WEBHOOK HANDLER API");
@@ -12,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const headerSignature = req.headers['signature'];
 
     if (!headerSignature) {
-        return res.status(401).json({ message: "Unauthorized" })
+        return res.status(HttpStatus.UNAUTHORIZED).json({ message: "Unauthorized" })
     }
 
     if (!process.env.SPHERE_SIGNING_SECRET) {
@@ -26,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         .digest("hex");
 
     if (signature !== headerSignature) {
-        return res.status(401).json({ message: "Unauthorized" })
+        return res.status(HttpStatus.UNAUTHORIZED).json({ message: "Unauthorized" })
     }
 
     const {
@@ -85,5 +86,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // TODO: Implement the logic here
     console.log('Webhook processed successfully');
 
-    res.status(200).json({ message: 'Webhook processed successfully' });
+    res.status(HttpStatus.OK).json({ message: 'Webhook processed successfully' });
 }
