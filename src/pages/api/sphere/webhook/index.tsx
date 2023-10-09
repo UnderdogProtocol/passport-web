@@ -1,9 +1,12 @@
 import crypto from 'crypto';
+import { createRouter } from "next-connect";
 import { NextApiRequest, NextApiResponse } from 'next';
 import { gcpStorage } from '../../gcp/upload';
 import * as HttpStatus from "http-status"
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const router = createRouter<NextApiRequest, NextApiResponse>();
+
+router.post(async (req, res) => {
     console.log("IN WEBHOOK HANDLER API");
 
     const requestBody = req.body;
@@ -51,11 +54,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return { receiverAddress: address.replace(/(\r\n|\n|\r)/gm, "") }
         })
 
-        console.log(mintAddresses);
-        console.log(subject);
-        console.log(content);
-
-
         fetch(`${process.env.UNDERDOG_API_URL}/v2/projects/50/nfts/batch`, {
             method: "POST",
             headers: {
@@ -87,4 +85,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log('Webhook processed successfully');
 
     res.status(HttpStatus.OK).json({ message: 'Webhook processed successfully' });
-}
+});
+
+export default router.handler();
