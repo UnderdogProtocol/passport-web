@@ -164,28 +164,32 @@ export const MailView: React.FC = () => {
   return (
     <Container className="space-y-4">
       <ConnectWalletButton type="secondary" className="flex-shrink-0" />
-      <form onSubmit={handleSubmit(formSubmit, onError)} noValidate>
-
-        <input
+      <form onSubmit={handleSubmit(formSubmit, onError)} noValidate className="space-y-6">
+        <Input label="Subject" help="Subject of your mail"
           {...register("subject", {
             required: { value: true, message: "Subject is required" },
           })}
         />
 
-        <textarea {...register("content", {
+        <TextArea label="Content" help="Content of your mail" rows={10}
+         {...register("content", {
           required: { value: true, message: "Content is required" },
-        })} rows={10}
+        })}
         />
 
-        <textarea {...register("recipients", {
+        <TextArea label="Recipients Address" help="Receivers of your mail" rows={10}
+         {...register("recipients", {
           required: { value: false, message: "Recipients is required" },
-        })} rows={10}
+        })}
         />
 
-        <input
+        <Input
           id="csvFile"
           name="csvFile"
           type="file"
+          htmlType="file"
+          label="CSV File"
+          help="CSV file containing the recipients address"
           className="cursor-pointer"
           onChange={(e) => {
             csvValidation();
@@ -193,7 +197,7 @@ export const MailView: React.FC = () => {
         />
 
         <Button type="primary" htmlType="submit">Submit</Button>
-
+        
       </form>
     </Container>
   );
