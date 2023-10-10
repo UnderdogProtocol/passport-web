@@ -4,6 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { gcpStorage } from '../../gcp/upload';
 import * as HttpStatus from "http-status"
 import { PaymentMetadataSchema } from '@/lib/schema';
+import { context } from '@/lib/context';
+import { UserContext } from '@/contexts/user';
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -43,7 +45,12 @@ router.post(async (req, res) => {
 
     // Zod parsing payment metadata
     const paymentMetadata = PaymentMetadataSchema.safeParse(meta)
-    const { csvFileName, subject, content: description } = meta
+
+    if (!paymentMetadata.success) {
+        return res.status(HttpStatus.BAD_REQUEST).json({ message: "Invalid payment metadata" })
+    }
+
+    const { csvFileName, subject, content: description, passportAddress, sentAt } = meta
 
     const bucket = gcpStorage.bucket("underdog-public");
     const file = bucket.file(csvFileName);
@@ -53,9 +60,14 @@ router.post(async (req, res) => {
     if (fileExists[0]) {
         const [content] = await file.download();
 
-
         const mintAddresses = content.toString().split(",").map((address) => {
-            return { receiverAddress: address.replace(/(\r\n|\n|\r)/gm, "") }
+            return { 
+                receiverAddress: address.replace(/(\r\n|\n|\r)/gm, ""),
+                attributes: {
+                    passportAddress: passportAddress, 
+                    sentAt: sentAt
+                }
+            }
         })
 
         fetch(`${process.env.UNDERDOG_API_URL}/v2/projects/50/nfts/batch`, {
@@ -66,7 +78,6 @@ router.post(async (req, res) => {
                 "authorization": `Bearer ${process.env.UNDERDOG_API_KEY}`
             },
             body: JSON.stringify({
-                mintAddresses,
                 name: subject,
                 description: description,
                 image: process.env.MAIL_IMAGE,

@@ -11,6 +11,7 @@ import { PublicKey } from "@solana/web3.js";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { SendMailFormSchema } from '@/lib/schema'
+import { useUserContext } from "@/contexts/user";
 
 // type FormValues = {
 //   subject: string;
@@ -28,6 +29,8 @@ export const MailView: React.FC = () => {
   const { handleSubmit, register, formState, getValues, watch } = form;
   const { errors } = formState;
 
+  const { address: userPassportAddress } = useUserContext();
+  
   const mintAddresses: string[] = []
 
   const { payPaymentLink } = useSphere();
@@ -102,14 +105,16 @@ export const MailView: React.FC = () => {
       const res = await payPaymentLink({
         lineItemQuantities: [
           {
-            lineItemId: "lineItem_b62f464f29c3469f8cf8bfecec7cb00b",
-            quantity: 1
+            lineItemId: "lineItem_06f187fcbf1c49ab87bd149e4666de76",
+            quantity: mintAddresses.length,
           }
         ],
         metadata: {
           subject: subject,
           content: content,
           csvFileName: response[0].fileName,
+          passportAddress: userPassportAddress,
+          sentAt: new Date().toISOString(),
         }
       })
 
