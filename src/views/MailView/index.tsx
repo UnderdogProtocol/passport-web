@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { SendMailFormSchema } from '@/lib/schema'
 import { useUserContext } from "@/contexts/user";
+import { getPassportAddress } from "@underdog-protocol/passport";
 
 // type FormValues = {
 //   subject: string;
@@ -65,8 +66,18 @@ export const MailView: React.FC = () => {
     for(let i=0;i<mintAddresses.length;i++){
       try{
         
+        // If email address, convert to passport address
+        if(z.string().email().safeParse(mintAddresses[i].trim().toLowerCase()).success){
+          
+          const passportAddress = getPassportAddress({ namespace: "mail", identifier: mintAddresses[i].trim().toLowerCase() })
+
+          mintAddresses[i] = passportAddress;
+          
+          continue
+        }
+
         // Clean up the address
-        const addressValue = mintAddresses[i].replace(/(\r\n|\n|\r)/gm, "");
+        const addressValue = mintAddresses[i].trim().replace(/(\r\n|\n|\r)/gm, "");
 
         // Check if address is valid
         new PublicKey(addressValue);
@@ -75,7 +86,7 @@ export const MailView: React.FC = () => {
         mintAddresses[i] = addressValue;
 
       }catch(e){
-        alert(`Value ${mintAddresses[i]} is not a valid Solana address`);
+        alert(`Value ${mintAddresses[i]} is not a valid Solana/Email address`);
         return;
       }
     }
@@ -177,13 +188,13 @@ export const MailView: React.FC = () => {
         })}
         />
 
-        <TextArea label="Recipients Address" help="Receivers of your mail" rows={10}
+        <TextArea label="Recipients Address" help="Receivers of your mail" rows={6}
          {...register("recipients", {
           required: { value: false, message: "Recipients is required" },
         })}
         />
 
-        <Input
+        {/* <Input
           id="csvFile"
           name="csvFile"
           type="file"
@@ -194,7 +205,7 @@ export const MailView: React.FC = () => {
           onChange={(e) => {
             csvValidation();
           }}
-        />
+        /> */}
 
         <Button type="primary" htmlType="submit">Submit</Button>
         
