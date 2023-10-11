@@ -17,11 +17,13 @@ router.get(async (req, res) => {
         return res.status(HttpStatus.UNAUTHORIZED).json({ message: "You must be logged in." });
     }
 
+    const { page = 1, limit = 100 } = req.query;
+
     const assets = await searchAssets({
         ownerAddress: getPassportAddress({ namespace: "mail", identifier: session.user!.email! }),
         grouping: ["collection", process.env.MAIL_UNDERDOG_PROJECT_MINT] as any,
-        page: 1,
-        limit: 1000,
+        page: Number.parseInt(page.toString()),
+        limit: Number.parseInt(limit.toString()),
     });
 
     return res.status(HttpStatus.OK).json({ assets });
