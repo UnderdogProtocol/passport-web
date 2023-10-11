@@ -1,8 +1,8 @@
 import { getLayout } from "@/components/AppLayout";
-import { AssetView } from "@/views/AssetView";
+import { MailAssetView } from "@/views/MailAssetView";
 
 export default function AssetPage() {
-  return <AssetView />;
+  return <MailAssetView />;
 }
 
 AssetPage.getLayout= getLayout;

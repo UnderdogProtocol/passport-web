@@ -9,14 +9,12 @@ function MailListView() {
     const { data, loading, error } = useMailApi("/api/mail");
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <h1 className="text-white">Loading...</h1>;
     }
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <h1 className="text-white">Error: {error.message}</h1>;
     }
-
-    console.log(data);
 
     const isDataValid = MailSchema.safeParse(data);
     if (!isDataValid.success) {
@@ -25,25 +23,25 @@ function MailListView() {
 
     const { assets } = data;
 
-    if(assets.items.length === 0) {
+    if (assets.items.length === 0) {
         return <h1 className="text-white">No Mails Found...</h1>
     }
-    
+
     return (
-        <div style={{ maxHeight: '1000px', overflowY: 'auto' }} className="">
+        // TODO: Add pagination
+        <div className="max-h-96 overflow-y-auto">
             {assets.items.map((item: any, index: number) => (
-                <a href={`/mail/${item.id}`}>
-                <div
-                    key={index}
-                    className="border-b p-2 text-white cursor-pointer hover:bg-gray-700"
-                >
-                    <div className="text-lg font-bold">{item.content.metadata.name}</div>
-                    <div className="text-gray-200 truncate">
-                        {item.content.metadata.description
-                            ? item.content.metadata.description
-                            : <i className="text-gray-500">No Content</i>}
+                <a key={index} href={`/mail/${item.id}`} target="_blank">
+                    <div
+                        className="border-b p-2 text-white cursor-pointer hover:bg-gray-700"
+                    >
+                        <div className="text-lg font-bold">{item.content.metadata.name}</div>
+                        <div className="text-gray-200 truncate">
+                            {item.content.metadata.description
+                                ? item.content.metadata.description
+                                : <i className="text-gray-500">No Content</i>}
+                        </div>
                     </div>
-                </div>
                 </a>
             ))}
         </div>
