@@ -13,6 +13,7 @@ function MailListView() {
     }
 
     if (error) {
+        /* @ts-ignore */
         return <h1 className="text-white">Error: {error.message}</h1>;
     }
 
@@ -21,6 +22,7 @@ function MailListView() {
         return <h1 className="text-white">Something Went Wrong</h1>
     }
 
+    /* @ts-ignore */
     const { assets } = data;
 
     if (assets.items.length === 0) {
