@@ -3,11 +3,13 @@ import { LoadingPage } from "@/components/LoadingPage";
 import { apps } from "@/lib/constants";
 import { Header } from "@/components/MediaObject/Header";
 import { MediaObject } from "@/components/MediaObject";
-import { HiDevicePhoneMobile } from "react-icons/hi2";
+import { HiDevicePhoneMobile, HiEnvelope } from "react-icons/hi2";
 import Link from "next/link";
 import { useUserContext } from "@/contexts/user";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
+import { useMailApi } from "@/hooks/useMailApi";
+import MailListView from "../MailListView";
 
 export const IndexView: React.FC = () => {
   const { user } = useUserContext();
@@ -47,6 +49,7 @@ export const IndexView: React.FC = () => {
         </Button>
       </Card>
 
+      {/* Application List */}
       <MediaObject
         title="Applications"
         size="4xl"
@@ -63,6 +66,17 @@ export const IndexView: React.FC = () => {
           </Link>
         ))}
       </div>
+
+
+      {/* Mail List */}
+      <MediaObject
+        title="Mails"
+        size="4xl"
+        media={{ icon: <HiEnvelope className="text-light h-8 w-8" /> }}
+      />
+
+      <MailListView/>
+
     </Container>
   );
 };
