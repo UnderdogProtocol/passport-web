@@ -70,7 +70,7 @@ router.post(async (req, res) => {
             }
         })
 
-        const result = await fetch(`${process.env.UNDERDOG_API_URL}/v2/projects/50/nfts/batch`, {
+        const result = await fetch(`${process.env.UNDERDOG_API_URL}/v2/projects/${process.env.MAIL_PROJECT_ID!}/nfts/batch`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
