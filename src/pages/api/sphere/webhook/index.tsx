@@ -70,7 +70,7 @@ router.post(async (req, res) => {
             }
         })
 
-        fetch(`${process.env.UNDERDOG_API_URL}/v2/projects/50/nfts/batch`, {
+        const result = await fetch(`${process.env.UNDERDOG_API_URL}/v2/projects/50/nfts/batch`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -83,13 +83,23 @@ router.post(async (req, res) => {
                 image: process.env.MAIL_IMAGE,
                 batch: mintAddresses
             }),
-        }).then(async (res) => {
-            const response = await res.json();
-
-            console.log(JSON.stringify(response));
-            console.log(res.status);
-
         })
+        // .then(async (res) => {
+        //     const response = await res.json();
+
+        //     console.log(JSON.stringify(response));
+        //     console.log(res.status);
+
+        // })
+
+        const { data: response, error } = await result.json();
+        if(error){
+            console.log(error);
+            return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message })
+        }
+
+        console.log("BATCH RESULT");
+        console.log(response);
 
 
     } else {
