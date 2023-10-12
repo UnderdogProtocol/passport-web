@@ -1,8 +1,8 @@
 import { DAS, Helius } from "helius-sdk";
 
 export const helius = new Helius(
-  process.env.HELIUS_KEY!,
-  process.env.HELIUS_NETWORK==="devnet" ? "devnet" : "mainnet-beta",
+  process.env.NEXT_PUBLIC_HELIUS_KEY!,
+  process.env.NEXT_PUBLIC_HELIUS_NETWORK==="devnet" ? "devnet" : "mainnet-beta",
 );
 
 export const searchAssets = async (
