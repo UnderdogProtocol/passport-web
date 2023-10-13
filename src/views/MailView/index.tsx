@@ -109,7 +109,7 @@ export const MailView: React.FC = () => {
     const response = result.data;
 
     console.log("JSON file name");
-    console.log(response[0].fileName);
+    console.log(response.data[0].fileName);
 
     try {
       const res = await payPaymentLink({
@@ -122,7 +122,7 @@ export const MailView: React.FC = () => {
         metadata: {
           subject: subject,
           content: content,
-          csvFileName: response[0].fileName,
+          csvFileName: response.data[0].fileName,
           passportAddress: userPassportAddress,
           sentAt: new Date().toISOString(),
         }

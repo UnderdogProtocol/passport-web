@@ -34,15 +34,22 @@ router.post(async (req, res) => {
         .digest("hex");
 
     if (signature !== headerSignature) {
+        console.log("Invalid signature");
         return res.status(HttpStatus.UNAUTHORIZED).json({ message: "Unauthorized" })
     }
 
     const {
         name,
-        data: { payment: { id: paymentID, status, transactions, customer, meta } },
+        data: { payment: { id: paymentID, status, transactions, customer, meta, paymentLink } },
     } = requestBody;
 
     const { id: customerId, amountUSD } = customer
+
+    // Allow only specific payment link
+    if(paymentLink.id!==`${process.env.NEXT_PUBLIC_PAYMENT_LINK_ID}`){
+        console.log("Invalid payment link");
+        return res.status(HttpStatus.BAD_REQUEST).json({ message: "Invalid payment link" })
+    }
 
     // Zod parsing payment metadata
     const paymentMetadata = PaymentMetadataSchema.safeParse(meta)
