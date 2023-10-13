@@ -1,21 +1,21 @@
 // YourComponent.js
 
+import { Error } from "@/components/Error";
+import { LoadingSection } from "@/components/LoadingSection";
+import { MediaObject } from "@/components/MediaObject";
 import { useMailApi } from "@/hooks/useMailApi";
 import { MailSchema } from "@/lib/schema";
-import { AssetSortBy } from "helius-sdk";
 
 function MailListView() {
 
     const { data, loading, error } = useMailApi("/api/mail");
 
     if (loading) {
-        return <h1 className="text-white">Loading...</h1>;
+        return <LoadingSection />
     }
 
     if (error) {
-        // This is ignored because ts is not able to infer the type of error
-        /* @ts-ignore */
-        return <h1 className="text-white">Error: {error.message}</h1>;
+        <Error error={error} />
     }
 
     const isDataValid = MailSchema.safeParse(data);
@@ -26,10 +26,10 @@ function MailListView() {
     /* ts-ignoring this because if we see the object keys via "data.", it shows 
         {items, limit,page,total}
        But the actual object is { assets: {items, limit,page,total} }
+       An SDK error, I guess, package update will fix this
     */
     /* @ts-ignore */
-    const { assets: {items} } = data!;
-console.log(data);
+    const { assets: { items } } = data!;
 
     if (!items || items.length === 0) {
         return <h1 className="text-white">No Mails Found...</h1>
@@ -43,12 +43,11 @@ console.log(data);
                     <div
                         className="border-b p-2 text-white cursor-pointer hover:bg-gray-700"
                     >
-                        <div className="text-lg font-bold">{item.content.metadata.name}</div>
-                        <div className="text-gray-200 truncate">
-                            {item.content.metadata.description
-                                ? item.content.metadata.description
-                                : <i className="text-gray-500">No Content</i>}
-                        </div>
+                        <MediaObject
+                            title={item.content.metadata.name}
+                            description={item.content.metadata.description}
+                            className="text-gray-200 truncate"
+                        />
                     </div>
                 </a>
             ))}

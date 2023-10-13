@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 export function useMailApi(apiUrl: string) {
   const [data, setData] = useState<DAS.GetAssetResponseList>();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(Error);
 
   useEffect(() => {
     async function fetchData() {
