@@ -70,7 +70,7 @@ export const IndexView: React.FC = () => {
 
       {/* Mail List */}
       <MediaObject
-        title="Mails"
+        title="Inbox"
         size="4xl"
         media={{ icon: <HiEnvelope className="text-light h-8 w-8" /> }}
       />

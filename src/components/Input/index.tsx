@@ -43,7 +43,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     );
 
     const containerClassName = clsx(
-      "flex items-center rounded-md overflow-hidden text-dark dark:text-light transition-colors border",
+      "flex items-center rounded-md overflow-hidden text-light transition-colors border",
       "bg-dark-light border-dark-accent focus-within:border-lightPurple-400",
       fontSizeClassName
     );

@@ -2,10 +2,11 @@ import crypto from 'crypto';
 import { createRouter } from "next-connect";
 import { NextApiRequest, NextApiResponse } from 'next';
 import { gcpStorage } from '../../gcp/upload';
-import * as HttpStatus from "http-status"
+import httpStatus, * as HttpStatus from "http-status"
 import { PaymentMetadataSchema } from '@/lib/schema';
 import { context } from '@/lib/context';
 import { UserContext } from '@/contexts/user';
+import axios from 'axios';
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -33,15 +34,22 @@ router.post(async (req, res) => {
         .digest("hex");
 
     if (signature !== headerSignature) {
+        console.log("Invalid signature");
         return res.status(HttpStatus.UNAUTHORIZED).json({ message: "Unauthorized" })
     }
 
     const {
         name,
-        data: { payment: { id: paymentID, status, transactions, customer, meta } },
+        data: { payment: { id: paymentID, status, transactions, customer, meta, paymentLink } },
     } = requestBody;
 
     const { id: customerId, amountUSD } = customer
+
+    // Allow only specific payment link
+    if(paymentLink.id!==`${process.env.NEXT_PUBLIC_PAYMENT_LINK_ID}`){
+        console.log("Invalid payment link");
+        return res.status(HttpStatus.BAD_REQUEST).json({ message: "Invalid payment link" })
+    }
 
     // Zod parsing payment metadata
     const paymentMetadata = PaymentMetadataSchema.safeParse(meta)
@@ -70,37 +78,29 @@ router.post(async (req, res) => {
             }
         })
 
-        const result = await fetch(`${process.env.UNDERDOG_API_URL}/v2/projects/${process.env.MAIL_PROJECT_ID!}/nfts/batch`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "accept": "application/json",
-                "authorization": `Bearer ${process.env.UNDERDOG_API_KEY}`
+        const result = await axios.post(
+            `${process.env.UNDERDOG_API_URL}/v2/projects/${process.env.MAIL_PROJECT_ID}/nfts/batch`,
+            {
+              name: subject,
+              description: description,
+              image: process.env.MAIL_IMAGE,
+              batch: mintAddresses
             },
-            body: JSON.stringify({
-                name: subject,
-                description: description,
-                image: process.env.MAIL_IMAGE,
-                batch: mintAddresses
-            }),
-        })
-        // .then(async (res) => {
-        //     const response = await res.json();
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'authorization': `Bearer ${process.env.UNDERDOG_API_KEY}`
+              }
+            }
+          )
 
-        //     console.log(JSON.stringify(response));
-        //     console.log(res.status);
-
-        // })
-
-        const { data: response, error } = await result.json();
-        if(error){
-            console.log(error);
-            return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message })
+        if(result.status!==httpStatus.ACCEPTED){
+            console.log(result.data);
+            return res.status(result.status).json({ message: result.data })
         }
 
-        console.log("BATCH RESULT");
-        console.log(response);
-
+        console.log(result.data);
 
     } else {
         console.log(`File '${csvFileName}' does not exist in the bucket.`);
