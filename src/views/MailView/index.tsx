@@ -233,6 +233,7 @@ export const MailView: React.FC = () => {
           error={errors.recipients}
         />
 
+        {/* Uncomment this to enable CSV file upload */}
         {/* <Input
           id="csvFile"
           name="csvFile"

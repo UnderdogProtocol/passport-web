@@ -89,7 +89,6 @@ router.post(async (req, res) => {
             {
               headers: {
                 'Content-Type': 'application/json',
-                'accept': 'application/json',
                 'authorization': `Bearer ${process.env.UNDERDOG_API_KEY}`
               }
             }
