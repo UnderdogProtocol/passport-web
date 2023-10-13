@@ -116,7 +116,7 @@ export const MailView: React.FC = () => {
       const res = await payPaymentLink({
         lineItemQuantities: [
           {
-            lineItemId: "lineItem_06f187fcbf1c49ab87bd149e4666de76",
+            lineItemId: `${process.env.NEXT_PUBLIC_SPHERE_LINE_ITEM}`,
             quantity: mintAddresses.length,
           }
         ],
