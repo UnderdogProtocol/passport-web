@@ -16,12 +16,6 @@ import { getPassportAddress } from "@underdog-protocol/passport";
 import axios from "axios";
 import httpStatus from "http-status";
 
-// type FormValues = {
-//   subject: string;
-//   content: string;
-//   recipients: string;
-// }
-
 type FormValues = z.infer<typeof SendMailFormSchema>;
 
 export const MailView: React.FC = () => {

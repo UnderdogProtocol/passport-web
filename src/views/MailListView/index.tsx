@@ -4,7 +4,6 @@ import { Error } from "@/components/Error";
 import { LoadingSection } from "@/components/LoadingSection";
 import { MediaObject } from "@/components/MediaObject";
 import { useMailApi } from "@/hooks/useMailApi";
-import { MailSchema } from "@/lib/schema";
 
 function MailListView() {
 
@@ -16,11 +15,6 @@ function MailListView() {
 
     if (error) {
         <Error error={error} />
-    }
-
-    const isDataValid = MailSchema.safeParse(data);
-    if (!isDataValid.success) {
-        return <h1 className="text-white">Something Went Wrong</h1>
     }
 
     /* ts-ignoring this because if we see the object keys via "data.", it shows 
