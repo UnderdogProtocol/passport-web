@@ -1,11 +1,12 @@
 // This hook is used to fetch data from `GET:/api/mail` APIs
 
 import axios from 'axios';
+import { DAS } from 'helius-sdk';
 import httpStatus from 'http-status';
 import { useState, useEffect } from 'react';
 
 export function useMailApi(apiUrl: string) {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<DAS.GetAssetResponseList>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
