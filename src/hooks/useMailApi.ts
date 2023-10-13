@@ -1,5 +1,7 @@
 // This hook is used to fetch data from `GET:/api/mail` APIs
 
+import axios from 'axios';
+import httpStatus from 'http-status';
 import { useState, useEffect } from 'react';
 
 export function useMailApi(apiUrl: string) {
@@ -10,7 +12,7 @@ export function useMailApi(apiUrl: string) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${apiUrl}`, {
+        const response = await axios(`${apiUrl}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -18,10 +20,10 @@ export function useMailApi(apiUrl: string) {
           },
         });
         
-        if (!response.ok) {
+        if (response.status >= httpStatus.BAD_REQUEST) {
           throw new Error('Network response was not ok');
         }
-        const result = await response.json();
+        const result = response.data;
         setData(result);
       } catch (error: any) {
         setError(error);

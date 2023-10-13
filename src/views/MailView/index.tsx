@@ -13,6 +13,8 @@ import { z } from 'zod'
 import { SendMailFormSchema } from '@/lib/schema'
 import { useUserContext } from "@/contexts/user";
 import { getPassportAddress } from "@underdog-protocol/passport";
+import axios from "axios";
+import httpStatus from "http-status";
 
 // type FormValues = {
 //   subject: string;
@@ -91,23 +93,20 @@ export const MailView: React.FC = () => {
       }
     }
 
-    const result = await fetch("/api/gcp/upload", {
-      method: "POST",
+    const result = await axios.post('/api/gcp/upload', {
+      recipients: mintAddresses.join(',')
+    }, {
       headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        recipients: mintAddresses.join(","),
-      }),
+        'Content-Type': 'application/json'
+      }
     });
 
-    const { data: response, error } = await result.json();
-
-    if (error) {
-      console.log(error[0].message);
-      alert(error[0].message)
-      return;
+    if(result.status!==httpStatus.OK){
+      console.log(result.data);
+      return alert("SOMETHING WENT WRONG");
     }
+
+    const response = result.data;
 
     console.log("JSON file name");
     console.log(response[0].fileName);
@@ -176,19 +175,19 @@ export const MailView: React.FC = () => {
     <Container className="space-y-4">
       <ConnectWalletButton type="secondary" className="flex-shrink-0" />
       <form onSubmit={handleSubmit(formSubmit, onError)} noValidate className="space-y-6">
-        <Input label="Subject" help="Subject of your mail"
+        <Input label="Subject" help="Subject of your mail" className="text-light"
           {...register("subject", {
             required: { value: true, message: "Subject is required" },
           })}
         />
 
-        <TextArea label="Content" help="Content of your mail" rows={10}
+        <TextArea label="Content" help="Content of your mail" className="text-light" rows={10}
          {...register("content", {
           required: { value: true, message: "Content is required" },
         })}
         />
 
-        <TextArea label="Recipients Address" help="Receivers of your mail" rows={6}
+        <TextArea label="Recipients Address" help="Receivers of your mail" className="text-light" rows={6}
          {...register("recipients", {
           required: { value: false, message: "Recipients is required" },
         })}
@@ -201,7 +200,7 @@ export const MailView: React.FC = () => {
           htmlType="file"
           label="CSV File"
           help="CSV file containing the recipients address"
-          className="cursor-pointer"
+          className="cursor-pointer text-light"
           onChange={(e) => {
             csvValidation();
           }}
