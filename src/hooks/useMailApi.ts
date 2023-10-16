@@ -12,6 +12,7 @@ export function useMailApi(apiUrl: string) {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         const response = await axios(`${apiUrl}`, {
           method: 'GET',
@@ -20,7 +21,7 @@ export function useMailApi(apiUrl: string) {
             'cache-control': 'no-cache',
           },
         });
-        
+
         if (response.status >= httpStatus.BAD_REQUEST) {
           throw new Error('Network response was not ok');
         }
