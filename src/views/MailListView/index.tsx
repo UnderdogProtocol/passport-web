@@ -6,6 +6,8 @@ import { MediaObject } from "@/components/MediaObject";
 import { Button } from "@/components/Button";
 import { useMailApi } from "@/hooks/useMailApi";
 import { useRef, useState } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { formatTimestamp } from "@/lib/utils";
 
 function MailListView() {
 
@@ -50,16 +52,31 @@ function MailListView() {
         <div className="h-max-96 overflow-y-auto">
             {items.map((item: any, index: number) => (
                 <a key={index} href={`/mail/${item.id}`} target="_blank">
-                    <div
-                        className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700"
-                    >
-                        <MediaObject
-                            title={item.content.metadata.name}
-                            description={item.content.metadata.description}
-                            className="text-gray-200 truncate"
-                        />
+                <div key={index} className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700">
+                    <MediaObject
+                        title={item.content.metadata.name}
+                        description={item.content.metadata.description}
+                        className="text-gray-200 truncate"
+                    />
+                    <div className="flex justify-end items-end">
+                        <div className="text-gray-500">
+                        {`${formatTimestamp(item!.content!.metadata!.attributes![1].value)}`}
+                        </div>
                     </div>
+                </div>
                 </a>
+
+                // <a key={index} href={`/mail/${item.id}`} target="_blank">
+                //     <div
+                //         className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700"
+                //     >
+                //         <MediaObject
+                //             title={item.content.metadata.name}
+                //             description={item.content.metadata.description}
+                //             className="text-gray-200 truncate"
+                //         />
+                //     </div>
+                // </a>
             ))}
 
             {/* Prev, Next Buttons */}

@@ -31,6 +31,7 @@
     "axios": "^1.4.0",
     "base58": "^2.0.1",
     "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
     "helius-sdk": "^1.0.13",
