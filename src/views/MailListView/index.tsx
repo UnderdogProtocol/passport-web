@@ -1,51 +1,79 @@
 // YourComponent.js
 
+import { Error } from "@/components/Error";
+import { LoadingSection } from "@/components/LoadingSection";
+import { MediaObject } from "@/components/MediaObject";
+import { Button } from "@/components/Button";
 import { useMailApi } from "@/hooks/useMailApi";
-import { MailSchema } from "@/lib/schema";
-import { AssetSortBy } from "helius-sdk";
+import { useRef, useState } from "react";
 
 function MailListView() {
 
-    const { data, loading, error } = useMailApi("/api/mail");
+    const [page, setPage] = useState(1);
+    const { data, loading, error } = useMailApi(`/api/mail?page=${page}&limit=50`);
 
     if (loading) {
-        return <h1 className="text-white">Loading...</h1>;
+        return <LoadingSection />
     }
 
     if (error) {
-        /* @ts-ignore */
-        return <h1 className="text-white">Error: {error.message}</h1>;
+        <Error error={error} />
     }
 
-    const isDataValid = MailSchema.safeParse(data);
-    if (!isDataValid.success) {
-        return <h1 className="text-white">Something Went Wrong</h1>
-    }
-
+    /* ts-ignoring this because if we see the object keys via "data.", it shows 
+        {items, limit, page, total}
+       But the actual object is { assets: {items, limit, page, total} }
+       An SDK error, I guess, package update will fix this
+    */
     /* @ts-ignore */
-    const { assets } = data;
+    const { assets: { items } } = data!;
 
-    if (assets.items.length === 0) {
-        return <h1 className="text-white">No Mails Found...</h1>
+    if (!items || items.length === 0) {
+        return <div>
+            <h1 className="text-white">No Mails Found...</h1>
+
+            {/* Prev, Next Buttons */}
+            <div className="flex items-end justify-end mt-4">
+                <Button type="secondary" className="mr-2" onClick={() => {
+                    if (page > 1)
+                        setPage((prevPage) => prevPage - 1);
+                }}>Prev</Button>
+                <Button type="secondary" onClick={() => {
+                    if (items.length > 0)
+                        setPage((prevPage) => prevPage + 1);
+                }}>Next</Button>
+            </div>
+        </div>
     }
 
     return (
-        // TODO: Add pagination
-        <div className="max-h-96 overflow-y-auto">
-            {assets.items.map((item: any, index: number) => (
+        <div className="h-max-96 overflow-y-auto">
+            {items.map((item: any, index: number) => (
                 <a key={index} href={`/mail/${item.id}`} target="_blank">
                     <div
-                        className="border-b p-2 text-white cursor-pointer hover:bg-gray-700"
+                        className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700"
                     >
-                        <div className="text-lg font-bold">{item.content.metadata.name}</div>
-                        <div className="text-gray-200 truncate">
-                            {item.content.metadata.description
-                                ? item.content.metadata.description
-                                : <i className="text-gray-500">No Content</i>}
-                        </div>
+                        <MediaObject
+                            title={item.content.metadata.name}
+                            description={item.content.metadata.description}
+                            className="text-gray-200 truncate"
+                        />
                     </div>
                 </a>
             ))}
+
+            {/* Prev, Next Buttons */}
+            <div className="flex items-end justify-end mt-4">
+                <Button type="secondary" className="mr-2" onClick={() => {
+                    if (page > 1)
+                        setPage((prevPage) => prevPage - 1);
+                }}>Prev</Button>
+                <Button type="secondary" onClick={() => {
+                    if (items.length > 0)
+                        setPage((prevPage) => prevPage + 1);
+                }}>Next</Button>
+            </div>
+
         </div>
     );
 }

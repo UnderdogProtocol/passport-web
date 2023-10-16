@@ -69,11 +69,14 @@ export const IndexView: React.FC = () => {
 
 
       {/* Mail List */}
+      <div className="flex justify-between">
       <MediaObject
         title="Inbox"
         size="4xl"
         media={{ icon: <HiEnvelope className="text-light h-8 w-8" /> }}
       />
+      <a href="/mail"><Button type="secondary">Compose</Button></a>
+      </div>
 
       <MailListView/>
 
