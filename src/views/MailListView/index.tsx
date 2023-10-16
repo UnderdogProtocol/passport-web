@@ -51,7 +51,7 @@ function MailListView() {
             {items.map((item: any, index: number) => (
                 <a key={index} href={`/mail/${item.id}`} target="_blank">
                     <div
-                        className="border-b p-2 text-white cursor-pointer hover:bg-gray-700"
+                        className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700"
                     >
                         <MediaObject
                             title={item.content.metadata.name}
