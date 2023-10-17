@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 import * as HttpStatus from "http-status"
-import { helius, searchAssets } from "@/lib/helius";
+import { searchAssets } from "@/lib/helius";
 import { getPassportAddress } from "@underdog-protocol/passport";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
@@ -26,7 +26,7 @@ router.get(async (req, res) => {
         limit: Number.parseInt(limit.toString()),
     });
 
-    return res.status(HttpStatus.OK).json({ assets });
+    return res.status(HttpStatus.OK).json(assets);
 })
 
 
