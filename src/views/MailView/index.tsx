@@ -212,7 +212,7 @@ export const MailView: React.FC = () => {
     <Container className="space-y-4">
       <ConnectWalletButton type="secondary" className="flex-shrink-0" />
       <form onSubmit={handleSubmit(formSubmit, onError)} noValidate className="space-y-6">
-        <Input label="Subject" help="Subject of your mail" className="text-light"
+        <Input label="Subject" help="Subject of your mail" className="text-light" maxLength={32}
           {...register("subject", {
             required: { value: true, message: "Subject is required" },
           })}
