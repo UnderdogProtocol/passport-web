@@ -10,6 +10,7 @@ import { viewAssetOnXray } from "@/lib";
 import { publicKey } from "@metaplex-foundation/umi";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import { formatDistanceToNow } from 'date-fns'
 import {
     HiMagnifyingGlass,
     HiOutlineArrowUpOnSquare,
@@ -17,6 +18,7 @@ import {
     HiOutlineTrash,
     HiSquare2Stack,
 } from "react-icons/hi2";
+import { formatTimestamp } from "@/lib/utils";
 
 export const MailAssetView = () => {
     const router = useRouter();
@@ -83,11 +85,25 @@ export const MailAssetView = () => {
 
             <div className="pt-16">
                 {assetData?.content?.metadata.description && (
-                    <div
-                        className="max-h-screen overflow-y-auto border b-2"
-                    >
-                        <div className="text-2xl text-white break-words p-4">{assetData?.content?.metadata.description}</div>
+
+
+                    <div className="max-h-screen overflow-y-auto">
+                        <div className="text-right text-gray-500 p-2">
+                            {`${formatTimestamp(assetData!.content!.metadata!.attributes![1].value)}`}
+                        </div>
+                        <div className="border b-2">
+                            <div className="text-2xl text-white break-words p-4">
+                                {assetData?.content?.metadata.description}
+                            </div>
+                        </div>
                     </div>
+
+
+                    // <div
+                    //     className="max-h-screen overflow-y-auto border b-2"
+                    // >
+                    //     <div className="text-2xl text-white break-words p-4">{assetData?.content?.metadata.description}</div>
+                    // </div>
                 )}
             </div>
 
