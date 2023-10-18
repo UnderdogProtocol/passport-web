@@ -27,6 +27,18 @@ export const apps: Record<string, { title: string; src: string }> = {
     title: "Superteam",
     src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/superteam/icon.png`,
   },
+  sayver: {
+    title: "Sayver",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/sayver/icon.jpeg`,
+  },
+  "retro-nexus": {
+    title: "Retro Nexus",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/retro-nexus/icon.jpeg`,
+  },
+  etherfuse: {
+    title: "Etherfuse",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/etherfuse/icon.png`,
+  },
   liquidprop: {
     title: "LiquidProp",
     src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/liquidprop/icon.jpeg`,
@@ -42,10 +54,6 @@ export const apps: Record<string, { title: string; src: string }> = {
   intotheverse: {
     title: "intotheverse",
     src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/intotheverse/icon.png`,
-  },
-  etherfuse: {
-    title: "Etherfuse",
-    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/etherfuse/icon.png`,
   },
   underdog: {
     title: "Underdog",

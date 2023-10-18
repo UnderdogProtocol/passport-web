@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useUserContext } from "@/contexts/user";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
-import { useMailApi } from "@/hooks/useMailApi";
 import MailListView from "../MailListView";
 
 export const IndexView: React.FC = () => {
@@ -49,7 +48,6 @@ export const IndexView: React.FC = () => {
         </Button>
       </Card>
 
-      {/* Application List */}
       <MediaObject
         title="Applications"
         size="4xl"
@@ -67,19 +65,18 @@ export const IndexView: React.FC = () => {
         ))}
       </div>
 
-
-      {/* Mail List */}
       <div className="flex justify-between">
-      <MediaObject
-        title="Inbox"
-        size="4xl"
-        media={{ icon: <HiEnvelope className="text-light h-8 w-8" /> }}
-      />
-      <a href="/mail"><Button type="secondary">Compose</Button></a>
+        <MediaObject
+          title="Inbox"
+          size="4xl"
+          media={{ icon: <HiEnvelope className="text-light h-8 w-8" /> }}
+        />
+        <Link href="/mail">
+          <Button type="secondary">Compose</Button>
+        </Link>
       </div>
 
-      <MailListView/>
-
+      <MailListView />
     </Container>
   );
 };
