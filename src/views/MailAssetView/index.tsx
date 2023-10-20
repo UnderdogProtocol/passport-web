@@ -9,7 +9,7 @@ import { useToggle } from "@/hooks/useToggle";
 import { viewAssetOnXray } from "@/lib";
 import { publicKey } from "@metaplex-foundation/umi";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { formatDistanceToNow } from 'date-fns'
 import {
     HiMagnifyingGlass,
@@ -29,6 +29,11 @@ import { FieldErrors, useForm, useFieldArray, SubmitHandler } from "react-hook-f
 import { z } from "zod";
 import { ReplyMailSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import httpStatus from "http-status";
+import { useSphere } from "@spherelabs/react";
+import { useUserContext } from "@/contexts/user";
+import { Spin } from "@/components/Spin";
 
 
 type FormValues = z.infer<typeof ReplyMailSchema>;
@@ -48,7 +53,8 @@ export const MailAssetView = () => {
 
     const [transferModalOpen, toggleTransferModalOpen] = useToggle();
     const [burnModalOpen, toggleBurnModalOpen] = useToggle();
-    const [showReplyModal, toggleReplyModal] = useToggle();
+    const [showReplyModal, toggleReplyModalOpen] = useToggle();
+    const [loading, setLoading] = useState(false);
 
     const dropdownItems: DropdownProps["items"] = [
         {
@@ -86,13 +92,80 @@ export const MailAssetView = () => {
     const { handleSubmit, register, formState } = form;
     const { errors } = formState;
 
+    const { payPaymentLink } = useSphere();
+
+    const { address: userPassportAddress } = useUserContext();
+
     const formSubmit = async (data: FormValues) => {
         console.log("Form submitted");
-        // setLoading(true);
-    }
+        setLoading(true);
+
+        const { reply } = data;
+
+        const result = await axios.post('/api/gcp/upload', {
+            recipients: assetData?.id
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (result.status !== httpStatus.OK) {
+            console.log(result.data);
+            setLoading(false);
+            renderNotification({
+                title: "Something went wrong",
+                description: `Please try again`,
+            })
+            return
+        }
+
+        const response = result.data;
+
+        console.log("JSON file name");
+        console.log(response.data[0].fileName);
+
+        try {
+            const res = await payPaymentLink({
+                lineItemQuantities: [
+                    {
+                        lineItemId: `${process.env.NEXT_PUBLIC_SPHERE_LINE_ITEM}`,
+                        quantity: 1,
+                    }
+                ],
+                metadata: {
+                    subject: assetData?.content?.metadata.name,
+                    content: reply,
+                    csvFileName: response.data[0].fileName,
+                    passportAddress: userPassportAddress,
+                    sentAt: new Date().toISOString(),
+                }
+            })
+
+            console.log(res);
+
+            if (res) {
+                renderNotification({
+                    title: "Mail sent successfully",
+                })
+                form.reset();
+                setLoading(false);
+                toggleReplyModalOpen();
+            }
+
+        } catch (e: any) {
+            console.log(e);
+            setLoading(false);
+            renderNotification({
+                title: "Error",
+                description: `${e.message}`,
+            })
+        }
+
+    };
 
     const onError = (errors: FieldErrors<FormValues>) => {
-        // setLoading(false);
+        setLoading(false);
         console.log("Form errors", errors);
     };
 
@@ -130,7 +203,7 @@ export const MailAssetView = () => {
                 )}
             </div>
 
-            <Button type="secondary" className="mt-4" onClick={toggleReplyModal}>
+            <Button type="secondary" className="mt-4" onClick={toggleReplyModalOpen}>
                 Reply
             </Button>
 
@@ -146,7 +219,7 @@ export const MailAssetView = () => {
                 size="5xl"
             />
 
-            <Modal open={showReplyModal} size="3xl">
+            <Modal open={showReplyModal} size="3xl" onClose={toggleReplyModalOpen}>
 
                 <Card className="p-8 space-y-8">
 
@@ -167,9 +240,16 @@ export const MailAssetView = () => {
                             />
                         </div>
 
+
                         <div className="flex justify-between items-end">
-                            <Button type="secondary" onClick={toggleReplyModal}>Cancel</Button>
-                            <Button type="primary" htmlType="submit">Reply</Button>
+                            <Button type="secondary" onClick={toggleReplyModalOpen}>Cancel</Button>
+                            {loading ? (
+                                <Spin />
+                            ) : (
+                                <Button type="primary" htmlType="submit">
+                                    Reply
+                                </Button>
+                            )}
                         </div>
                     </form>
                 </Card>
