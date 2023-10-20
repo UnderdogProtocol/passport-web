@@ -86,7 +86,7 @@ export const CreateDomainForm: React.FC = () => {
       <Input label="Partner Code" error={errors.code} {...register("code")} />
 
       <div className="space-y-0.5">
-        <Label label="Select Payment Method" />
+        <Label label="Pay With" />
         <div className="grid grid-cols-2 gap-2">
           <Button
             size="sm"
@@ -114,6 +114,25 @@ export const CreateDomainForm: React.FC = () => {
             />
           </Button>
         </div>
+      </div>
+
+      <div>
+        <Label label="Price" />
+
+        <MediaObject
+          title={
+            paymentLinkId === paymentLinks.domain.usdc
+              ? "1000 USDC"
+              : paymentLinkId === paymentLinks.domain.sol
+              ? "40 SOL"
+              : paymentLinkId === paymentLinks.domain.usdc
+              ? "1000 USDC"
+              : paymentLinkId === paymentLinks.domain.partner.usdc
+              ? "100 USDC"
+              : "1 SOL"
+          }
+          size="xl"
+        />
       </div>
 
       <SphereProvider paymentLinkId={paymentLinkId}>
