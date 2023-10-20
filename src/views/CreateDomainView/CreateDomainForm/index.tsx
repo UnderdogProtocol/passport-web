@@ -33,7 +33,7 @@ export const CreateDomainForm: React.FC = () => {
     defaultValues: { payWith: "sol" },
   });
 
-  const [paymentLinkId, setPaymentLinkId] = useState(paymentLinks.domain.usdc);
+  const [paymentLinkId, setPaymentLinkId] = useState(paymentLinks.domain.sol);
 
   const { payWith, code, namespace } = watch();
 
