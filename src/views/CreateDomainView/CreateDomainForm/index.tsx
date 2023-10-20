@@ -23,7 +23,13 @@ export type CreateDomainFormFields = {
 export const CreateDomainForm: React.FC = () => {
   const [success, toggleSuccess] = useToggle();
 
-  const { watch, reset, register, formState: { errors }, setValue } = useForm<CreateDomainFormFields>({
+  const {
+    watch,
+    reset,
+    register,
+    formState: { errors },
+    setValue,
+  } = useForm<CreateDomainFormFields>({
     defaultValues: { payWith: "sol" },
   });
 
@@ -73,6 +79,7 @@ export const CreateDomainForm: React.FC = () => {
       <Input
         label="Namespace"
         placeholder="Namespace (e.g. solarplex, underdog, drip)"
+        maxLength={16}
         {...register("namespace", { required: true })}
       />
 

@@ -34,6 +34,8 @@ export const CheckoutWithSphereButton: React.FC<
       }
 
       await pay();
+
+      onSuccess();
     } catch {
       renderNotification({ title: "Transaction failed" });
     }
