@@ -13,3 +13,7 @@ export const PaymentMetadataSchema = z.object({
     csvFileName: z.string().min(6,{message: "CSV File Name is required"}),
     sentAt: z.string().min(6,{message: "Sent At is required"}),
 })
+
+export const ReplyMailSchema = z.object({
+    reply: z.string().trim().min(1,{message: "Reply is required"}),
+})

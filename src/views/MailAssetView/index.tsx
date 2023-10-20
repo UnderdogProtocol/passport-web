@@ -19,6 +19,19 @@ import {
     HiSquare2Stack,
 } from "react-icons/hi2";
 import { formatTimestamp } from "@/lib/utils";
+import { Button } from "@/components/Button";
+import { Modal } from "@/components/Modal";
+import { Card } from "@/components/Card";
+import { Header } from "@/components/MediaObject/Header";
+import { Input } from "@/components/Input";
+import { TextArea } from "@/components/TextArea";
+import { FieldErrors, useForm, useFieldArray, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
+import { ReplyMailSchema } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+
+type FormValues = z.infer<typeof ReplyMailSchema>;
 
 export const MailAssetView = () => {
     const router = useRouter();
@@ -35,6 +48,7 @@ export const MailAssetView = () => {
 
     const [transferModalOpen, toggleTransferModalOpen] = useToggle();
     const [burnModalOpen, toggleBurnModalOpen] = useToggle();
+    const [showReplyModal, toggleReplyModal] = useToggle();
 
     const dropdownItems: DropdownProps["items"] = [
         {
@@ -66,6 +80,22 @@ export const MailAssetView = () => {
         },
     ];
 
+    const form = useForm<FormValues>({
+        resolver: zodResolver(ReplyMailSchema),
+    });
+    const { handleSubmit, register, formState } = form;
+    const { errors } = formState;
+
+    const formSubmit = async (data: FormValues) => {
+        console.log("Form submitted");
+        // setLoading(true);
+    }
+
+    const onError = (errors: FieldErrors<FormValues>) => {
+        // setLoading(false);
+        console.log("Form errors", errors);
+    };
+
     return (
         <Container>
             <div className="flex justify-between items-center">
@@ -86,7 +116,6 @@ export const MailAssetView = () => {
             <div className="pt-16">
                 {assetData?.content?.metadata.description && (
 
-
                     <div className="max-h-screen overflow-y-auto">
                         <div className="text-right text-gray-500 p-2">
                             {`${formatTimestamp(assetData!.content!.metadata!.attributes![1].value)}`}
@@ -98,14 +127,12 @@ export const MailAssetView = () => {
                         </div>
                     </div>
 
-
-                    // <div
-                    //     className="max-h-screen overflow-y-auto border b-2"
-                    // >
-                    //     <div className="text-2xl text-white break-words p-4">{assetData?.content?.metadata.description}</div>
-                    // </div>
                 )}
             </div>
+
+            <Button type="secondary" className="mt-4" onClick={toggleReplyModal}>
+                Reply
+            </Button>
 
             <TransferModal
                 open={transferModalOpen}
@@ -118,6 +145,38 @@ export const MailAssetView = () => {
                 onClose={toggleBurnModalOpen}
                 size="5xl"
             />
+
+            <Modal open={showReplyModal} size="3xl">
+
+                <Card className="p-8 space-y-8">
+
+                    <div className="flex items-center justify-between space-x-8">
+                        <Header
+                            title="Reply"
+                        />
+
+                    </div>
+
+                    <form onSubmit={handleSubmit(formSubmit, onError)} noValidate className="space-y-6">
+                        <div className="flex justify-between items-center">
+                            <TextArea className="w-full" rows={10}
+                                {...register("reply", {
+                                    required: { value: true, message: "Content is required" },
+                                })}
+                                error={errors.reply}
+                            />
+                        </div>
+
+                        <div className="flex justify-between items-end">
+                            <Button type="secondary" onClick={toggleReplyModal}>Cancel</Button>
+                            <Button type="primary" htmlType="submit">Reply</Button>
+                        </div>
+                    </form>
+                </Card>
+
+            </Modal>
         </Container>
+
+
     );
 };
