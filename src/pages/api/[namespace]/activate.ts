@@ -13,7 +13,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { createRouter } from "next-connect";
 import { authOptions } from "../auth/[...nextauth]";
-import * as HttpStatus from "http-status"
+import * as HttpStatus from "http-status";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -30,7 +30,9 @@ router.post(async (req, res) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
-    return res.status(HttpStatus.UNAUTHORIZED).json({ message: "You must be logged in." });
+    return res
+      .status(HttpStatus.UNAUTHORIZED)
+      .json({ message: "You must be logged in." });
   }
 
   if (!(session.user?.email && req.body.linkerAddress)) {

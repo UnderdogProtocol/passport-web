@@ -60,18 +60,6 @@ function MailListView() {
                 // </a>
             ))}
 
-            {/* Prev, Next Buttons */}
-            <div className="flex items-end justify-end mt-4">
-                <Button type="secondary" className="mr-2" onClick={() => {
-                    if (page > 1)
-                        setPage((prevPage) => prevPage - 1);
-                }}>Prev</Button>
-                <Button type="secondary" onClick={() => {
-                    if (items.length > 0)
-                        setPage((prevPage) => prevPage + 1);
-                }}>Next</Button>
-            </div>
-
         {/* Prev, Next Buttons */}
         <div className="flex items-end justify-end mt-4">
           <Button

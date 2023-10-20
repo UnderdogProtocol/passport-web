@@ -77,7 +77,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             </div>
           </div>
         </div>
-        <Error error={error} className="mt-2" />
+        <Error error={error} className="mt-0.5" />
       </div>
     );
   }
