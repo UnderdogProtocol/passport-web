@@ -31,5 +31,5 @@ export const initializeDomain = async (
   await initializeDomainV0(context, {
     domainAuthority,
     namespace,
-  }).sendAndConfirm(context);
+  }).sendAndConfirm(context, { confirm: { commitment: "processed" } });
 };
