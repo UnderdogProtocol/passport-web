@@ -47,7 +47,7 @@ export const CreateDomainForm: React.FC = () => {
     }
   }, [payWith, code]);
 
-  if (!success) {
+  if (success) {
     return (
       <div className="flex flex-col items-center space-y-4">
         <HiCheckCircle className="text-primary text-7xl" />
