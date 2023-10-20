@@ -53,7 +53,7 @@ export const CreateDomainForm: React.FC = () => {
     }
   }, [payWith, code]);
 
-  if (success) {
+  if (!success) {
     return (
       <div className="flex flex-col items-center space-y-4">
         <HiCheckCircle className="text-primary text-7xl" />
@@ -61,15 +61,28 @@ export const CreateDomainForm: React.FC = () => {
           title="Your domain has been successfully purchased!"
           size="2xl"
         />
-        <Button
-          type="secondary"
-          onClick={() => {
-            toggleSuccess();
-            reset();
-          }}
-        >
-          Buy another domain
-        </Button>
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            type="secondary"
+            onClick={() => {
+              window.open(
+                "https://explorer.solana.com/address/upUcvW7nF6ymrAFKborbq3vrbdpuokAvJheqHX5Qxtd?cluster=mainnet-beta"
+              );
+            }}
+          >
+            View on Explorer
+          </Button>
+
+          <Button
+            type="secondary"
+            onClick={() => {
+              toggleSuccess();
+              reset();
+            }}
+          >
+            Buy another domain
+          </Button>
+        </div>
       </div>
     );
   }
