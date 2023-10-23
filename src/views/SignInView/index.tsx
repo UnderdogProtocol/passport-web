@@ -17,7 +17,6 @@ export const SignInView: React.FC = () => {
 
   return (
 
-
     <Container size="2xl" className="py-8 h-screen flex flex-col items-center justify-center">
       <div className="p-4 space-y-4 bg-dark-light rounded-lg w-full">
         <img src={apps.underdog.src} alt="logo" className="w-32 h-32 mx-auto" />

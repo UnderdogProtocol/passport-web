@@ -19,6 +19,10 @@ export const apps: Record<string, { title: string; src: string }> = {
     title: "Sporting",
     src: SPORTING_LOGO_URL,
   },
+  publique: {
+    title: "Publique",
+    src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/publique/icon.png`,
+  },
   sphere: {
     title: "Sphere",
     src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/sphere/icon.jpg`,
