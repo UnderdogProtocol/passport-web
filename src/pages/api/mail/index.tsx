@@ -5,6 +5,7 @@ import { authOptions } from "../auth/[...nextauth]";
 import * as HttpStatus from "http-status"
 import { searchAssets } from "@/lib/helius";
 import { getPassportAddress } from "@underdog-protocol/passport";
+import { AssetSortBy, AssetSortDirection } from "helius-sdk";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -24,6 +25,7 @@ router.get(async (req, res) => {
         grouping: ["collection", process.env.MAIL_UNDERDOG_PROJECT_MINT] as any,
         page: Number.parseInt(page.toString()),
         limit: Number.parseInt(limit.toString()),
+        sortBy: { sortBy: AssetSortBy.Created, sortDirection: AssetSortDirection.Desc }
     });
 
     return res.status(HttpStatus.OK).json(assets);

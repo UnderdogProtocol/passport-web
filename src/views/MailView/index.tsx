@@ -42,14 +42,8 @@ export const MailView: React.FC = () => {
     setLoading(true);
 
     const { subject, content, recipients } = data;
-    console.log(subject);
-    console.log(content);
-
 
     if (recipients && recipients.split(",").length > 0) {
-      console.log(recipients);
-      console.log("Split");
-
       mintAddresses.push(...recipients.split(",").filter((item) => item.trim().length > 0))
     }
 

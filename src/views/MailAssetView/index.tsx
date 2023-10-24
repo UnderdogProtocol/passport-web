@@ -9,8 +9,8 @@ import { useToggle } from "@/hooks/useToggle";
 import { viewAssetOnXray } from "@/lib";
 import { publicKey } from "@metaplex-foundation/umi";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
-import { formatDistanceToNow } from 'date-fns'
+import { useMemo, useState } from "react";
+import { formatDistanceToNow, sub } from 'date-fns'
 import {
     HiMagnifyingGlass,
     HiOutlineArrowUpOnSquare,
@@ -19,6 +19,25 @@ import {
     HiSquare2Stack,
 } from "react-icons/hi2";
 import { formatTimestamp } from "@/lib/utils";
+import { Button } from "@/components/Button";
+import { Modal } from "@/components/Modal";
+import { Card } from "@/components/Card";
+import { Header } from "@/components/MediaObject/Header";
+import { Input } from "@/components/Input";
+import { TextArea } from "@/components/TextArea";
+import { FieldErrors, useForm, useFieldArray, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
+import { ReplyMailSchema } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import httpStatus from "http-status";
+import { useSphere } from "@spherelabs/react";
+import { useUserContext } from "@/contexts/user";
+import { Spin } from "@/components/Spin";
+import { useAssetsByOwner } from "@/hooks/useAssetsByOwner";
+
+
+type FormValues = z.infer<typeof ReplyMailSchema>;
 
 export const MailAssetView = () => {
     const router = useRouter();
@@ -32,9 +51,16 @@ export const MailAssetView = () => {
     );
 
     const { data: assetData } = useAsset(mintAddress);
+    // const abc = useAssetsByOwner(assetData?.id);
+    const { data: subAssetsData } = useAssetsByOwner(assetData?.id);
+
+    console.log("ASSETS BY OWNER");
+    console.log(subAssetsData);
 
     const [transferModalOpen, toggleTransferModalOpen] = useToggle();
     const [burnModalOpen, toggleBurnModalOpen] = useToggle();
+    const [showReplyModal, toggleReplyModalOpen] = useToggle();
+    const [loading, setLoading] = useState(false);
 
     const dropdownItems: DropdownProps["items"] = [
         {
@@ -66,6 +92,89 @@ export const MailAssetView = () => {
         },
     ];
 
+    const form = useForm<FormValues>({
+        resolver: zodResolver(ReplyMailSchema),
+    });
+    const { handleSubmit, register, formState } = form;
+    const { errors } = formState;
+
+    const { payPaymentLink } = useSphere();
+
+    const { address: userPassportAddress } = useUserContext();
+
+    const formSubmit = async (data: FormValues) => {
+        console.log("Form submitted");
+        setLoading(true);
+
+        const { reply } = data;
+
+        const result = await axios.post('/api/gcp/upload', {
+            recipients: assetData?.id
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (result.status !== httpStatus.OK) {
+            console.log(result.data);
+            setLoading(false);
+            renderNotification({
+                title: "Something went wrong",
+                description: `Please try again`,
+            })
+            return
+        }
+
+        const response = result.data;
+
+        console.log("JSON file name");
+        console.log(response.data[0].fileName);
+
+        try {
+            const res = await payPaymentLink({
+                lineItemQuantities: [
+                    {
+                        lineItemId: `${process.env.NEXT_PUBLIC_SPHERE_LINE_ITEM}`,
+                        quantity: 1,
+                    }
+                ],
+                metadata: {
+                    subject: assetData?.content?.metadata.name,
+                    content: reply,
+                    csvFileName: response.data[0].fileName,
+                    passportAddress: userPassportAddress,
+                    sentAt: new Date().toISOString(),
+                }
+            })
+
+            console.log(res);
+
+            if (res) {
+                renderNotification({
+                    title: "Mail sent successfully",
+                })
+                form.reset();
+                setLoading(false);
+                toggleReplyModalOpen();
+            }
+
+        } catch (e: any) {
+            console.log(e);
+            setLoading(false);
+            renderNotification({
+                title: "Error",
+                description: `${e.message}`,
+            })
+        }
+
+    };
+
+    const onError = (errors: FieldErrors<FormValues>) => {
+        setLoading(false);
+        console.log("Form errors", errors);
+    };
+
     return (
         <Container>
             <div className="flex justify-between items-center">
@@ -86,7 +195,6 @@ export const MailAssetView = () => {
             <div className="pt-16">
                 {assetData?.content?.metadata.description && (
 
-
                     <div className="max-h-screen overflow-y-auto">
                         <div className="text-right text-gray-500 p-2">
                             {`${formatTimestamp(assetData!.content!.metadata!.attributes![1].value)}`}
@@ -98,14 +206,29 @@ export const MailAssetView = () => {
                         </div>
                     </div>
 
-
-                    // <div
-                    //     className="max-h-screen overflow-y-auto border b-2"
-                    // >
-                    //     <div className="text-2xl text-white break-words p-4">{assetData?.content?.metadata.description}</div>
-                    // </div>
                 )}
             </div>
+
+            {subAssetsData && subAssetsData.items.length > 0 && (
+                Object.entries(subAssetsData.items).map(([key, value]) =>{ 
+                    const timestamp = value!.content!.metadata.attributes![1].trait_type==="sentAt" ? value.content!.metadata!.attributes![1].value: new Date().toISOString();
+                    return (
+                    <div className="max-h-screen overflow-y-auto mt-8" key={key}>
+                        <div className="text-right text-gray-500 p-2">
+                            {`${formatTimestamp(timestamp)}`}
+                        </div>
+                        <div className="border b-2 border-neonGreen-600">
+                            <div className="text-2xl text-white break-words p-4">
+                                {value?.content?.metadata.description}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            ))}
+
+            <Button type="secondary" className="mt-4" onClick={toggleReplyModalOpen}>
+                Reply
+            </Button>
 
             <TransferModal
                 open={transferModalOpen}
@@ -118,6 +241,45 @@ export const MailAssetView = () => {
                 onClose={toggleBurnModalOpen}
                 size="5xl"
             />
+
+            <Modal open={showReplyModal} size="3xl" onClose={toggleReplyModalOpen}>
+
+                <Card className="p-8 space-y-8">
+
+                    <div className="flex items-center justify-between space-x-8">
+                        <Header
+                            title="Reply"
+                        />
+
+                    </div>
+
+                    <form onSubmit={handleSubmit(formSubmit, onError)} noValidate className="space-y-6">
+                        <div className="flex justify-between items-center">
+                            <TextArea className="w-full" rows={10}
+                                {...register("reply", {
+                                    required: { value: true, message: "Content is required" },
+                                })}
+                                error={errors.reply}
+                            />
+                        </div>
+
+
+                        <div className="flex justify-between items-end">
+                            <Button type="secondary" onClick={toggleReplyModalOpen}>Cancel</Button>
+                            {loading ? (
+                                <Spin />
+                            ) : (
+                                <Button type="primary" htmlType="submit">
+                                    Reply
+                                </Button>
+                            )}
+                        </div>
+                    </form>
+                </Card>
+
+            </Modal>
         </Container>
+
+
     );
 };
