@@ -38,6 +38,7 @@ import { useAssetsByOwner } from "@/hooks/useAssetsByOwner";
 import { ConnectWalletButton } from "@/components/ConnectWalletButton";
 import { BsX } from 'react-icons/bs';
 import { FaTelegramPlane } from "react-icons/fa";
+import MailBody from "@/components/MailBody";
 
 type FormValues = z.infer<typeof ReplyMailSchema>;
 
@@ -199,16 +200,18 @@ export const MailAssetView = () => {
             <div className="">
                 {assetData?.content?.metadata.description && (
 
-                    <div className="max-h-screen overflow-y-auto">
-                        <div className="text-right text-gray-500 p-2">
-                            {`${formatTimestamp(assetData!.content!.metadata!.attributes![1].value)}`}
-                        </div>
-                        <div className="border b-2">
-                            <div className="text-2xl text-white break-words p-4">
-                                {assetData?.content?.metadata.description}
-                            </div>
-                        </div>
-                    </div>
+                    <MailBody description={assetData?.content?.metadata.description} timestamp={`${formatTimestamp(assetData!.content!.metadata!.attributes![1].value)}`}/>
+
+                    // <div className="max-h-screen overflow-y-auto">
+                    //     <div className="text-right text-gray-500 p-2">
+                    //         {`${formatTimestamp(assetData!.content!.metadata!.attributes![1].value)}`}
+                    //     </div>
+                    //     <div className="border b-2">
+                    //         <div className="text-2xl text-white break-words p-4">
+                    //             {assetData?.content?.metadata.description}
+                    //         </div>
+                    //     </div>
+                    // </div>
 
                 )}
             </div>
@@ -218,16 +221,19 @@ export const MailAssetView = () => {
                 Object.entries(subAssetsData.items).map(([key, value]) => {
                     const timestamp = value!.content!.metadata.attributes![1].trait_type === "sentAt" ? value.content!.metadata!.attributes![1].value : new Date().toISOString();
                     return (
-                        <div className="max-h-screen overflow-y-auto mt-8" key={key}>
-                            <div className="text-right text-gray-500 p-2">
-                                {`${formatTimestamp(timestamp)}`}
-                            </div>
-                            <div className="border b-2 border-neonGreen-600">
-                                <div className="text-2xl text-white break-words p-4">
-                                    {value?.content?.metadata.description}
-                                </div>
-                            </div>
-                        </div>
+
+                        <MailBody description={value?.content?.metadata.description!} timestamp={`${formatTimestamp(timestamp)}`}/>
+
+                        // <div className="max-h-screen overflow-y-auto mt-8" key={key}>
+                        //     <div className="text-right text-gray-500 p-2">
+                        //         {`${formatTimestamp(timestamp)}`}
+                        //     </div>
+                        //     <div className="border b-2 border-neonGreen-600">
+                        //         <div className="text-2xl text-white break-words p-4">
+                        //             {value?.content?.metadata.description}
+                        //         </div>
+                        //     </div>
+                        // </div>
                     )
                 }
                 ))}
