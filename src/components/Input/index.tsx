@@ -31,7 +31,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    console.log(inputProps);
     const [currentLength, setCurrentLength] = useState(0);
     const paddingClassName = sizeToPaddingClassName[size];
     const fontSizeClassName = sizeToFontSizeClassName[size];

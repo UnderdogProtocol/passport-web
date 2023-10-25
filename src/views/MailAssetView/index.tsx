@@ -222,7 +222,7 @@ export const MailAssetView = () => {
                     const timestamp = value!.content!.metadata.attributes![1].trait_type === "sentAt" ? value.content!.metadata!.attributes![1].value : new Date().toISOString();
                     return (
 
-                        <MailBody description={value?.content?.metadata.description!} timestamp={`${formatTimestamp(timestamp)}`}/>
+                        <MailBody description={value?.content?.metadata.description!} timestamp={`${formatTimestamp(timestamp)}`} borderColor="border-neonGreen-600"/>
 
                         // <div className="max-h-screen overflow-y-auto mt-8" key={key}>
                         //     <div className="text-right text-gray-500 p-2">
@@ -250,7 +250,7 @@ export const MailAssetView = () => {
 
                     <form onSubmit={handleSubmit(formSubmit, onError)} noValidate className="space-y-6">
                         <div className="flex justify-between items-center">
-                            <TextArea className="w-full outline-none border-none" rows={5}
+                            <TextArea className="w-full resize-y" rows={5}
                                 {...register("reply", {
                                     required: { value: true, message: "Content is required" },
                                 })}
