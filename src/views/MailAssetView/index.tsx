@@ -36,7 +36,8 @@ import { useUserContext } from "@/contexts/user";
 import { Spin } from "@/components/Spin";
 import { useAssetsByOwner } from "@/hooks/useAssetsByOwner";
 import { ConnectWalletButton } from "@/components/ConnectWalletButton";
-
+import { BsX } from 'react-icons/bs';
+import { FaTelegramPlane } from "react-icons/fa";
 
 type FormValues = z.infer<typeof ReplyMailSchema>;
 
@@ -57,7 +58,7 @@ export const MailAssetView = () => {
 
     const [transferModalOpen, toggleTransferModalOpen] = useToggle();
     const [burnModalOpen, toggleBurnModalOpen] = useToggle();
-    const [showReplyModal, toggleReplyModalOpen] = useToggle();
+    const [showReplyInput, toggleReplyInputOpen] = useToggle();
     const [loading, setLoading] = useState(false);
 
     const dropdownItems: DropdownProps["items"] = [
@@ -154,7 +155,7 @@ export const MailAssetView = () => {
                 })
                 form.reset();
                 setLoading(false);
-                toggleReplyModalOpen();
+                toggleReplyInputOpen();
             }
 
         } catch (e: any) {
@@ -194,6 +195,7 @@ export const MailAssetView = () => {
                 <ConnectWalletButton type="secondary" className="flex-shrink-0 mt-8" />
             </div>
 
+            {/* First Mail */}
             <div className="">
                 {assetData?.content?.metadata.description && (
 
@@ -211,6 +213,7 @@ export const MailAssetView = () => {
                 )}
             </div>
 
+            {/* Mail Replies */}
             {subAssetsData && subAssetsData.items.length > 0 && (
                 Object.entries(subAssetsData.items).map(([key, value]) => {
                     const timestamp = value!.content!.metadata.attributes![1].trait_type === "sentAt" ? value.content!.metadata!.attributes![1].value : new Date().toISOString();
@@ -229,10 +232,45 @@ export const MailAssetView = () => {
                 }
                 ))}
 
-            <Button type="secondary" className="mt-4" onClick={toggleReplyModalOpen}>
-                Reply
-            </Button>
+            {/* Reply Input */}
+            {showReplyInput && (
+                <Card className="space-y-0 bg-transparent">
 
+                    <div className="flex items-end justify-end">
+                        <span className="text-gray-500 hover:text-gray-700 cursor-pointer">
+                            <BsX size={24} onClick={toggleReplyInputOpen} />
+                        </span>
+                    </div>
+
+                    <form onSubmit={handleSubmit(formSubmit, onError)} noValidate className="space-y-6">
+                        <div className="flex justify-between items-center">
+                            <TextArea className="w-full outline-none border-none" rows={5}
+                                {...register("reply", {
+                                    required: { value: true, message: "Content is required" },
+                                })}
+                                error={errors.reply}
+                            />
+                        </div>
+
+
+                        <div className="flex justify-start items-start">
+                            {loading ? (
+                                <Spin />
+                            ) : (
+                                <Button type="primary" htmlType="submit">
+                                    <FaTelegramPlane size={24} />
+                                </Button>
+                            )}
+                        </div>
+                    </form>
+                </Card>
+            )}
+
+            {!showReplyInput && (
+                <Button type="secondary" className="mt-4" onClick={toggleReplyInputOpen}>
+                    Reply
+                </Button>
+            )}
             <TransferModal
                 open={transferModalOpen}
                 onClose={toggleTransferModalOpen}
@@ -245,44 +283,7 @@ export const MailAssetView = () => {
                 size="5xl"
             />
 
-            <Modal open={showReplyModal} size="3xl" onClose={toggleReplyModalOpen}>
-
-                <Card className="p-8 space-y-8">
-
-                    <div className="flex items-center justify-between space-x-8">
-                        <Header
-                            title="Reply"
-                        />
-
-                    </div>
-
-                    <form onSubmit={handleSubmit(formSubmit, onError)} noValidate className="space-y-6">
-                        <div className="flex justify-between items-center">
-                            <TextArea className="w-full" rows={10}
-                                {...register("reply", {
-                                    required: { value: true, message: "Content is required" },
-                                })}
-                                error={errors.reply}
-                            />
-                        </div>
-
-
-                        <div className="flex justify-between items-end">
-                            <Button type="secondary" onClick={toggleReplyModalOpen}>Cancel</Button>
-                            {loading ? (
-                                <Spin />
-                            ) : (
-                                <Button type="primary" htmlType="submit">
-                                    Reply
-                                </Button>
-                            )}
-                        </div>
-                    </form>
-                </Card>
-
-            </Modal>
         </Container>
-
 
     );
 };
