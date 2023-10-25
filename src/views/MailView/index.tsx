@@ -210,21 +210,22 @@ export const MailView: React.FC = () => {
           {...register("subject", {
             required: { value: true, message: "Subject is required" },
           })}
-          error={errors.subject}
+          error={errors.subject} placeholder="Underdog is awesome!"
         />
 
-        <TextArea label="Content" help="Content of your mail" className="text-light" rows={10}
-          {...register("content", {
-            required: { value: false, message: "Content is required" },
-          })}
-          error={errors.content}
-        />
 
-        <TextArea label="Recipients Address" help="Receivers of your mail" className="text-light" rows={6}
+        <TextArea label="To" help="Receivers of your mail" className="text-light" rows={1}
           {...register("recipients", {
-            required: { value: false, message: "Recipients is required" },
+            required: { value: false, message: "At least 1 receiver required" },
           })}
-          error={errors.recipients}
+          error={errors.recipients} placeholder="tony@underdogprotocol.com, 8u6gpn7exWaTTmn5iFWtFgR1wAVzRJLpeNJBRxXubDgQ"
+        />
+
+        <TextArea label="Body" help="Body of your mail" className="text-light" rows={10}
+          {...register("content", {
+            required: { value: false, message: "Mail body is required" },
+          })}
+          error={errors.content} placeholder="Hey, you should try out Passport by Underdog Protocol"
         />
 
         {/* Uncomment this to enable CSV file upload */}
@@ -246,7 +247,7 @@ export const MailView: React.FC = () => {
           <Spin />
         ) : (
           <Button type="primary" htmlType="submit">
-            Submit
+            Send
           </Button>
         )}
 
