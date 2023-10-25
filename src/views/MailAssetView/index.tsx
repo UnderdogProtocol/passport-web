@@ -9,7 +9,7 @@ import { useToggle } from "@/hooks/useToggle";
 import { viewAssetOnXray } from "@/lib";
 import { publicKey } from "@metaplex-foundation/umi";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatDistanceToNow, sub } from 'date-fns'
 import {
     HiMagnifyingGlass,
@@ -35,6 +35,7 @@ import { useSphere } from "@spherelabs/react";
 import { useUserContext } from "@/contexts/user";
 import { Spin } from "@/components/Spin";
 import { useAssetsByOwner } from "@/hooks/useAssetsByOwner";
+import { ConnectWalletButton } from "@/components/ConnectWalletButton";
 
 
 type FormValues = z.infer<typeof ReplyMailSchema>;
@@ -53,9 +54,6 @@ export const MailAssetView = () => {
     const { data: assetData } = useAsset(mintAddress);
     // const abc = useAssetsByOwner(assetData?.id);
     const { data: subAssetsData } = useAssetsByOwner(assetData?.id);
-
-    console.log("ASSETS BY OWNER");
-    console.log(subAssetsData);
 
     const [transferModalOpen, toggleTransferModalOpen] = useToggle();
     const [burnModalOpen, toggleBurnModalOpen] = useToggle();
@@ -176,7 +174,7 @@ export const MailAssetView = () => {
     };
 
     return (
-        <Container>
+        <Container className="space-y-4">
             <div className="flex justify-between items-center">
                 <MediaObject
                     size="4xl"
@@ -192,7 +190,11 @@ export const MailAssetView = () => {
                 <Dropdown items={dropdownItems} />
             </div>
 
-            <div className="pt-16">
+            <div>
+                <ConnectWalletButton type="secondary" className="flex-shrink-0 mt-8" />
+            </div>
+
+            <div className="">
                 {assetData?.content?.metadata.description && (
 
                     <div className="max-h-screen overflow-y-auto">
@@ -210,21 +212,22 @@ export const MailAssetView = () => {
             </div>
 
             {subAssetsData && subAssetsData.items.length > 0 && (
-                Object.entries(subAssetsData.items).map(([key, value]) =>{ 
-                    const timestamp = value!.content!.metadata.attributes![1].trait_type==="sentAt" ? value.content!.metadata!.attributes![1].value: new Date().toISOString();
+                Object.entries(subAssetsData.items).map(([key, value]) => {
+                    const timestamp = value!.content!.metadata.attributes![1].trait_type === "sentAt" ? value.content!.metadata!.attributes![1].value : new Date().toISOString();
                     return (
-                    <div className="max-h-screen overflow-y-auto mt-8" key={key}>
-                        <div className="text-right text-gray-500 p-2">
-                            {`${formatTimestamp(timestamp)}`}
-                        </div>
-                        <div className="border b-2 border-neonGreen-600">
-                            <div className="text-2xl text-white break-words p-4">
-                                {value?.content?.metadata.description}
+                        <div className="max-h-screen overflow-y-auto mt-8" key={key}>
+                            <div className="text-right text-gray-500 p-2">
+                                {`${formatTimestamp(timestamp)}`}
+                            </div>
+                            <div className="border b-2 border-neonGreen-600">
+                                <div className="text-2xl text-white break-words p-4">
+                                    {value?.content?.metadata.description}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
-            ))}
+                    )
+                }
+                ))}
 
             <Button type="secondary" className="mt-4" onClick={toggleReplyModalOpen}>
                 Reply
