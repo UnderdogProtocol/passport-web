@@ -200,18 +200,7 @@ export const MailAssetView = () => {
             <div className="">
                 {assetData?.content?.metadata.description && (
 
-                    <MailBody description={assetData?.content?.metadata.description} timestamp={`${formatTimestamp(assetData!.content!.metadata!.attributes![1].value)}`}/>
-
-                    // <div className="max-h-screen overflow-y-auto">
-                    //     <div className="text-right text-gray-500 p-2">
-                    //         {`${formatTimestamp(assetData!.content!.metadata!.attributes![1].value)}`}
-                    //     </div>
-                    //     <div className="border b-2">
-                    //         <div className="text-2xl text-white break-words p-4">
-                    //             {assetData?.content?.metadata.description}
-                    //         </div>
-                    //     </div>
-                    // </div>
+                    <MailBody description={assetData?.content?.metadata.description} timestamp={`${formatTimestamp(assetData!.content!.metadata!.attributes![1].value)}`} />
 
                 )}
             </div>
@@ -222,18 +211,8 @@ export const MailAssetView = () => {
                     const timestamp = value!.content!.metadata.attributes![1].trait_type === "sentAt" ? value.content!.metadata!.attributes![1].value : new Date().toISOString();
                     return (
 
-                        <MailBody description={value?.content?.metadata.description!} timestamp={`${formatTimestamp(timestamp)}`} borderColor="border-neonGreen-600"/>
+                        <MailBody description={value?.content?.metadata.description!} timestamp={`${formatTimestamp(timestamp)}`} isReply={true} />
 
-                        // <div className="max-h-screen overflow-y-auto mt-8" key={key}>
-                        //     <div className="text-right text-gray-500 p-2">
-                        //         {`${formatTimestamp(timestamp)}`}
-                        //     </div>
-                        //     <div className="border b-2 border-neonGreen-600">
-                        //         <div className="text-2xl text-white break-words p-4">
-                        //             {value?.content?.metadata.description}
-                        //         </div>
-                        //     </div>
-                        // </div>
                     )
                 }
                 ))}
