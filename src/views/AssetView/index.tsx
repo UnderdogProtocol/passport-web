@@ -18,7 +18,7 @@ import {
   HiSquare2Stack,
 } from "react-icons/hi2";
 
-export const AssetView = () => {
+export function AssetView() {
   const router = useRouter();
 
   const mintAddress = useMemo(
@@ -26,7 +26,7 @@ export const AssetView = () => {
       router.query.mintAddress
         ? publicKey(router.query.mintAddress as string)
         : undefined,
-    [router.query.mintAddress]
+    [router.query.mintAddress],
   );
 
   const { data: assetData } = useAsset(mintAddress);
@@ -94,4 +94,4 @@ export const AssetView = () => {
       />
     </Container>
   );
-};
+}

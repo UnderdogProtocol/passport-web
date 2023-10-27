@@ -54,9 +54,9 @@ export const Button: React.FC<ButtonProps> = ({
       disabled ? disabledClassName : "",
       block ? blockClassName : "",
       fontSizeClassName,
-      paddingClassName
+      paddingClassName,
     ),
-    className
+    className,
   );
 
   return (

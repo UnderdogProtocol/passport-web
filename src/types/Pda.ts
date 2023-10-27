@@ -1,5 +1,5 @@
-import { Buffer } from 'buffer';
-import { PublicKey, PublicKeyInitData } from '@solana/web3.js';
+import { Buffer } from "buffer";
+import { PublicKey, PublicKeyInitData } from "@solana/web3.js";
 
 export class Pda extends PublicKey {
   /** The bump used to generate the PDA. */
@@ -13,7 +13,7 @@ export class Pda extends PublicKey {
   static find(programId: PublicKey, seeds: Array<Buffer | Uint8Array>): Pda {
     const [publicKey, bump] = PublicKey.findProgramAddressSync(
       seeds,
-      programId
+      programId,
     );
 
     return new Pda(publicKey, bump);

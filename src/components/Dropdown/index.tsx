@@ -25,7 +25,12 @@ export function Dropdown({ items = [], children, className }: DropdownProps) {
           <div className="px-1 py-1 ">
             {items.map((buttonProps, i) => (
               <Menu.Item key={i}>
-                <Button type="link" block className="justify-start" {...buttonProps} />
+                <Button
+                  type="link"
+                  block
+                  className="justify-start"
+                  {...buttonProps}
+                />
               </Menu.Item>
             ))}
           </div>

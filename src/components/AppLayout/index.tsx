@@ -1,14 +1,14 @@
 import { ReactElement, ReactNode } from "react";
-import Layout from "../Layout";
 import { ActivateModal } from "@/views/AppView/ActivateModal";
+import { useToggle } from "@/hooks/useToggle";
+import { useUserContext } from "@/contexts/user";
+import Layout from "../Layout";
 import { DescriptionList } from "../DescriptionList";
 import { Card } from "../Card";
 import { Button } from "../Button";
 import { Badge } from "../Badge";
 import { MediaObject } from "../MediaObject";
-import { useToggle } from "@/hooks/useToggle";
 import { Container } from "../Container";
-import { useUserContext } from "@/contexts/user";
 import { LoadingPage } from "../LoadingPage";
 import { AddressLink } from "../AddressLink";
 

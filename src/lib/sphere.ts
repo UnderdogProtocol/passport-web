@@ -1,5 +1,4 @@
 import { initializeDomainV0 } from "@underdog-protocol/underdog-identity-sdk";
-import { context } from "./context";
 import {
   PublicKey,
   createSignerFromKeypair,
@@ -7,6 +6,7 @@ import {
   publicKey,
 } from "@metaplex-foundation/umi";
 import { base58 } from "@metaplex-foundation/umi/serializers";
+import { context } from "./context";
 
 export const paymentLinks = {
   domainWithSol:
@@ -20,13 +20,13 @@ context.use(
     createSignerFromKeypair(context, {
       publicKey: publicKey("a5sSqWJR1WExtq1hvufeep8fLU43xxXXac44k6FRgbs"),
       secretKey: base58.serialize(process.env.ADMIN_SECRET_KEY!),
-    })
-  )
+    }),
+  ),
 );
 
 export const initializeDomain = async (
   domainAuthority: PublicKey,
-  namespace: string
+  namespace: string,
 ) => {
   await initializeDomainV0(context, {
     domainAuthority,

@@ -5,4 +5,4 @@ export default function IndexPage() {
   return <IndexView />;
 }
 
-IndexPage.getLayout= getLayout;
+IndexPage.getLayout = getLayout;

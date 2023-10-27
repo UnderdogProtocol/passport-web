@@ -13,7 +13,7 @@ export const SessionPopoverPanel: React.FC<SessionPopoverPanelProps> = ({
 }) => {
   const sessionPopoverPanelClassName = clsx(
     "bg-dark-light rounded-md focus:outline-none border border-dark-accent z-40 p-2",
-    className
+    className,
   );
 
   return (

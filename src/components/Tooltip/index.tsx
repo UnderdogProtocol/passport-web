@@ -17,14 +17,22 @@ const positionClassName = {
   bottom: "top-full left-1/2 -translate-x-1/2 justify-center",
 };
 
-export const Tooltip: React.FC<TooltipProps> = ({ children, text, position = "top" }) => {
+export const Tooltip: React.FC<TooltipProps> = ({
+  children,
+  text,
+  position = "top",
+}) => {
   if (!text) return <>{children}</>;
 
   return (
     <div className="group relative flex items-center">
       {children}
       <div
-        className={clsx("absolute z-50 hidden w-64 transform group-hover:flex", positionClassName[position])}>
+        className={clsx(
+          "absolute z-50 hidden w-64 transform group-hover:flex",
+          positionClassName[position],
+        )}
+      >
         <div className="bg-dark-light border-dark-accent m-0.5 max-w-full rounded border px-2 py-1 text-sm">
           {text}
         </div>

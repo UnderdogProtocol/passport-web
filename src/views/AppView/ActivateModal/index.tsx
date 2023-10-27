@@ -43,18 +43,18 @@ export const ActivateModal: React.FC<ActivateModalProps> = (props) => {
       });
 
       const transaction = context.transactions.deserialize(
-        base58.serialize(response.data)
+        base58.serialize(response.data),
       );
 
       try {
         const signedTransaction = await wallet.signTransaction(
-          toWeb3JsTransaction(transaction)
+          toWeb3JsTransaction(transaction),
         );
         await connection.sendRawTransaction(signedTransaction.serialize());
         renderNotification({
           title: `Activated your ${app.title} account`,
           description: `Wallet ${shortenAddress(
-            publicKey(wallet.publicKey)
+            publicKey(wallet.publicKey),
           )} linked`,
         });
       } catch {
@@ -74,7 +74,7 @@ export const ActivateModal: React.FC<ActivateModalProps> = (props) => {
         <MediaObject
           size="xl"
           title={`Activate your ${app.title} account`}
-          description={`Once your account is activated, you can transfer & burn your assets`}
+          description="Once your account is activated, you can transfer & burn your assets"
           media={{ src: app.src }}
         />
 

@@ -29,9 +29,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       help,
       ...inputProps
     },
-    ref
+    ref,
   ) => {
-    console.log(inputProps);
     const [currentLength, setCurrentLength] = useState(0);
     const paddingClassName = sizeToPaddingClassName[size];
     const fontSizeClassName = sizeToFontSizeClassName[size];
@@ -39,13 +38,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputClassName = clsx(
       "focus:outline-none w-full placeholder-dark-accent bg-transparent",
       paddingClassName,
-      className
+      className,
     );
 
     const containerClassName = clsx(
       "flex items-center rounded-md overflow-hidden text-light transition-colors border",
       "bg-dark-light border-dark-accent focus-within:border-lightPurple-400",
-      fontSizeClassName
+      fontSizeClassName,
     );
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,10 +79,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <Error error={error} className="mt-0.5" />
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";
-
 
 export { Input };

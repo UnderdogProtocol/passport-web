@@ -1,7 +1,7 @@
 import { Container } from "@/components/Container";
-import { CreateDomainForm } from "./CreateDomainForm";
 import { MediaObject } from "@/components/MediaObject";
 import { Button } from "@/components/Button";
+import { CreateDomainForm } from "./CreateDomainForm";
 
 export const CreateDomainView: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ export const CreateDomainView: React.FC = () => {
       <div className="space-y-2">
         <MediaObject
           title="Create Passport Domain"
-          description={`For a limited time, we are offering early partners the opportunity for lifetime ownership over a Passport Domain (normally 10 USDC / month). By owning a Passport Domain, you can activate Passports within your domain in your own application.`}
+          description="For a limited time, we are offering early partners the opportunity for lifetime ownership over a Passport Domain (normally 10 USDC / month). By owning a Passport Domain, you can activate Passports within your domain in your own application."
           size="2xl"
         />
 

@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { MediaObject } from "@/components/MediaObject";
 import { SessionPopoverPanel } from "./SessionPopoverPanel";
 
-export const SessionPopover = () => {
+export function SessionPopover() {
   const session = useSession();
 
   const user = useMemo(() => session?.data?.user, [session]);
@@ -26,4 +26,4 @@ export const SessionPopover = () => {
       <SessionPopoverPanel className="absolute right-0 mt-2 w-64" />
     </Popover>
   );
-};
+}

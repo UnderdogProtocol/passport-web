@@ -24,25 +24,28 @@ export const AppView: React.FC = () => {
       />
 
       <div className="grid grid-cols-3 sm:grid-cols-5 gap-1">
-        {data?.items.filter((item) => !item.burnt).map((item) => (
-          <Link
-            href={`/${namespace}/${item.id}`}
-            className="relative pb-[100%] rounded-md overflow-hidden hover:opacity-50"
-            key={item.id}
-          >
-            <img
-              className="absolute h-full w-full object-cover"
-              src={
-                item.content
-                  ? item.content.json_uri.replace("jsondata", "imgdata")
-                  : "https://updg8.com/imgdata/8QfUaoNPNwjEAKHkXvBUrjQaqiRf7MmpRWUHuQdMZyXj"
-              }
-            />
-            {item.ownership.delegated && (
-              <HiLockClosed className="absolute bottom-0 right-0 text-light m-2 h-5 w-5" />
-            )}
-          </Link>
-        ))}
+        {data?.items
+          .filter((item) => !item.burnt)
+          .map((item) => (
+            <Link
+              href={`/${namespace}/${item.id}`}
+              className="relative pb-[100%] rounded-md overflow-hidden hover:opacity-50"
+              key={item.id}
+            >
+              <img
+                className="absolute h-full w-full object-cover"
+                src={
+                  item.content
+                    ? item.content.json_uri.replace("jsondata", "imgdata")
+                    : "https://updg8.com/imgdata/8QfUaoNPNwjEAKHkXvBUrjQaqiRf7MmpRWUHuQdMZyXj"
+                }
+                alt="img"
+              />
+              {item.ownership.delegated && (
+                <HiLockClosed className="absolute bottom-0 right-0 text-light m-2 h-5 w-5" />
+              )}
+            </Link>
+          ))}
       </div>
     </Container>
   );
