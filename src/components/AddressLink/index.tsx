@@ -1,10 +1,10 @@
-import { renderNotification } from "../Notification";
 import { PublicKey } from "@metaplex-foundation/umi";
-import { Tooltip } from "../Tooltip";
 import { UNDERDOG_PROTOCOL_LOGOS_URL } from "@/lib/constants";
 import { sizeToDimensionsClassName } from "@/lib/tailwind";
 import { shortenAddress, viewAccountOnXray, viewAssetOnXray } from "@/lib";
 import clsx from "clsx";
+import { Tooltip } from "../Tooltip";
+import { renderNotification } from "../Notification";
 
 type AddressLinkProps = {
   address: PublicKey;
@@ -58,7 +58,7 @@ export function AddressLink({
           >
             <img
               src={`${UNDERDOG_PROTOCOL_LOGOS_URL}/xray/icon.jpeg`}
-              className={sizeToDimensionsClassName["xs"]}
+              className={sizeToDimensionsClassName.xs}
               alt="xray"
             />
           </button>

@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import { Spin } from "../Spin";
 import { TailwindSize } from "@/lib/tailwind";
+import { Spin } from "../Spin";
 
 type LoadingSectionProps = {
   className?: string;

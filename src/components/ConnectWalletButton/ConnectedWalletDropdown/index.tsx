@@ -2,10 +2,10 @@ import { Menu } from "@headlessui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletIcon } from "@solana/wallet-adapter-react-ui";
 
-import { Button, ButtonProps } from "../../Button";
 import { shortenAddress } from "@/lib";
 import clsx from "clsx";
 import { publicKey } from "@metaplex-foundation/umi";
+import { Button, ButtonProps } from "../../Button";
 
 export function ConnectedWalletDropdown({ type, size, ...props }: ButtonProps) {
   const { publicKey: web3PublicKey, wallet, disconnect } = useWallet();
@@ -26,7 +26,7 @@ export function ConnectedWalletDropdown({ type, size, ...props }: ButtonProps) {
               <button
                 className={clsx(
                   active && "hover:bg-dark",
-                  "text-light group flex w-full items-center rounded-md px-2 py-2 text-sm"
+                  "text-light group flex w-full items-center rounded-md px-2 py-2 text-sm",
                 )}
                 onClick={disconnect}
               >

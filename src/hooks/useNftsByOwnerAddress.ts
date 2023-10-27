@@ -17,6 +17,6 @@ export const useNftsByOwnerAddress = (ownerAddress?: PublicKey, page = 1) => {
   return useQuery(
     ["nftsByOwnerAddress", ownerAddress, page],
     () => fetchNftsByOwnerAddress(ownerAddress, page),
-    { enabled: !!ownerAddress }
+    { enabled: !!ownerAddress },
   );
 };

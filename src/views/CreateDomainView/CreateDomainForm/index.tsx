@@ -9,10 +9,10 @@ import {
 } from "@/lib/sphere/constants";
 import { SphereProvider } from "@spherelabs/react";
 import { useForm } from "react-hook-form";
-import { CheckoutWithSphereButton } from "./CheckoutWithSphereButton";
 import { useEffect, useState } from "react";
 import { useToggle } from "@/hooks/useToggle";
 import { HiCheckCircle } from "react-icons/hi2";
+import { CheckoutWithSphereButton } from "./CheckoutWithSphereButton";
 
 export type CreateDomainFormFields = {
   namespace: string;
@@ -42,13 +42,13 @@ export const CreateDomainForm: React.FC = () => {
       setPaymentLinkId(
         code === DOMAIN_PARTNER_CODE_SOL
           ? paymentLinks.domain.partner.sol
-          : paymentLinks.domain.sol
+          : paymentLinks.domain.sol,
       );
     } else {
       setPaymentLinkId(
         code === DOMAIN_PARTNER_CODE_USDC
           ? paymentLinks.domain.partner.usdc
-          : paymentLinks.domain.usdc
+          : paymentLinks.domain.usdc,
       );
     }
   }, [payWith, code]);
@@ -66,7 +66,7 @@ export const CreateDomainForm: React.FC = () => {
             type="secondary"
             onClick={() => {
               window.open(
-                "https://explorer.solana.com/address/upUcvW7nF6ymrAFKborbq3vrbdpuokAvJheqHX5Qxtd?cluster=mainnet-beta"
+                "https://explorer.solana.com/address/upUcvW7nF6ymrAFKborbq3vrbdpuokAvJheqHX5Qxtd?cluster=mainnet-beta",
               );
             }}
           >

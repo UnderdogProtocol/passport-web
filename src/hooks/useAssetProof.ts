@@ -15,6 +15,6 @@ export const useAssetProof = (mintAddress?: PublicKey) => {
     {
       enabled: !!mintAddress,
       retry: false,
-    }
+    },
   );
 };

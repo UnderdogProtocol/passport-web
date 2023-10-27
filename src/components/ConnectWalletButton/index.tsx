@@ -6,7 +6,11 @@ import { ConnectedWalletDropdown } from "./ConnectedWalletDropdown";
 
 type ConnectWalletButtonProps = ButtonProps;
 
-export function ConnectWalletButton({ size, type, ...buttonProps }: ConnectWalletButtonProps) {
+export function ConnectWalletButton({
+  size,
+  type,
+  ...buttonProps
+}: ConnectWalletButtonProps) {
   const { wallet, connect, publicKey } = useWallet();
   const { setVisible } = useWalletModal();
 

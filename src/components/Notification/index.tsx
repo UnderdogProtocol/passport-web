@@ -2,9 +2,9 @@ import { Fragment, ReactNode } from "react";
 import toast, { Toast, ToastOptions } from "react-hot-toast";
 import { HiX } from "react-icons/hi";
 
+import clsx from "clsx";
 import { Transition } from "../Transition";
 import { Header, HeaderProps } from "../MediaObject/Header";
-import clsx from "clsx";
 import { Button } from "../Button";
 
 export type NotificationProps = HeaderProps & {
@@ -15,7 +15,7 @@ export type NotificationProps = HeaderProps & {
 
 export const renderNotification = (
   notificationProps: Omit<NotificationProps, "t">,
-  options?: ToastOptions
+  options?: ToastOptions,
 ) => {
   toast.custom((t) => <Notification t={t} {...notificationProps} />, options);
 };
@@ -24,7 +24,7 @@ export function BaseNotification(notificationProps: NotificationProps) {
   const { t, children } = notificationProps;
   const notificationClassName = clsx(
     "max-w-md w-full bg-dark-light rounded-lg pointer-events-auto flex",
-    "items-center z-60 border border-dark-accent space-x-2"
+    "items-center z-60 border border-dark-accent space-x-2",
   );
 
   return (

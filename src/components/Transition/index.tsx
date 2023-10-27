@@ -1,4 +1,7 @@
-import { Transition as HeadlessTransition, TransitionClasses } from "@headlessui/react";
+import {
+  Transition as HeadlessTransition,
+  TransitionClasses,
+} from "@headlessui/react";
 import { ReactNode } from "react";
 
 type TransitionType = "slideDown" | "scaleUp" | "fadeIn";
@@ -35,9 +38,20 @@ const transitionProps: Record<TransitionType, TransitionClasses> = {
   },
 };
 
-export function Transition({ type, children, as, show, appear }: TransitionProps) {
+export function Transition({
+  type,
+  children,
+  as,
+  show,
+  appear,
+}: TransitionProps) {
   return (
-    <HeadlessTransition {...transitionProps[type]} as={as} show={show} appear={appear}>
+    <HeadlessTransition
+      {...transitionProps[type]}
+      as={as}
+      show={show}
+      appear={appear}
+    >
       {children}
     </HeadlessTransition>
   );

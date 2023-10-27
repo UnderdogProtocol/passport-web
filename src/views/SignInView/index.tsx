@@ -4,7 +4,6 @@ import { apps } from "@/lib/constants";
 import { signIn } from "next-auth/react";
 
 export const SignInView: React.FC = () => {
-
   const imagesToShow = [
     "liquidprop",
     "solarplex",
@@ -12,33 +11,48 @@ export const SignInView: React.FC = () => {
     "superteam",
     "etherfuse",
     "urfeed",
-    "intotheverse"
-  ]
+    "intotheverse",
+  ];
 
   return (
-
-    <Container size="2xl" className="py-8 h-screen flex flex-col items-center justify-center">
+    <Container
+      size="2xl"
+      className="py-8 h-screen flex flex-col items-center justify-center"
+    >
       <div className="p-4 space-y-4 bg-dark-light rounded-lg w-full">
         <img src={apps.underdog.src} alt="logo" className="w-32 h-32 mx-auto" />
 
         <div className="text-center">
           <p className="text-2xl text-white">
-            Collect free digital art from top brands with just your email address
+            Collect free digital art from top brands with just your email
+            address
           </p>
         </div>
 
         <div className="flex flex-col items-center">
           <button
             onClick={() => signIn("google", { callbackUrl: "/" })}
-            className="px-4 py-2 border flex items-center space-x-2 bg-white rounded-lg text-black">
-            <img className="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />
+            className="px-4 py-2 border flex items-center space-x-2 bg-white rounded-lg text-black"
+          >
+            <img
+              className="w-6 h-6"
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              loading="lazy"
+              alt="google logo"
+            />
             <span>Sign in with Google</span>
           </button>
 
           <button
             onClick={() => signIn("twitter", { callbackUrl: "/" })}
-            className="px-4 py-2 border flex items-center space-x-2 bg-white rounded-lg text-black mt-4">
-            <img className="w-6 h-6" src="https://storage.googleapis.com/underdog-protocol/logos/x/icon.png" loading="lazy" alt="twitter logo" />
+            className="px-4 py-2 border flex items-center space-x-2 bg-white rounded-lg text-black mt-4"
+          >
+            <img
+              className="w-6 h-6"
+              src="https://storage.googleapis.com/underdog-protocol/logos/x/icon.png"
+              loading="lazy"
+              alt="twitter logo"
+            />
             <span>Sign in with Twitter/X</span>
           </button>
         </div>
@@ -47,14 +61,17 @@ export const SignInView: React.FC = () => {
           {Object.entries(apps).map(([namespace, { title, src }]) => {
             if (imagesToShow.includes(namespace))
               return (
-                <img key={namespace} src={src} alt={title} className="w-12 h-12" />
+                <img
+                  key={namespace}
+                  src={src}
+                  alt={title}
+                  className="w-12 h-12"
+                />
               );
           })}
         </div>
       </div>
     </Container>
-
-
 
     // <Container
     //   size="2xl"
@@ -72,7 +89,6 @@ export const SignInView: React.FC = () => {
     //         <p className="text-2xl text-white text-center">Collect free digital art from top brands with just your email address</p>
     //       </div>
     //       <div className="text-right">
-
 
     //         <button
     //           onClick={() => signIn("google", { callbackUrl: "/" })}

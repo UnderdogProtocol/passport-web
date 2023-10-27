@@ -12,7 +12,7 @@ import { formatTimestamp } from "@/lib/utils";
 function MailListView() {
   const [page, setPage] = useState(1);
   const { data, loading, error } = useMailApi(
-    `/api/mail?page=${page}&limit=50`
+    `/api/mail?page=${page}&limit=50`,
   );
   console.log(data);
 
@@ -30,35 +30,45 @@ function MailListView() {
 
   if (!items || items.length === 0) {
     return (
-        <div className="h-max-96 overflow-y-auto">
-            {items.map((item: any, index: number) => (
-                <a key={index} href={`/mail/${item.id}`} target="_blank">
-                <div key={index} className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700">
-                    <MediaObject
-                        title={item.content.metadata.name}
-                        description={item.content.metadata.description}
-                        className="text-gray-200 truncate"
-                    />
-                    <div className="flex justify-end items-end">
-                        <div className="text-gray-500">
-                        {`${formatTimestamp(item!.content!.metadata!.attributes![1].value)}`}
-                        </div>
-                    </div>
+      <div className="h-max-96 overflow-y-auto">
+        {items.map((item: any, index: number) => (
+          <a
+            key={index}
+            href={`/mail/${item.id}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div
+              key={index}
+              className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700"
+            >
+              <MediaObject
+                title={item.content.metadata.name}
+                description={item.content.metadata.description}
+                className="text-gray-200 truncate"
+              />
+              <div className="flex justify-end items-end">
+                <div className="text-gray-500">
+                  {`${formatTimestamp(
+                    item!.content!.metadata!.attributes![1].value,
+                  )}`}
                 </div>
-                </a>
+              </div>
+            </div>
+          </a>
 
-                // <a key={index} href={`/mail/${item.id}`} target="_blank">
-                //     <div
-                //         className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700"
-                //     >
-                //         <MediaObject
-                //             title={item.content.metadata.name}
-                //             description={item.content.metadata.description}
-                //             className="text-gray-200 truncate"
-                //         />
-                //     </div>
-                // </a>
-            ))}
+          // <a key={index} href={`/mail/${item.id}`} target="_blank">
+          //     <div
+          //         className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700"
+          //     >
+          //         <MediaObject
+          //             title={item.content.metadata.name}
+          //             description={item.content.metadata.description}
+          //             className="text-gray-200 truncate"
+          //         />
+          //     </div>
+          // </a>
+        ))}
 
         {/* Prev, Next Buttons */}
         <div className="flex items-end justify-end mt-4">
@@ -87,7 +97,12 @@ function MailListView() {
   return (
     <div className="h-max-96 overflow-y-auto">
       {items.map((item: any, index: number) => (
-        <a key={index} href={`/mail/${item.id}`} target="_blank">
+        <a
+          key={index}
+          href={`/mail/${item.id}`}
+          target="_blank"
+          rel="noreferrer"
+        >
           <div className="border-b border-dark-accent p-2 text-white cursor-pointer hover:bg-gray-700">
             <MediaObject
               title={item.content.metadata.name}
