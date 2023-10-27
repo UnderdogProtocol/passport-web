@@ -2,6 +2,7 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { apps } from "@/lib/constants";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 export const SignInView: React.FC = () => {
   const imagesToShow = [
@@ -20,7 +21,11 @@ export const SignInView: React.FC = () => {
       className="py-8 h-screen flex flex-col items-center justify-center"
     >
       <div className="p-4 space-y-4 bg-dark-light rounded-lg w-full">
-        <img src={apps.underdog.src} alt="logo" className="w-32 h-32 mx-auto" />
+        <Image
+          src={apps.underdog.src}
+          alt="logo"
+          className="w-32 h-32 mx-auto"
+        />
 
         <div className="text-center">
           <p className="text-2xl text-white">
@@ -31,10 +36,11 @@ export const SignInView: React.FC = () => {
 
         <div className="flex flex-col items-center">
           <button
+            type="button"
             onClick={() => signIn("google", { callbackUrl: "/" })}
             className="px-4 py-2 border flex items-center space-x-2 bg-white rounded-lg text-black"
           >
-            <img
+            <Image
               className="w-6 h-6"
               src="https://www.svgrepo.com/show/475656/google-color.svg"
               loading="lazy"
@@ -44,10 +50,11 @@ export const SignInView: React.FC = () => {
           </button>
 
           <button
+            type="button"
             onClick={() => signIn("twitter", { callbackUrl: "/" })}
             className="px-4 py-2 border flex items-center space-x-2 bg-white rounded-lg text-black mt-4"
           >
-            <img
+            <Image
               className="w-6 h-6"
               src="https://storage.googleapis.com/underdog-protocol/logos/x/icon.png"
               loading="lazy"
@@ -61,7 +68,7 @@ export const SignInView: React.FC = () => {
           {Object.entries(apps).map(([namespace, { title, src }]) => {
             if (imagesToShow.includes(namespace))
               return (
-                <img
+                <Image
                   key={namespace}
                   src={src}
                   alt={title}

@@ -52,7 +52,7 @@ export const MailView: React.FC = () => {
       );
     }
 
-    if (mintAddresses.length == 0) {
+    if (mintAddresses.length === 0) {
       renderNotification({
         title: "No recipients found",
         description: "Please enter the recipients address",

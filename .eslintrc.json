@@ -10,10 +10,7 @@
     "prettier"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json",
-    "ecmaFeatures": {
-      "arrowFunctions": true
-    }
+    "project": "./tsconfig.json"
   },
   "rules": {
     "quotes": [
@@ -23,13 +20,27 @@
         "avoidEscape": true
       }
     ],
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "error"
-    ],
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
     "import/no-unresolved": "error",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": [
+      "off",
+      {
+        "namedComponents": [
+          "function-declaration",
+          "function-expression"
+        ],
+        "unnamedComponents": "function-expression"
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "no-new": "off",
+    "no-continue": "off",
+    "no-shadow": "off",
+    "consistent-return": "off",
+    "array-callback-return": "warn"
   }
 }
