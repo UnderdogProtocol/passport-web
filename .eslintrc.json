@@ -2,16 +2,21 @@
   "extends": [
     "next/core-web-vitals",
     "airbnb",
-    "airbnb-typescript"
+    "airbnb-typescript",
+    "plugin:prettier/recommended"
   ],
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "prettier"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "ecmaFeatures": {
+      "arrowFunctions": true
+    }
   },
-  "rules":{
-    "quotes":[
+  "rules": {
+    "quotes": [
       "error",
       "double",
       {
@@ -19,7 +24,9 @@
       }
     ],
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error"],
+    "@typescript-eslint/no-unused-vars": [
+      "error"
+    ],
     "import/no-unresolved": "error",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
