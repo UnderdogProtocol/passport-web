@@ -48,6 +48,7 @@ router.post(async (req, res) => {
     },
   } = requestBody;
 
+  // eslint-disable-next-line default-case
   switch (paymentLink.id) {
     case paymentLinks.domain.partner.sol:
     case paymentLinks.domain.partner.usdc:
@@ -62,9 +63,9 @@ router.post(async (req, res) => {
       } catch {
         return res.status(httpStatus.BAD_REQUEST).json({ message: "Not OK" });
       }
-    default:
-      // TODO: Add a default case here
-      console.log("default case");
+    // default:
+    //   // TODO: Add a default case here
+    //   console.log("default case");
   }
 
   // Allow only specific payment link

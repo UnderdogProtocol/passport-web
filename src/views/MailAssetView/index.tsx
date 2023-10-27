@@ -219,17 +219,23 @@ export function MailAssetView() {
       {subAssetsData &&
         subAssetsData.items.length > 0 &&
         Object.entries(subAssetsData.items).map(([key, value]) => {
-          const timestamp =
-            value!.content!.metadata.attributes![1].trait_type === "sentAt"
-              ? value.content!.metadata!.attributes![1].value
-              : new Date().toISOString();
-          return (
-            <MailBody
-              description={value?.content?.metadata.description!}
-              timestamp={`${formatTimestamp(timestamp)}`}
-              isReply
-            />
-          );
+          /* There are too many variables in here to check and attributes is dynamic so type checking it is difficult. Wrapping in try catch seems the best to do. */
+          try {
+            const timestamp =
+              value!.content!.metadata.attributes![1].trait_type === "sentAt"
+                ? value.content!.metadata!.attributes![1].value
+                : new Date().toISOString();
+            return (
+              <MailBody
+                description={value?.content?.metadata.description!}
+                timestamp={`${formatTimestamp(timestamp)}`}
+                isReply
+              />
+            );
+          } catch (e) {
+            console.log(e);
+            return <div />;
+          }
         })}
 
       {/* Reply Input */}
