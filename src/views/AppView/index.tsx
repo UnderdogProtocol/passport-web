@@ -39,6 +39,7 @@ export const AppView: React.FC = () => {
                     ? item.content.json_uri.replace("jsondata", "imgdata")
                     : "https://updg8.com/imgdata/8QfUaoNPNwjEAKHkXvBUrjQaqiRf7MmpRWUHuQdMZyXj"
                 }
+                alt="img"
               />
               {item.ownership.delegated && (
                 <HiLockClosed className="absolute bottom-0 right-0 text-light m-2 h-5 w-5" />

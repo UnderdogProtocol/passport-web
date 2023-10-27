@@ -58,7 +58,7 @@ export const IndexView: React.FC = () => {
         {Object.entries(apps).map(([namespace, { title, src }]) => (
           <Link href={namespace} key={title}>
             <div className="bg-dark-light p-4 rounded-lg">
-              <img src={src} className="p-4" />
+              <img alt="indexAlt" src={src} className="p-4" />
               <Header title={title} size="xl" />
             </div>
           </Link>

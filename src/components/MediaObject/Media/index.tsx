@@ -36,5 +36,5 @@ export const Media: React.FC<MediaProps> = ({
     return icon;
   }
 
-  return <></>;
+  return <div />;
 };

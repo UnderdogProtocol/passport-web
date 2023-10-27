@@ -13,13 +13,6 @@ export type NotificationProps = HeaderProps & {
   children?: ReactNode;
 };
 
-export const renderNotification = (
-  notificationProps: Omit<NotificationProps, "t">,
-  options?: ToastOptions,
-) => {
-  toast.custom((t) => <Notification t={t} {...notificationProps} />, options);
-};
-
 export function BaseNotification(notificationProps: NotificationProps) {
   const { t, children } = notificationProps;
   const notificationClassName = clsx(
@@ -50,3 +43,10 @@ export function Notification(notificationProps: NotificationProps) {
     </BaseNotification>
   );
 }
+
+export const renderNotification = (
+  notificationProps: Omit<NotificationProps, "t">,
+  options?: ToastOptions,
+) => {
+  toast.custom((t) => <Notification t={t} {...notificationProps} />, options);
+};

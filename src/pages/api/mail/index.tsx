@@ -26,8 +26,8 @@ router.get(async (req, res) => {
       identifier: session.user!.email!,
     }),
     grouping: ["collection", process.env.MAIL_UNDERDOG_PROJECT_MINT] as any,
-    page: Number.parseInt(page.toString()),
-    limit: Number.parseInt(limit.toString()),
+    page: Number.parseInt(page.toString(), 10),
+    limit: Number.parseInt(limit.toString(), 10),
     sortBy: {
       sortBy: AssetSortBy.Created,
       sortDirection: AssetSortDirection.Desc,

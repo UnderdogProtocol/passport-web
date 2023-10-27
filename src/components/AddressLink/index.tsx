@@ -3,6 +3,7 @@ import { UNDERDOG_PROTOCOL_LOGOS_URL } from "@/lib/constants";
 import { sizeToDimensionsClassName } from "@/lib/tailwind";
 import { shortenAddress, viewAccountOnXray, viewAssetOnXray } from "@/lib";
 import clsx from "clsx";
+import Image from "next/image";
 import { Tooltip } from "../Tooltip";
 import { renderNotification } from "../Notification";
 
@@ -51,12 +52,13 @@ export function AddressLink({
       {showXray && (
         <Tooltip text="Open in XRAY">
           <button
+            type="button"
             onClick={() =>
               asset ? viewAssetOnXray(address) : viewAccountOnXray(address)
             }
             className="flex-shrink-0"
           >
-            <img
+            <Image
               src={`${UNDERDOG_PROTOCOL_LOGOS_URL}/xray/icon.jpeg`}
               className={sizeToDimensionsClassName.xs}
               alt="xray"
@@ -66,7 +68,7 @@ export function AddressLink({
       )}
 
       <Tooltip text="Copy to Clipboard">
-        <button onClick={handleCopyToClipboard}>
+        <button type="button" onClick={handleCopyToClipboard}>
           {shortenAddress(address)}
         </button>
       </Tooltip>
