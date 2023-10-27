@@ -21,7 +21,7 @@ export interface TextAreaProps
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
     { size = "md", error, className, maxLength, label, help, ...textAreaProps },
-    ref
+    ref,
   ) => {
     const [currentLength, setCurrentLength] = useState(0);
     const paddingClassName = sizeToPaddingClassName[size];
@@ -30,17 +30,17 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     const textAreaClassName = clsx(
       "focus:outline-none w-full placeholder-dark-accent bg-transparent",
       paddingClassName,
-      className
+      className,
     );
 
     const containerClassName = clsx(
       "flex items-center rounded-md overflow-hidden text-light transition-colors border",
       "bg-dark-light border-dark-accent focus-within:border-lightPurple-400",
-      fontSizeClassName
+      fontSizeClassName,
     );
 
     const handleTextAreaChange = (
-      e: React.ChangeEvent<HTMLTextAreaElement>
+      e: React.ChangeEvent<HTMLTextAreaElement>,
     ) => {
       setCurrentLength(e.target.value.length);
       if (textAreaProps.onChange) textAreaProps.onChange(e);
@@ -71,7 +71,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         <Error error={error} className="mt-2" />
       </div>
     );
-  }
+  },
 );
 
 TextArea.displayName = "TextArea"; // Add this line

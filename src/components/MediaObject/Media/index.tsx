@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
-import { Avatar } from "../../Avatar";
 import { TailwindSize, sizeToDimensionsClassName } from "@/lib/tailwind";
+import { Avatar } from "../../Avatar";
 
 export type MediaProps = {
   size?: TailwindSize;
@@ -21,7 +21,7 @@ export const Media: React.FC<MediaProps> = ({
   const mediaClassName = clsx(
     "flex-shrink-0",
     sizeToDimensionsClassName[size],
-    className
+    className,
   );
 
   if (src) {
@@ -36,5 +36,5 @@ export const Media: React.FC<MediaProps> = ({
     return icon;
   }
 
-  return <></>;
+  return <div />;
 };

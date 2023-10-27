@@ -30,7 +30,7 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
       router.query.mintAddress
         ? publicKey(router.query.mintAddress as string)
         : undefined,
-    [router.query.mintAddress]
+    [router.query.mintAddress],
   );
 
   const { data: assetData } = useAsset(mintAddress);
@@ -75,7 +75,7 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
           isSigner: false,
           isWritable: false,
         }));
-      
+
       const transaction = toWeb3JsTransaction(
         await transferAssetV0(context, {
           authority: createNoopSigner(linkedAddress),
@@ -90,7 +90,7 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
         })
           .addRemainingAccounts(proof)
           .setFeePayer(createNoopSigner(linkedAddress))
-          .buildWithLatestBlockhash(context)
+          .buildWithLatestBlockhash(context),
       );
 
       try {
@@ -119,7 +119,7 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
           description={
             account?.address &&
             `Connect the wallet you activated your account with (${shortenAddress(
-              account?.address
+              account?.address,
             )})`
           }
           media={{

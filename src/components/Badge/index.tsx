@@ -1,4 +1,8 @@
-import { TailwindSize, sizeToFontSizeClassName, sizeToPaddingClassName } from "@/lib/tailwind";
+import {
+  TailwindSize,
+  sizeToFontSizeClassName,
+  sizeToPaddingClassName,
+} from "@/lib/tailwind";
 import clsx from "clsx";
 import { ReactNode } from "react";
 
@@ -18,13 +22,18 @@ export type BadgeProps = {
   type?: BadgeType;
 };
 
-export function Badge({ className, children, size = "md", type = "default" }: BadgeProps) {
+export function Badge({
+  className,
+  children,
+  size = "md",
+  type = "default",
+}: BadgeProps) {
   const badgeClassName = clsx(
     sizeToPaddingClassName[size],
     sizeToFontSizeClassName[size],
     styles[type],
     "inline-flex items-center rounded-t rounded-br",
-    className
+    className,
   );
 
   return <div className={badgeClassName}>{children}</div>;

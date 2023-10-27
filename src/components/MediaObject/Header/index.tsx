@@ -43,8 +43,12 @@ export const Header: React.FC<HeaderProps> = ({
   const { title: titleSizeClassName } = sizeClassName[titleSize || size];
   const titleClassName = clsx(titleSizeClassName, "font-medium text-light");
 
-  const { description: descriptionSizeClassName } = sizeClassName[descriptionSize || size];
-  const descriptionClassName = clsx(descriptionSizeClassName, "text-light-accent");
+  const { description: descriptionSizeClassName } =
+    sizeClassName[descriptionSize || size];
+  const descriptionClassName = clsx(
+    descriptionSizeClassName,
+    "text-light-accent",
+  );
 
   return (
     <div className="flex w-full items-center justify-between">

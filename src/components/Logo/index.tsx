@@ -14,7 +14,7 @@ const UNDERDOG_PROTOCOL_LOGOS_URL =
 export function Logo({ className, size = "md", dark, full }: LogoProps) {
   const logoClassName = clsx(
     full ? "" : sizeToDimensionsClassName[size],
-    className
+    className,
   );
 
   return (

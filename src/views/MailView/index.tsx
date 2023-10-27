@@ -4,13 +4,18 @@ import { Container } from "@/components/Container";
 import { Input } from "@/components/Input";
 import { TextArea } from "@/components/TextArea";
 import { Button } from "@/components/Button";
-import { FieldErrors, useForm, useFieldArray, SubmitHandler } from "react-hook-form";
+import {
+  FieldErrors,
+  useForm,
+  useFieldArray,
+  SubmitHandler,
+} from "react-hook-form";
 import { useSphere } from "@spherelabs/react";
 import { ConnectWalletButton } from "@/components/ConnectWalletButton";
 import { PublicKey } from "@solana/web3.js";
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { SendMailFormSchema } from '@/lib/schema'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { SendMailFormSchema } from "@/lib/schema";
 import { useUserContext } from "@/contexts/user";
 import { getPassportAddress } from "@underdog-protocol/passport";
 import axios from "axios";
@@ -19,11 +24,9 @@ import { useState } from "react";
 import { Spin } from "@/components/Spin";
 import { renderNotification } from "@/components/Notification";
 
-
 type FormValues = z.infer<typeof SendMailFormSchema>;
 
 export const MailView: React.FC = () => {
-
   const form = useForm<FormValues>({
     resolver: zodResolver(SendMailFormSchema),
   });
@@ -33,7 +36,7 @@ export const MailView: React.FC = () => {
 
   const { address: userPassportAddress } = useUserContext();
 
-  const mintAddresses: string[] = []
+  const mintAddresses: string[] = [];
 
   const { payPaymentLink } = useSphere();
 
@@ -44,14 +47,16 @@ export const MailView: React.FC = () => {
     const { subject, content, recipients } = data;
 
     if (recipients && recipients.split(",").length > 0) {
-      mintAddresses.push(...recipients.split(",").filter((item) => item.trim().length > 0))
+      mintAddresses.push(
+        ...recipients.split(",").filter((item) => item.trim().length > 0),
+      );
     }
 
-    if (mintAddresses.length == 0) {
+    if (mintAddresses.length === 0) {
       renderNotification({
         title: "No recipients found",
-        description: `Please enter the recipients address`,
-      })
+        description: "Please enter the recipients address",
+      });
       setLoading(false);
       return;
     }
@@ -59,8 +64,8 @@ export const MailView: React.FC = () => {
     if (mintAddresses.length > 1000) {
       renderNotification({
         title: "Max 1000 recipients allowed",
-        description: `Please reduce the number of recipients`,
-      })
+        description: "Please reduce the number of recipients",
+      });
       setLoading(false);
       return;
     }
@@ -69,52 +74,61 @@ export const MailView: React.FC = () => {
 
     for (let i = 0; i < mintAddresses.length; i++) {
       try {
-
         // If email address, convert to passport address
-        if (z.string().email().safeParse(mintAddresses[i].trim().toLowerCase()).success) {
-
-          const passportAddress = getPassportAddress({ namespace: "mail", identifier: mintAddresses[i].trim().toLowerCase() })
+        if (
+          z.string().email().safeParse(mintAddresses[i].trim().toLowerCase())
+            .success
+        ) {
+          const passportAddress = getPassportAddress({
+            namespace: "mail",
+            identifier: mintAddresses[i].trim().toLowerCase(),
+          });
 
           mintAddresses[i] = passportAddress;
 
-          continue
+          continue;
         }
 
         // Clean up the address
-        const addressValue = mintAddresses[i].trim().replace(/(\r\n|\n|\r)/gm, "");
+        const addressValue = mintAddresses[i]
+          .trim()
+          .replace(/(\r\n|\n|\r)/gm, "");
 
         // Check if address is valid
         new PublicKey(addressValue);
 
         // Replace the address with the cleaned up one
         mintAddresses[i] = addressValue;
-
       } catch (e) {
         renderNotification({
           title: "Invalid Address",
           description: `Value ${mintAddresses[i]} is not a valid Solana/Email address`,
-        })
+        });
         setLoading(false);
         return;
       }
     }
 
-    const result = await axios.post('/api/gcp/upload', {
-      recipients: mintAddresses.join(',')
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const result = await axios.post(
+      "/api/gcp/upload",
+      {
+        recipients: mintAddresses.join(","),
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
     if (result.status !== httpStatus.OK) {
       console.log(result.data);
       setLoading(false);
       renderNotification({
         title: "Something went wrong",
-        description: `Please try again`,
-      })
-      return
+        description: "Please try again",
+      });
+      return;
     }
 
     const response = result.data;
@@ -128,36 +142,34 @@ export const MailView: React.FC = () => {
           {
             lineItemId: `${process.env.NEXT_PUBLIC_SPHERE_LINE_ITEM}`,
             quantity: mintAddresses.length,
-          }
+          },
         ],
         metadata: {
-          subject: subject,
-          content: content,
+          subject,
+          content,
           csvFileName: response.data[0].fileName,
           passportAddress: userPassportAddress,
           sentAt: new Date().toISOString(),
-        }
-      })
+        },
+      });
 
       console.log(res);
 
       if (res) {
         renderNotification({
           title: "Mail sent successfully",
-        })
+        });
         form.reset();
         setLoading(false);
       }
-
     } catch (e: any) {
       console.log(e);
       setLoading(false);
       renderNotification({
         title: "Error",
         description: `${e.message}`,
-      })
+      });
     }
-
   };
 
   const onError = (errors: FieldErrors<FormValues>) => {
@@ -166,29 +178,28 @@ export const MailView: React.FC = () => {
   };
 
   const csvValidation = () => {
-    var fileInput = document.getElementById('csvFile') as HTMLInputElement;
+    const fileInput = document.getElementById("csvFile") as HTMLInputElement;
 
-    var filePath = fileInput?.value;
+    const filePath = fileInput?.value;
 
-    var allowedExtensions = /(\.csv)$/i;
+    const allowedExtensions = /(\.csv)$/i;
 
     if (!allowedExtensions.exec(filePath)) {
       renderNotification({
         title: "Only CSV File Allowed",
         description: "Please upload a valid CSV file",
-      })
-      fileInput.value = '';
+      });
+      fileInput.value = "";
       return false;
     }
 
     if (fileInput!.files!.length > 0) {
-      var file = fileInput!.files![0];
-      var reader = new FileReader();
+      const file = fileInput!.files![0];
+      const reader = new FileReader();
       reader.onload = function (event) {
-        var fileContent = event!.target!.result?.toString();
-        mintAddresses.push(...fileContent!.split(","))
+        const fileContent = event!.target!.result?.toString();
+        mintAddresses.push(...fileContent!.split(","));
         console.log(mintAddresses);
-
       };
 
       reader.readAsText(file);
@@ -197,35 +208,52 @@ export const MailView: React.FC = () => {
       renderNotification({
         title: "Invalid CSV File",
         description: "Please upload a valid CSV file",
-      })
+      });
     }
-
   };
 
   return (
     <Container className="space-y-4">
       <ConnectWalletButton type="secondary" className="flex-shrink-0" />
-      <form onSubmit={handleSubmit(formSubmit, onError)} noValidate className="space-y-6">
-        <Input label="Subject" help="Subject of your mail" className="text-light" maxLength={32}
+      <form
+        onSubmit={handleSubmit(formSubmit, onError)}
+        noValidate
+        className="space-y-6"
+      >
+        <Input
+          label="Subject"
+          help="Subject of your mail"
+          className="text-light"
+          maxLength={32}
           {...register("subject", {
             required: { value: true, message: "Subject is required" },
           })}
-          error={errors.subject} placeholder="Underdog is awesome!"
+          error={errors.subject}
+          placeholder="Underdog is awesome!"
         />
 
-
-        <TextArea label="To" help="Receivers of your mail" className="text-light" rows={1}
+        <TextArea
+          label="To"
+          help="Receivers of your mail"
+          className="text-light"
+          rows={1}
           {...register("recipients", {
             required: { value: false, message: "At least 1 receiver required" },
           })}
-          error={errors.recipients} placeholder="tony@underdogprotocol.com, 8u6gpn7exWaTTmn5iFWtFgR1wAVzRJLpeNJBRxXubDgQ"
+          error={errors.recipients}
+          placeholder="tony@underdogprotocol.com, 8u6gpn7exWaTTmn5iFWtFgR1wAVzRJLpeNJBRxXubDgQ"
         />
 
-        <TextArea label="Body" help="Body of your mail" className="text-light" rows={10}
+        <TextArea
+          label="Body"
+          help="Body of your mail"
+          className="text-light"
+          rows={10}
           {...register("content", {
             required: { value: false, message: "Mail body is required" },
           })}
-          error={errors.content} placeholder="Hey, you should try out Passport by Underdog Protocol"
+          error={errors.content}
+          placeholder="Hey, you should try out Passport by Underdog Protocol"
         />
 
         {/* Uncomment this to enable CSV file upload */}
@@ -242,7 +270,6 @@ export const MailView: React.FC = () => {
           }}
         /> */}
 
-
         {loading ? (
           <Spin />
         ) : (
@@ -250,7 +277,6 @@ export const MailView: React.FC = () => {
             Send
           </Button>
         )}
-
       </form>
     </Container>
   );

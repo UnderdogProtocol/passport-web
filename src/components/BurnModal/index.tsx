@@ -30,7 +30,7 @@ export const BurnModal: React.FC<ModalProps> = (props) => {
       router.query.mintAddress
         ? publicKey(router.query.mintAddress as string)
         : undefined,
-    [router.query.mintAddress]
+    [router.query.mintAddress],
   );
 
   const { data: assetData } = useAsset(mintAddress);
@@ -89,7 +89,7 @@ export const BurnModal: React.FC<ModalProps> = (props) => {
         })
           .addRemainingAccounts(proof)
           .setFeePayer(createNoopSigner(linkedAddress))
-          .buildWithLatestBlockhash(context)
+          .buildWithLatestBlockhash(context),
       );
 
       try {
@@ -118,7 +118,7 @@ export const BurnModal: React.FC<ModalProps> = (props) => {
           description={
             account?.address &&
             `Connect the wallet you activated your account with (${shortenAddress(
-              account?.address
+              account?.address,
             )})`
           }
           media={{
@@ -134,7 +134,9 @@ export const BurnModal: React.FC<ModalProps> = (props) => {
             title="Connect Wallet"
             description={
               account?.address &&
-              `You'll need to approve deleting your asset with wallet ${shortenAddress(account?.address)}`
+              `You'll need to approve deleting your asset with wallet ${shortenAddress(
+                account?.address,
+              )}`
             }
           />
           <ConnectWalletButton type="secondary" className="flex-shrink-0" />

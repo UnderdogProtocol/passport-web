@@ -1,13 +1,13 @@
 import crypto from "crypto";
 import { createRouter } from "next-connect";
 import { NextApiRequest, NextApiResponse } from "next";
-import { gcpStorage } from "../../gcp/upload";
 import httpStatus from "http-status";
 import { PaymentMetadataSchema } from "@/lib/schema";
 import axios from "axios";
 import { initializeDomain } from "@/lib/sphere";
 import { paymentLinks } from "@/lib/sphere/constants";
 import { publicKey } from "@metaplex-foundation/umi";
+import { gcpStorage } from "../../gcp/upload";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -17,7 +17,7 @@ router.post(async (req, res) => {
   const requestBody = req.body;
 
   // get the header 'signature' from the request
-  const headerSignature = req.headers["signature"];
+  const headerSignature = req.headers.signature;
 
   if (!headerSignature) {
     return res
@@ -56,12 +56,15 @@ router.post(async (req, res) => {
       try {
         await initializeDomain(
           publicKey(customer.solanaPubKey),
-          meta.namespace
+          meta.namespace,
         );
         return res.status(httpStatus.OK).json({ message: "OK" });
       } catch {
         return res.status(httpStatus.BAD_REQUEST).json({ message: "Not OK" });
       }
+    default:
+      // TODO: Add a default case here
+      console.log("default case");
   }
 
   // Allow only specific payment link
@@ -104,8 +107,8 @@ router.post(async (req, res) => {
         return {
           receiverAddress: address.replace(/(\r\n|\n|\r)/gm, ""),
           attributes: {
-            passportAddress: passportAddress,
-            sentAt: sentAt,
+            passportAddress,
+            sentAt,
           },
         };
       });
@@ -114,11 +117,11 @@ router.post(async (req, res) => {
       `${process.env.UNDERDOG_API_URL}/v2/projects/${process.env.MAIL_PROJECT_ID}/nfts/batch`,
       {
         name: subject,
-        description: description,
+        description,
         image: process.env.MAIL_IMAGE,
         batch: mintAddresses,
       },
-      { headers: { Authorization: `Bearer ${process.env.UNDERDOG_API_KEY}` } }
+      { headers: { Authorization: `Bearer ${process.env.UNDERDOG_API_KEY}` } },
     );
 
     if (result.status !== httpStatus.ACCEPTED) {

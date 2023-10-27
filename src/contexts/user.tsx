@@ -47,7 +47,7 @@ export function UserProvider({ children }: UserProviderProps) {
 
   const namespace = useMemo(
     () => router.query.namespace as string,
-    [router.query.namespace]
+    [router.query.namespace],
   );
 
   const session = useSession();
@@ -56,7 +56,7 @@ export function UserProvider({ children }: UserProviderProps) {
 
   const app = useMemo(
     () => (namespace ? apps[namespace] : undefined),
-    [namespace]
+    [namespace],
   );
 
   const address = useMemo(() => {
