@@ -11,6 +11,13 @@
     "project": "./tsconfig.json"
   },
   "rules":{
+    "quotes":[
+      "error",
+      "double",
+      {
+        "avoidEscape": true
+      }
+    ],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["error"],
     "import/no-unresolved": "error",
