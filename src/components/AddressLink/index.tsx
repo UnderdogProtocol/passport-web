@@ -3,7 +3,6 @@ import { UNDERDOG_PROTOCOL_LOGOS_URL } from "@/lib/constants";
 import { sizeToDimensionsClassName } from "@/lib/tailwind";
 import { shortenAddress, viewAccountOnXray, viewAssetOnXray } from "@/lib";
 import clsx from "clsx";
-import Image from "next/image";
 import { Tooltip } from "../Tooltip";
 import { renderNotification } from "../Notification";
 
@@ -58,7 +57,7 @@ export function AddressLink({
             }
             className="flex-shrink-0"
           >
-            <Image
+            <img
               src={`${UNDERDOG_PROTOCOL_LOGOS_URL}/xray/icon.jpeg`}
               className={sizeToDimensionsClassName.xs}
               alt="xray"
