@@ -102,9 +102,7 @@ export function AssetView() {
                   : undefined
               }
               alt="NFT Img"
-              className={`max-w-full ${
-                isCollapsed ? "h-full" : "max-h-full"
-              }  rounded-xl`}
+              className="max-w-full h-auto rounded-xl"
             />
           </div>
 
