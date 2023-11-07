@@ -59,6 +59,10 @@ export const apps: Record<string, { title: string; src: string }> = {
     title: "intotheverse",
     src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/intotheverse/icon.png`,
   },
+  solsquatch: {
+    title: "Solsquatch",
+    src: "https://mjphgbhftqzehivrnstl.supabase.co/storage/v1/object/public/nft-images/solsquatch.jpg",
+  },
   underdog: {
     title: "Underdog",
     src: UNDERDOG_LOGO_URL,
