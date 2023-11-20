@@ -63,6 +63,10 @@ export const apps: Record<string, { title: string; src: string }> = {
     title: "Solsquatch",
     src: "https://mjphgbhftqzehivrnstl.supabase.co/storage/v1/object/public/nft-images/solsquatch.jpg",
   },
+  metacamp: {
+    title: "Metacamp",
+    src: "https://storage.googleapis.com/underdog-protocol/logos/metacamp/logo.png",
+  },
   underdog: {
     title: "Underdog",
     src: UNDERDOG_LOGO_URL,
