@@ -67,6 +67,10 @@ export const apps: Record<string, { title: string; src: string }> = {
     title: "Metacamp",
     src: "https://storage.googleapis.com/underdog-protocol/logos/metacamp/logo.png",
   },
+  publed: {
+    title: "Publed",
+    src: "https://storage.googleapis.com/underdog-protocol/logos/publed/logo.jpeg",
+  },
   underdog: {
     title: "Underdog",
     src: UNDERDOG_LOGO_URL,
