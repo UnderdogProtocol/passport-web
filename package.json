@@ -33,6 +33,7 @@
     "axios": "^1.4.0",
     "base58": "^2.0.1",
     "clsx": "^2.0.0",
+    "cookie": "^0.6.0",
     "date-fns": "^2.30.0",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
@@ -56,13 +57,14 @@
     "zod": "3.21.4"
   },
   "devDependencies": {
+    "@types/cookie": "^0.5.4",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "prettier": "^3.0.3",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "prettier": "^3.0.3"
   }
 }

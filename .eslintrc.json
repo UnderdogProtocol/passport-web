@@ -20,6 +20,7 @@
         "avoidEscape": true
       }
     ],
+    "@next/next/no-img-element": "off",
     "no-unused-vars": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
     "import/no-unresolved": "error",

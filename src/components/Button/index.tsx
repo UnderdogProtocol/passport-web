@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { MouseEventHandler, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
-export type ButtonType = "primary" | "secondary" | "default" | "link";
+export type ButtonType = "primary" | "secondary" | "default" | "link" | "white";
 
 export type ButtonProps = {
   type?: ButtonType;
@@ -27,6 +27,7 @@ const typeToClassName: Record<ButtonType, string> = {
   secondary:
     "text-primary border-primary text-primary-dark hover:bg-primary/25",
   link: "border-transparent hover:opacity-75 text-light",
+  white: "bg-white border-white text-dark",
   default:
     "bg-dark-light border-dark-400 text-dark-200 hover:bg-dark-light/25 hover:border-dark-300",
 };

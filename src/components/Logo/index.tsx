@@ -8,23 +8,14 @@ type LogoProps = {
   full?: boolean;
 };
 
-const UNDERDOG_PROTOCOL_LOGOS_URL =
-  "https://storage.googleapis.com/underdog-protocol/logos";
+const UNDERDOG_PROTOCOL_LOGOS_URL = "https://storage.googleapis.com/underdog-protocol/logos";
 
-export function Logo({ className, size = "md", dark, full }: LogoProps) {
-  const logoClassName = clsx(
-    full ? "" : sizeToDimensionsClassName[size],
-    className,
-  );
+export function Logo({ className, size = "md", full }: LogoProps) {
+  const logoClassName = clsx(full ? "" : sizeToDimensionsClassName[size], className);
 
   return (
     <div className={logoClassName}>
-      <img
-        src={`${UNDERDOG_PROTOCOL_LOGOS_URL}/${full ? "full" : "icon"}_${
-          dark ? "dark" : "light"
-        }.svg`}
-        alt="logo"
-      />
+      <img src={`${UNDERDOG_PROTOCOL_LOGOS_URL}/passport/${full ? "full" : "icon"}.svg`} alt="logo" />
     </div>
   );
 }

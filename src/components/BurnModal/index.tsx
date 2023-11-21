@@ -10,12 +10,7 @@ import { useAsset } from "@/hooks/useAsset";
 import { useAssetProof } from "@/hooks/useAssetProof";
 import { shortenAddress } from "@/lib";
 import { context } from "@/lib/context";
-import {
-  createNoopSigner,
-  publicKey,
-  publicKeyBytes,
-  AccountMeta,
-} from "@metaplex-foundation/umi";
+import { createNoopSigner, publicKey, publicKeyBytes, AccountMeta } from "@metaplex-foundation/umi";
 import { toWeb3JsTransaction } from "@metaplex-foundation/umi-web3js-adapters";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { burnAssetV0 } from "@underdog-protocol/underdog-identity-sdk";
@@ -26,10 +21,7 @@ import { HiOutlineTrash } from "react-icons/hi2";
 export const BurnModal: React.FC<ModalProps> = (props) => {
   const router = useRouter();
   const mintAddress = useMemo(
-    () =>
-      router.query.mintAddress
-        ? publicKey(router.query.mintAddress as string)
-        : undefined,
+    () => (router.query.mintAddress ? publicKey(router.query.mintAddress as string) : undefined),
     [router.query.mintAddress],
   );
 
@@ -117,9 +109,7 @@ export const BurnModal: React.FC<ModalProps> = (props) => {
           title={`Send ${assetData?.content?.metadata.name || "Asset"}`}
           description={
             account?.address &&
-            `Connect the wallet you activated your account with (${shortenAddress(
-              account?.address,
-            )})`
+            `Connect the wallet you activated your account with (${shortenAddress(account?.address)})`
           }
           media={{
             src:
@@ -134,9 +124,7 @@ export const BurnModal: React.FC<ModalProps> = (props) => {
             title="Connect Wallet"
             description={
               account?.address &&
-              `You'll need to approve deleting your asset with wallet ${shortenAddress(
-                account?.address,
-              )}`
+              `You'll need to approve deleting your asset with wallet ${shortenAddress(account?.address)}`
             }
           />
           <ConnectWalletButton type="secondary" className="flex-shrink-0" />
@@ -148,11 +136,7 @@ export const BurnModal: React.FC<ModalProps> = (props) => {
             description="Sign the transaction to delete your asset. You'll need a little bit of SOL to cover transactions fees."
           />
 
-          <Button
-            type="primary"
-            disabled={!wallet.publicKey}
-            onClick={handleBurn}
-          >
+          <Button type="primary" disabled={!wallet.publicKey} onClick={handleBurn}>
             <div className="flex items-center space-x-2">
               <span>Delete</span>
               <HiOutlineTrash className="h-5 w-5" />

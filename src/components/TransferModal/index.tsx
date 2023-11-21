@@ -10,12 +10,7 @@ import { useAsset } from "@/hooks/useAsset";
 import { useAssetProof } from "@/hooks/useAssetProof";
 import { shortenAddress } from "@/lib";
 import { context } from "@/lib/context";
-import {
-  createNoopSigner,
-  publicKey,
-  publicKeyBytes,
-  AccountMeta,
-} from "@metaplex-foundation/umi";
+import { createNoopSigner, publicKey, publicKeyBytes, AccountMeta } from "@metaplex-foundation/umi";
 import { toWeb3JsTransaction } from "@metaplex-foundation/umi-web3js-adapters";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { transferAssetV0 } from "@underdog-protocol/underdog-identity-sdk";
@@ -26,10 +21,7 @@ import { HiOutlinePaperAirplane } from "react-icons/hi2";
 export const TransferModal: React.FC<ModalProps> = (props) => {
   const router = useRouter();
   const mintAddress = useMemo(
-    () =>
-      router.query.mintAddress
-        ? publicKey(router.query.mintAddress as string)
-        : undefined,
+    () => (router.query.mintAddress ? publicKey(router.query.mintAddress as string) : undefined),
     [router.query.mintAddress],
   );
 
@@ -118,9 +110,7 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
           title={`Send ${assetData?.content?.metadata.name || "Asset"}`}
           description={
             account?.address &&
-            `Connect the wallet you activated your account with (${shortenAddress(
-              account?.address,
-            )})`
+            `Connect the wallet you activated your account with (${shortenAddress(account?.address)})`
           }
           media={{
             src:
@@ -133,10 +123,7 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
         <div className="flex items-center justify-between space-x-8">
           <Header
             title="Connect Wallet"
-            description={
-              account?.address &&
-              `We'll send your asset to ${shortenAddress(account?.address)}`
-            }
+            description={account?.address && `We'll send your asset to ${shortenAddress(account?.address)}`}
           />
           <ConnectWalletButton type="secondary" className="flex-shrink-0" />
         </div>
@@ -147,11 +134,7 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
             description="Sign the transaction to transfer your asset. You'll need a little bit of SOL to cover transactions fees."
           />
 
-          <Button
-            type="primary"
-            disabled={!wallet.publicKey}
-            onClick={handleTransfer}
-          >
+          <Button type="primary" disabled={!wallet.publicKey} onClick={handleTransfer}>
             <div className="flex items-center space-x-2">
               <span>Send</span>
               <HiOutlinePaperAirplane className="h-5 w-5" />
