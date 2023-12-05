@@ -1,5 +1,4 @@
-export const UNDERDOG_PROTOCOL_LOGOS_URL =
-  "https://storage.googleapis.com/underdog-protocol/logos";
+export const UNDERDOG_PROTOCOL_LOGOS_URL = "https://storage.googleapis.com/underdog-protocol/logos";
 
 export const PUBLIC_LOGO_URL = `${UNDERDOG_PROTOCOL_LOGOS_URL}/public/icon.svg`;
 export const SOLARPLEX_LOGO_URL = `${UNDERDOG_PROTOCOL_LOGOS_URL}/solarplex/icon.svg`;
@@ -22,6 +21,14 @@ export const apps: Record<string, { title: string; src: string }> = {
   publique: {
     title: "Publique",
     src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/publique/icon.png`,
+  },
+  metacamp: {
+    title: "Metacamp",
+    src: "https://storage.googleapis.com/underdog-protocol/logos/metacamp/logo.png",
+  },
+  syndicate: {
+    title: "Syndicate",
+    src: "https://storage.googleapis.com/underdog-protocol/logos/syndicate/logo.png",
   },
   sphere: {
     title: "Sphere",
@@ -63,10 +70,7 @@ export const apps: Record<string, { title: string; src: string }> = {
     title: "Solsquatch",
     src: "https://mjphgbhftqzehivrnstl.supabase.co/storage/v1/object/public/nft-images/solsquatch.jpg",
   },
-  metacamp: {
-    title: "Metacamp",
-    src: "https://storage.googleapis.com/underdog-protocol/logos/metacamp/logo.png",
-  },
+
   publed: {
     title: "Publed",
     src: "https://storage.googleapis.com/underdog-protocol/logos/publed/logo.jpeg",
