@@ -11,18 +11,8 @@ export type MediaProps = {
   className?: string;
 };
 
-export const Media: React.FC<MediaProps> = ({
-  className,
-  src,
-  text,
-  size = "md",
-  icon,
-}) => {
-  const mediaClassName = clsx(
-    "flex-shrink-0",
-    sizeToDimensionsClassName[size],
-    className,
-  );
+export const Media: React.FC<MediaProps> = ({ className, src, text, size = "md", icon }) => {
+  const mediaClassName = clsx("flex-shrink-0", sizeToDimensionsClassName[size], className);
 
   if (src) {
     return <Avatar src={src} className={mediaClassName} />;

@@ -1,12 +1,14 @@
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
-// import { SignInWithWalletButton } from "@/components/SignInWithWalletButton";
 import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { Header } from "@/components/MediaObject/Header";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export const SignInView: React.FC = () => {
+  const router = useRouter();
+
   return (
     <Container size="xl" className="h-screen flex items-center justify-center">
       <Card className="p-12 space-y-8 w-full">
@@ -17,7 +19,10 @@ export const SignInView: React.FC = () => {
 
         <div className="space-y-2">
           <div className="grid grid-cols-3 gap-2">
-            <Button type="white" onClick={() => signIn("google", { callbackUrl: "/" })}>
+            <Button
+              type="white"
+              onClick={() => signIn("google", { callbackUrl: (router.query.callbackUrl as string) || "/" })}
+            >
               <img
                 alt="google"
                 src="https://storage.googleapis.com/underdog-protocol/logos/google/icon.svg"
