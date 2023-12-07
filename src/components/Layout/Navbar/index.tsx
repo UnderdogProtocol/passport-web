@@ -2,6 +2,7 @@ import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import Link from "next/link";
 import { SessionPopover } from "./SessionPopover";
+import { Button } from "@/components/Button";
 
 export function Navbar() {
   return (
@@ -12,7 +13,14 @@ export function Navbar() {
           <Logo dark className="w-10 sm:hidden" />
         </Link>
 
-        <SessionPopover />
+        <div className="flex space-x-2 items-center">
+          <a href="https://app.underdogprotocol.com/projects" target="_blank" rel="noreferrer">
+            <Button type="link" className="text-primary">
+              Build with Passport
+            </Button>
+          </a>
+          <SessionPopover />
+        </div>
       </nav>
     </Container>
   );
