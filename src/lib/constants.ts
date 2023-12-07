@@ -30,6 +30,10 @@ export const apps: Record<string, { title: string; src: string }> = {
     title: "Syndicate",
     src: "https://storage.googleapis.com/underdog-protocol/logos/syndicate/logo.png",
   },
+  shremp: {
+    title: "Shremp",
+    src: "https://storage.googleapis.com/underdog-protocol/logos/shremp/logo.png",
+  },
   sphere: {
     title: "Sphere",
     src: `${UNDERDOG_PROTOCOL_LOGOS_URL}/sphere/icon.jpg`,
