@@ -20,7 +20,7 @@ const router = createRouter<NextApiRequest, NextApiResponse>();
 context.use(
   keypairIdentity(
     createSignerFromKeypair(context, {
-      publicKey: publicKey("a5sSqWJR1WExtq1hvufeep8fLU43xxXXac44k6FRgbs"),
+      publicKey: publicKey(process.env.ADMIN_PUBLIC_KEY!),
       secretKey: base58.serialize(process.env.ADMIN_SECRET_KEY!),
     }),
   ),
@@ -30,15 +30,11 @@ router.post(async (req, res) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
-    return res
-      .status(HttpStatus.UNAUTHORIZED)
-      .json({ message: "You must be logged in." });
+    return res.status(HttpStatus.UNAUTHORIZED).json({ message: "You must be logged in." });
   }
 
   if (!(session.user?.email && req.body.linkerAddress)) {
-    return res
-      .status(HttpStatus.BAD_REQUEST)
-      .json({ message: "Identifier & address are required" });
+    return res.status(HttpStatus.BAD_REQUEST).json({ message: "Identifier & address are required" });
   }
 
   const transaction = toWeb3JsTransaction(
