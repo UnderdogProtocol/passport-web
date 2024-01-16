@@ -34,11 +34,7 @@ export const AppView: React.FC = () => {
             >
               <img
                 className="absolute h-full w-full object-cover"
-                src={
-                  item.content
-                    ? item.content.json_uri.replace("jsondata", "imgdata")
-                    : "https://updg8.com/imgdata/8QfUaoNPNwjEAKHkXvBUrjQaqiRf7MmpRWUHuQdMZyXj"
-                }
+                src={item.content?.links?.image}
                 alt="img"
               />
               {item.ownership.delegated && (
