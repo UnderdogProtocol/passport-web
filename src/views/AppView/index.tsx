@@ -2,14 +2,14 @@ import { Container } from "@/components/Container";
 import { LoadingPage } from "@/components/LoadingPage";
 import { MediaObject } from "@/components/MediaObject";
 import { useUserContext } from "@/contexts/user";
-import { useNftsByOwnerAddress } from "@/hooks/useNftsByOwnerAddress";
 import { HiLockClosed, HiOutlineSquares2X2 } from "react-icons/hi2";
 import Link from "next/link";
+import { useAssetsByOwner } from "@/hooks/useAssetsByOwner";
 
 export const AppView: React.FC = () => {
   const { user, address, namespace, app } = useUserContext();
 
-  const { data } = useNftsByOwnerAddress(address);
+  const { data } = useAssetsByOwner(address);
 
   if (!(user && app && address)) return <LoadingPage />;
 
@@ -34,7 +34,7 @@ export const AppView: React.FC = () => {
             >
               <img
                 className="absolute h-full w-full object-cover"
-                src={item.content?.links?.image}
+                src={item.content.links?.image}
                 alt="img"
               />
               {item.ownership.delegated && (

@@ -7,7 +7,6 @@ import { Modal, ModalProps } from "@/components/Modal";
 import { renderNotification } from "@/components/Notification";
 import { useUserContext } from "@/contexts/user";
 import { shortenAddress } from "@/lib";
-import { context } from "@/lib/context";
 import { publicKey } from "@metaplex-foundation/umi";
 import { toWeb3JsTransaction } from "@metaplex-foundation/umi-web3js-adapters";
 import { base58 } from "@metaplex-foundation/umi/serializers";
@@ -32,30 +31,19 @@ export const ActivateModal: React.FC<ActivateModalProps> = (props) => {
   if (!app) return null;
 
   const handleActivate = async () => {
-    if (
-      wallet.publicKey &&
-      wallet.signTransaction &&
-      user?.email &&
-      namespace
-    ) {
+    if (wallet.publicKey && wallet.signTransaction && user?.email && namespace) {
       const response = await axios.post(`/api/${namespace}/activate`, {
         linkerAddress: wallet.publicKey.toBase58(),
       });
 
-      const transaction = context.transactions.deserialize(
-        base58.serialize(response.data),
-      );
+      const transaction = context.transactions.deserialize(base58.serialize(response.data));
 
       try {
-        const signedTransaction = await wallet.signTransaction(
-          toWeb3JsTransaction(transaction),
-        );
+        const signedTransaction = await wallet.signTransaction(toWeb3JsTransaction(transaction));
         await connection.sendRawTransaction(signedTransaction.serialize());
         renderNotification({
           title: `Activated your ${app.title} account`,
-          description: `Wallet ${shortenAddress(
-            publicKey(wallet.publicKey),
-          )} linked`,
+          description: `Wallet ${shortenAddress(publicKey(wallet.publicKey))} linked`,
         });
       } catch {
         renderNotification({

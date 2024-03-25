@@ -3,12 +3,11 @@ import { LoadingPage } from "@/components/LoadingPage";
 import { apps } from "@/lib/constants";
 import { Header } from "@/components/MediaObject/Header";
 import { MediaObject } from "@/components/MediaObject";
-import { HiDevicePhoneMobile, HiEnvelope } from "react-icons/hi2";
+import { HiDevicePhoneMobile } from "react-icons/hi2";
 import Link from "next/link";
 import { useUserContext } from "@/contexts/user";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
-import MailListView from "../MailListView";
 
 export const IndexView: React.FC = () => {
   const { user } = useUserContext();
@@ -40,9 +39,7 @@ export const IndexView: React.FC = () => {
 
         <Button
           type="secondary"
-          onClick={() =>
-            window.open(`https://shop.underdogprotocol.com/${mintAddress}`)
-          }
+          onClick={() => window.open(`https://shop.underdogprotocol.com/${mintAddress}`)}
         >
           Visit Shop
         </Button>
@@ -65,7 +62,7 @@ export const IndexView: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <MediaObject
           title="Inbox"
           size="4xl"
@@ -75,8 +72,8 @@ export const IndexView: React.FC = () => {
           <Button type="secondary">Compose</Button>
         </Link>
       </div>
-
-      <MailListView />
+ */}
+      {/* <MailListView /> */}
     </Container>
   );
 };

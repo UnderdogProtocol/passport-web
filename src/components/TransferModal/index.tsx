@@ -6,14 +6,13 @@ import { Header } from "@/components/MediaObject/Header";
 import { Modal, ModalProps } from "@/components/Modal";
 import { renderNotification } from "@/components/Notification";
 import { useUserContext } from "@/contexts/user";
-import { useAsset } from "@/hooks/useAsset";
-import { useAssetProof } from "@/hooks/useAssetProof";
+import { useAssetWithProof } from "@/hooks/useAssetWithProof";
+import { useContext } from "@/hooks/useContext";
 import { shortenAddress } from "@/lib";
-import { context } from "@/lib/context";
-import { createNoopSigner, publicKey, publicKeyBytes, AccountMeta } from "@metaplex-foundation/umi";
+import { createNoopSigner, publicKey } from "@metaplex-foundation/umi";
 import { toWeb3JsTransaction } from "@metaplex-foundation/umi-web3js-adapters";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { transferAssetV0 } from "@underdog-protocol/underdog-identity-sdk";
+import { transferAssetV0 } from "@underdog-protocol/passport-sdk";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
@@ -25,8 +24,9 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
     [router.query.mintAddress],
   );
 
-  const { data: assetData } = useAsset(mintAddress);
-  const { data: assetProofData } = useAssetProof(mintAddress);
+  const { data } = useAssetWithProof(mintAddress);
+
+  const context = useContext();
 
   const wallet = useWallet();
   const { connection } = useConnection();
@@ -50,37 +50,22 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
   if (!app) return null;
 
   const handleTransfer = async () => {
-    if (
-      assetData?.compression &&
-      assetProofData &&
-      account?.address &&
-      user?.email &&
-      namespace &&
-      wallet.publicKey
-    ) {
+    if (data && account?.address && user?.email && namespace && wallet.publicKey) {
       const linkedAddress = publicKey(wallet.publicKey.toBase58());
-
-      const proof: AccountMeta[] = assetProofData.proof
-        .slice(0, assetProofData.proof.length - 11)
-        .map((node: string) => ({
-          pubkey: publicKey(node),
-          isSigner: false,
-          isWritable: false,
-        }));
 
       const transaction = toWeb3JsTransaction(
         await transferAssetV0(context, {
           authority: createNoopSigner(linkedAddress),
-          receiverAddress: publicKey(account?.address),
-          merkleTree: publicKey(assetData.compression.tree),
-          root: publicKeyBytes(assetProofData.root),
-          dataHash: publicKeyBytes(assetData.compression.data_hash),
-          creatorHash: publicKeyBytes(assetData.compression.creator_hash),
-          leafIndex: assetData.compression.leaf_id,
+          receiverAddress: account.address,
+          merkleTree: data.merkleTree,
+          root: data.root,
+          dataHash: data.dataHash,
+          creatorHash: data.creatorHash,
+          leafIndex: data.index,
           namespace,
           identifier: user.email,
+          proof: data.proof.slice(0, data.proof.length - 9),
         })
-          .addRemainingAccounts(proof)
           .setFeePayer(createNoopSigner(linkedAddress))
           .buildWithLatestBlockhash(context),
       );
@@ -107,17 +92,11 @@ export const TransferModal: React.FC<ModalProps> = (props) => {
       <Card className="p-8 space-y-8">
         <MediaObject
           size="2xl"
-          title={`Send ${assetData?.content?.metadata.name || "Asset"}`}
+          title={`Send ${data?.metadata?.name || "Asset"}`}
           description={
             account?.address &&
             `Connect the wallet you activated your account with (${shortenAddress(account?.address)})`
           }
-          media={{
-            src:
-              assetData?.content?.files && assetData.content.files.length > 0
-                ? assetData?.content.files[0].uri
-                : undefined,
-          }}
         />
 
         <div className="flex items-center justify-between space-x-8">

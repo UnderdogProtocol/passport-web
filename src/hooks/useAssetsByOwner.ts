@@ -1,25 +1,19 @@
-import { useQuery } from "react-query";
-import { helius } from "@/lib/helius";
 import { PublicKey } from "@metaplex-foundation/umi";
-import { AssetSortBy, AssetSortDirection } from "helius-sdk";
 
-const fetchAsset = async (mintAddress?: string) => {
-  return mintAddress
-    ? helius.rpc.getAssetsByOwner({
-        ownerAddress: mintAddress,
-        page: 1,
-        limit: 100,
-        sortBy: {
-          sortBy: AssetSortBy.Created,
-          sortDirection: AssetSortDirection.Asc,
-        },
-      })
-    : undefined;
-};
+import { useQuery } from "react-query";
+import { useContext } from "./useContext";
 
-export const useAssetsByOwner = (mintAddress?: string) => {
-  return useQuery("someName", async () => fetchAsset(mintAddress), {
-    enabled: !!mintAddress,
-    retry: false,
-  });
+export const useAssetsByOwner = (ownerAddress?: PublicKey) => {
+  const context = useContext();
+
+  return useQuery(
+    ["assets", ownerAddress],
+    async () => {
+      if (ownerAddress) {
+        const assets = await context.rpc.getAssetsByOwner({ owner: ownerAddress });
+        return assets;
+      }
+    },
+    { enabled: !!ownerAddress },
+  );
 };

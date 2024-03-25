@@ -1,4 +1,4 @@
-import { context } from "@/lib/context";
+import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import {
   createNoopSigner,
   createSignerFromKeypair,
@@ -8,14 +8,16 @@ import {
 import { base58 } from "@metaplex-foundation/umi/serializers";
 
 import { toWeb3JsTransaction } from "@metaplex-foundation/umi-web3js-adapters";
-import { initializeLinkV0 } from "@underdog-protocol/underdog-identity-sdk";
+import { initializeLinkV0 } from "@underdog-protocol/passport-sdk";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { createRouter } from "next-connect";
 import * as HttpStatus from "http-status";
-import { authOptions } from "../auth/[...nextauth]";
+import { nextAuthOptions } from "../auth/[...nextauth]";
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
+
+const context = createUmi(process.env.NEXT_PUBLIC_RPC_URL);
 
 context.use(
   keypairIdentity(
@@ -27,18 +29,14 @@ context.use(
 );
 
 router.post(async (req, res) => {
-  const session = await getServerSession(req, res, authOptions);
+  const session = await getServerSession(req, res, nextAuthOptions(req));
 
   if (!session) {
-    return res
-      .status(HttpStatus.UNAUTHORIZED)
-      .json({ message: "You must be logged in." });
+    return res.status(HttpStatus.UNAUTHORIZED).json({ message: "You must be logged in." });
   }
 
   if (!(session.user?.email && req.body.linkerAddress)) {
-    return res
-      .status(HttpStatus.BAD_REQUEST)
-      .json({ message: "Identifier & address are required" });
+    return res.status(HttpStatus.BAD_REQUEST).json({ message: "Identifier & address are required" });
   }
 
   const transaction = toWeb3JsTransaction(

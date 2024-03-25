@@ -1,9 +1,13 @@
+import { dasApi } from "@metaplex-foundation/digital-asset-standard-api";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
+import { useConnection } from "@solana/wallet-adapter-react";
 
 export const useContext = () => {
-  const context = createUmi(
-    "https://rpc.helius.xyz/?api-key=f961a77f-7072-4316-b9a2-1cab32a4d4a1",
-  );
+  const { connection } = useConnection();
+
+  const context = createUmi(connection.rpcEndpoint);
+
+  context.use(dasApi());
 
   return context;
 };

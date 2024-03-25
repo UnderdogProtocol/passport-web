@@ -1,8 +1,8 @@
+import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import Link from "next/link";
 import { SessionPopover } from "./SessionPopover";
-import { Button } from "@/components/Button";
 
 export function Navbar() {
   return (

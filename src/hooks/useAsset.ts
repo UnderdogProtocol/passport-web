@@ -1,14 +1,17 @@
 import { useQuery } from "react-query";
-import { helius } from "@/lib/helius";
 import { PublicKey } from "@metaplex-foundation/umi";
-
-const fetchAsset = async (mintAddress?: PublicKey) => {
-  return mintAddress ? helius.rpc.getAsset(mintAddress) : undefined;
-};
+import { useContext } from "./useContext";
 
 export const useAsset = (mintAddress?: PublicKey) => {
-  return useQuery(["asset", mintAddress], () => fetchAsset(mintAddress), {
-    enabled: !!mintAddress,
-    retry: false,
-  });
+  const context = useContext();
+
+  return useQuery(
+    ["asset", mintAddress],
+    () => {
+      if (mintAddress) {
+        return context.rpc.getAsset(mintAddress);
+      }
+    },
+    { enabled: !!mintAddress },
+  );
 };

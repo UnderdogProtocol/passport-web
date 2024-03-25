@@ -1,23 +1,11 @@
 import { apps } from "@/lib/constants";
-import { context } from "@/lib/context";
 import { PublicKey } from "@metaplex-foundation/umi";
-import { getPassportAddress } from "@underdog-protocol/passport";
-import {
-  LinkAccountData,
-  findLinkPda,
-  safeFetchLinkFromSeeds,
-} from "@underdog-protocol/underdog-identity-sdk";
+import { getPassportAddress, LinkAccountData, safeFetchLinkFromSeeds } from "@underdog-protocol/passport-sdk";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { useContext as useWeb3Context } from "../hooks/useContext";
 
 export type UserContextProps = {
   user: Omit<User, "id"> | undefined;
@@ -44,20 +32,15 @@ type UserProviderProps = {
 export function UserProvider({ children }: UserProviderProps) {
   const router = useRouter();
   const [account, setAccount] = useState<LinkAccountData>();
+  const context = useWeb3Context();
 
-  const namespace = useMemo(
-    () => router.query.namespace as string,
-    [router.query.namespace],
-  );
+  const namespace = useMemo(() => router.query.namespace as string, [router.query.namespace]);
 
   const session = useSession();
 
   const user = useMemo(() => session?.data?.user, [session]);
 
-  const app = useMemo(
-    () => (namespace ? apps[namespace] : undefined),
-    [namespace],
-  );
+  const app = useMemo(() => (namespace ? apps[namespace] : undefined), [namespace]);
 
   const address = useMemo(() => {
     if (router.query.namespace && user?.email) {
@@ -77,11 +60,9 @@ export function UserProvider({ children }: UserProviderProps) {
     } else {
       setAccount(undefined);
     }
-  }, [namespace, user]);
+  }, [context, namespace, user]);
 
   return (
-    <UserContext.Provider value={{ user, app, address, account, namespace }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={{ user, app, address, account, namespace }}>{children}</UserContext.Provider>
   );
 }
