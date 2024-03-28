@@ -31,6 +31,7 @@ type UserProviderProps = {
 
 export function UserProvider({ children }: UserProviderProps) {
   const router = useRouter();
+
   const [account, setAccount] = useState<LinkAccountData>();
   const context = useWeb3Context();
 

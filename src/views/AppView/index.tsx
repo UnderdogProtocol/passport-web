@@ -8,6 +8,7 @@ import { useAssetsByOwner } from "@/hooks/useAssetsByOwner";
 
 export const AppView: React.FC = () => {
   const { user, address, namespace, app } = useUserContext();
+  console.log(user);
 
   const { data } = useAssetsByOwner(address);
 

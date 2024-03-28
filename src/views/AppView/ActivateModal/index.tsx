@@ -6,6 +6,7 @@ import { Header } from "@/components/MediaObject/Header";
 import { Modal, ModalProps } from "@/components/Modal";
 import { renderNotification } from "@/components/Notification";
 import { useUserContext } from "@/contexts/user";
+import { useContext } from "@/hooks/useContext";
 import { shortenAddress } from "@/lib";
 import { publicKey } from "@metaplex-foundation/umi";
 import { toWeb3JsTransaction } from "@metaplex-foundation/umi-web3js-adapters";
@@ -20,6 +21,8 @@ export const ActivateModal: React.FC<ActivateModalProps> = (props) => {
   const wallet = useWallet();
   const { connection } = useConnection();
   const { app, namespace, user, account } = useUserContext();
+
+  const context = useContext();
 
   useEffect(() => {
     if (account && props.open) {

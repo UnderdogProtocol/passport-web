@@ -17,7 +17,9 @@ export const Providers: React.FC<ProvidersProps> = ({ children, session }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ConnectionProvider endpoint={endpoint || "http://localhost:3000"}>
+      <ConnectionProvider
+        endpoint={endpoint || "https://solana-mainnet.rpc.extrnode.com/3d7dc892-1492-4d3e-a341-ae6aa7fea478"}
+      >
         <SessionProvider session={session}>
           <UserProvider>
             <WalletProvider wallets={[]} autoConnect>
