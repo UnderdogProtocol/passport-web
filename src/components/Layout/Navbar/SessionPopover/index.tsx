@@ -12,15 +12,10 @@ export function SessionPopover() {
 
   if (!user) return null;
 
-  console.log(user);
-
   return (
     <Popover as="div" className="relative flex-shrink-0">
       <Popover.Button className="bg-dark-light p-2 rounded-md focus:outline-none">
-        <MediaObject
-          media={{ src: user.image || undefined }}
-          title={user.email || user.name}
-        />
+        <MediaObject media={{ src: user.image || undefined }} title={user.email || user.name} />
       </Popover.Button>
 
       <SessionPopoverPanel className="absolute right-0 mt-2 w-64" />

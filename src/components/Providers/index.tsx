@@ -13,7 +13,7 @@ export type ProvidersProps = {
 const queryClient = new QueryClient();
 
 export const Providers: React.FC<ProvidersProps> = ({ children, session }) => {
-  const endpoint = process.env.NEXT_PUBLIC_RPC_URL!;
+  const endpoint = process.env.NEXT_PUBLIC_RPC_URL;
 
   return (
     <QueryClientProvider client={queryClient}>

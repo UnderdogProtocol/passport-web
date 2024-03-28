@@ -62,7 +62,10 @@ export function UserProvider({ children }: UserProviderProps) {
     }
   }, [context, namespace, user]);
 
-  return (
-    <UserContext.Provider value={{ user, app, address, account, namespace }}>{children}</UserContext.Provider>
+  const value = useMemo(
+    () => ({ user, address, account, app, namespace }),
+    [user, address, account, app, namespace],
   );
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
