@@ -10,8 +10,9 @@ import { useAsset } from "@/hooks/useAsset";
 import { useToggle } from "@/hooks/useToggle";
 import { viewAssetOnXray } from "@/lib";
 import { publicKey } from "@metaplex-foundation/umi";
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { HiMagnifyingGlass, HiOutlineArrowUpOnSquare, HiOutlineTrash } from "react-icons/hi2";
 
 export function AssetView() {
@@ -23,6 +24,18 @@ export function AssetView() {
   );
 
   const { data: assetData, isLoading } = useAsset(mintAddress);
+  const [metadata, setMetadata] = useState<{
+    image: string;
+    attributes: any;
+    description: string;
+    name: string;
+  }>();
+
+  useEffect(() => {
+    if (assetData?.content?.json_uri) {
+      axios.get(assetData?.content.json_uri).then((res) => setMetadata(res.data));
+    }
+  });
 
   const [transferModalOpen, toggleTransferModalOpen] = useToggle();
   const [burnModalOpen, toggleBurnModalOpen] = useToggle();
@@ -56,23 +69,15 @@ export function AssetView() {
       </div>
 
       <div className="grid grid-cols-2 gap-8">
-        <img
-          src={
-            assetData.content?.files && assetData.content.files.length > 0
-              ? assetData?.content.files[0].uri
-              : undefined
-          }
-          alt="NFT Img"
-          className="w-full h-full object-cover rounded-md"
-        />
+        <img src={metadata?.image} alt="NFT Img" className="w-full h-full object-cover rounded-md" />
         <div className="w-full">
           <div className="mb-4">
-            <Header title={assetData?.content?.metadata.description} />
+            <Header title={metadata?.description || ""} />
           </div>
 
           <div>
             <div className="grid grid-cols-2 gap-4 pt-2">
-              {assetData?.content?.metadata.attributes?.map((attribute) => (
+              {metadata?.attributes?.map((attribute: any) => (
                 <Card className="p-4 overflow-scroll">
                   <MediaObject title={attribute.trait_type} description={attribute.value} />
                 </Card>
